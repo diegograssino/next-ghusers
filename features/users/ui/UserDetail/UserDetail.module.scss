@@ -1,0 +1,88 @@
+@use "../../../../styles/abstracts" as *;
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &InfoSection {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    @media (min-width: $screen-xl) {
+      flex-direction: row;
+    }
+  }
+
+  &Header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+    }
+
+    div {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+
+  &Info {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    gap: 1rem;
+    padding: 1rem;
+    border: 2px solid $color-accent2;
+    border-radius: 0.5rem;
+  }
+
+  &Stats {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 0.25rem;
+
+    @media (min-width: $screen-xl) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.5rem;
+    }
+  }
+
+  &Repos {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    gap: 1rem;
+    padding: 1rem;
+    border: 2px solid $color-accent2;
+    border-radius: 0.5rem;
+  }
+
+  &ReposList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &ReposItem {
+    display: flex;
+  }
+}
+
+.detailReposItemIcon {
+  //   TODO Make dimensions responsive
+  width: 1.5rem;
+  height: 1.5rem;
+  stroke-width: 0.125rem;
+  stroke: $color-accent2;
+  margin-right: 0.5rem;
+}

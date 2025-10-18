@@ -1,0 +1,17 @@
+@use "../../../../styles/abstracts.scss" as *;
+
+.FavsWidgetIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  stroke-width: 0.125rem;
+  //   TODO Make dimensions responsive
+}
+
+.FavsWidgetEmptyStar {
+  stroke: $color-warning;
+}
+
+.FavsWidgetFilledStar {
+  stroke: $color-warning;
+  fill: $color-warning;
+}

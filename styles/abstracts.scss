@@ -1,0 +1,86 @@
+// TODO Refactor folder structure for variables, add animatios to a mixins file
+// Base Colors (used to define CSS custom properties)
+$base-color-primary: #ffffff !default;
+$base-color-secondary: #1f2937 !default;
+$base-color-primary-dark: #f9fafb !default;
+$base-color-secondary-dark: #111827 !default;
+$base-color-accent: #3b82f6 !default;
+$base-color-accent2: #6b7280 !default;
+$base-color-success: #10b981 !default;
+$base-color-error: #ef4444 !default;
+$base-color-warning: #f59e0b !default;
+$base-color-accent-dark: #2563eb !default;
+$base-color-accent2-dark: #4b5563 !default;
+$base-color-success-dark: #059669 !default;
+$base-color-error-dark: #dc2626 !default;
+$base-color-warning-dark: #d97706 !default;
+
+// Theme Colors (CSS custom properties for dynamic theming)
+$color-foreground: var(--color-foreground) !default;
+$color-background: var(--color-background) !default;
+$color-primary: var(--color-primary) !default;
+$color-secondary: var(--color-secondary) !default;
+$color-accent: var(--color-accent) !default;
+$color-accent2: var(--color-accent2) !default;
+$color-success: var(--color-success) !default;
+$color-error: var(--color-error) !default;
+$color-warning: var(--color-warning) !default;
+
+// Layout
+$layout-navbar-height: 4rem !default;
+$layout-footer-height: 5rem !default;
+
+// Typography
+// CSS vars are defined by Next.js Google Fonts integration
+$font-primary: var(--font-primary) !default;
+$font-secondary: var(--font-secondary) !default;
+$font-weight-thin: 100 !default;
+$font-weight-normal: 400 !default;
+$font-weight-bold: 700 !default;
+
+// Breakpoints
+$screen-xs: 480px !default;
+$screen-sm: 640px !default;
+$screen-md: 768px !default;
+$screen-lg: 1024px !default;
+$screen-xl: 1280px !default;
+$screen-2xl: 1440px !default;
+$screen-3xl: 1920px !default;
+
+// Animations
+$animation-pulse-duration: 2s !default;
+$animation-pulse-timing: infinite !default;
+$animation-pulse: pulse $animation-pulse-duration $animation-pulse-timing !default;
+
+$animation-spin-duration: 1s !default;
+$animation-spin-timing: linear infinite !default;
+$animation-spin: spin $animation-spin-duration $animation-spin-timing !default;
+
+// Transitions
+$transition-fast: all 0.2s ease-in-out !default;
+$transition-transform: transform 0.2s ease-in-out !default;
+
+// Global Keyframes
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 0.25;
+  }
+
+  100% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: translateY(-50%) rotate(0deg);
+  }
+
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}

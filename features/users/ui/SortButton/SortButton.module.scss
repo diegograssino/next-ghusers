@@ -1,0 +1,8 @@
+@use "../../../../styles/abstracts" as *;
+
+.sortButton {
+  border: 2px solid $color-accent2;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.5rem;
+}

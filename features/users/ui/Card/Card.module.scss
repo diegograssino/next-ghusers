@@ -1,0 +1,38 @@
+@use "../../../../styles/abstracts" as *;
+
+.card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: 0.75rem;
+  position: relative;
+  border: 2px solid $color-accent2;
+  transition: $transition-fast;
+  overflow: hidden;
+
+  &:hover {
+    border-color: $color-foreground;
+  }
+
+  &:hover img {
+    transform: scale(1.05);
+  }
+
+  img {
+    transition: $transition-transform;
+    transform-origin: center;
+  }
+
+  &Content {
+    padding: 1rem;
+    overflow: hidden;
+  }
+
+  &Options {
+    padding: 1rem;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+}

@@ -1,0 +1,162 @@
+@use "../../../styles/abstracts.scss" as *;
+
+.typography {
+  &:is(h1, h2, h3, h4, h5, h6) {
+    font-family: $font-secondary;
+  }
+}
+
+.default {
+  color: $color-foreground;
+}
+
+.inverse {
+  color: $color-background;
+}
+
+.primary {
+  color: $color-primary;
+}
+
+.secondary {
+  color: $color-secondary;
+}
+
+.accent {
+  color: $color-accent;
+}
+
+.accent2 {
+  color: $color-accent2;
+}
+
+.thin {
+  font-weight: $font-weight-thin;
+}
+
+.normal {
+  font-weight: $font-weight-normal;
+}
+
+.bold {
+  font-weight: $font-weight-bold;
+}
+
+.sm {
+  font-size: 0.75rem;
+
+  @media (min-width: $screen-sm) {
+    font-size: 0.8125rem;
+  }
+
+  @media (min-width: $screen-md) {
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: $screen-lg) {
+    font-size: 0.9375rem;
+  }
+
+  @media (min-width: $screen-xl) {
+    font-size: 1rem;
+  }
+
+  @media (min-width: $screen-2xl) {
+    font-size: 1.0625rem;
+  }
+
+  @media (min-width: $screen-3xl) {
+    font-size: 1.125rem;
+  }
+}
+
+.md {
+  font-size: 0.875rem;
+
+  @media (min-width: $screen-sm) {
+    font-size: 0.9375rem;
+  }
+
+  @media (min-width: $screen-md) {
+    font-size: 1rem;
+  }
+
+  @media (min-width: $screen-lg) {
+    font-size: 1.125rem;
+  }
+
+  @media (min-width: $screen-xl) {
+    font-size: 1.25rem;
+  }
+
+  @media (min-width: $screen-2xl) {
+    font-size: 1.375rem;
+  }
+
+  @media (min-width: $screen-3xl) {
+    font-size: 1.5rem;
+  }
+}
+
+.lg {
+  font-size: 1.125rem;
+
+  @media (min-width: $screen-sm) {
+    font-size: 1.25rem;
+  }
+
+  @media (min-width: $screen-md) {
+    font-size: 1.5rem;
+  }
+
+  @media (min-width: $screen-lg) {
+    font-size: 1.75rem;
+  }
+
+  @media (min-width: $screen-xl) {
+    font-size: 2rem;
+  }
+
+  @media (min-width: $screen-2xl) {
+    font-size: 2.25rem;
+  }
+
+  @media (min-width: $screen-3xl) {
+    font-size: 2.5rem;
+  }
+}
+
+.xl {
+  font-size: 1.5rem;
+
+  @media (min-width: $screen-sm) {
+    font-size: 1.75rem;
+  }
+
+  @media (min-width: $screen-md) {
+    font-size: 2.25rem;
+  }
+
+  @media (min-width: $screen-lg) {
+    font-size: 2.75rem;
+  }
+
+  @media (min-width: $screen-xl) {
+    font-size: 3.25rem;
+  }
+
+  @media (min-width: $screen-2xl) {
+    font-size: 3.75rem;
+  }
+
+  @media (min-width: $screen-3xl) {
+    font-size: 4rem;
+  }
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.2;
+}
