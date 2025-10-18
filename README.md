@@ -52,7 +52,7 @@ npm run dev
 
 ## Live Demo
 
-The application is deployed at: https://next-github-users-six.vercel.app/
+The application is deployed at: https://next-ghusers.vercel.app
 
 ## Tech Stack
 
