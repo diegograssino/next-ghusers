@@ -29,6 +29,7 @@ export const FavsContext = createContext<FavsContextProps>({
 
 export const FavsProvider = ({ children }: FavsProviderProps) => {
   const [favs, setFavs] = useState<number[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
   const sharedContext = useContext(SharedContext);
 
   if (!sharedContext) {
@@ -38,18 +39,21 @@ export const FavsProvider = ({ children }: FavsProviderProps) => {
 
   const { isClient } = sharedContext;
 
-  useEffect(() => {
-    if (isClient) {
-      localStorage.setItem("favs", JSON.stringify(favs));
-    }
-  }, [favs, isClient]);
-
+  // Load favs from localStorage on mount
   useEffect(() => {
     if (isClient && typeof window !== "undefined" && window.localStorage) {
       const localFavs = localStorage.getItem("favs") || "[]";
       setFavs(JSON.parse(localFavs));
+      setIsInitialized(true);
     }
   }, [isClient]);
+
+  // Save favs to localStorage when favs change (but only after initial load)
+  useEffect(() => {
+    if (isClient && isInitialized) {
+      localStorage.setItem("favs", JSON.stringify(favs));
+    }
+  }, [favs, isClient, isInitialized]);
 
   const addFav = useCallback((id: number) => {
     setFavs((currentFavs) => {
