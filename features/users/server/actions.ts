@@ -7,10 +7,10 @@ import {
   handleFetchError,
   parseNext,
 } from "../lib/utils";
-import { USERS_PER_PAGE } from "../queries/constants";
+import { USERS_PER_PAGE_DEFAULT } from "../queries/constants";
 
 export async function fetchUsersAction({
-  perPageParam = USERS_PER_PAGE,
+  perPageParam = USERS_PER_PAGE_DEFAULT,
   pageParam = "1",
   queryParam = "",
 }: FetchUsersParams): Promise<FetchUsersResult> {

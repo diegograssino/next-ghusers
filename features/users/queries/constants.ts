@@ -1,1 +1,1 @@
-export const USERS_PER_PAGE: string = "20";
+export const USERS_PER_PAGE_DEFAULT: string = "24";

@@ -1,0 +1,52 @@
+@use "../../../styles/abstracts" as *;
+
+.searchPage {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "search"
+    "info"
+    "results";
+  gap: 2rem;
+
+  @media (min-width: $screen-md) {
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "info search"
+      "filters results";
+  }
+
+  @media (min-width: $screen-lg) {
+    grid-template-columns: 1fr 4fr;
+  }
+
+  @media (min-width: $screen-xl) {
+    grid-template-columns: 1fr 4fr;
+  }
+
+  @media (min-width: $screen-2xl) {
+    grid-template-columns: 1fr 3fr;
+  }
+
+  @media (min-width: $screen-3xl) {
+    grid-template-columns: 1fr 4fr;
+  }
+}
+
+.searchPageInfo {
+  grid-area: info;
+}
+
+.searchPageSearch {
+  grid-area: search;
+}
+
+.searchPageFilters {
+  grid-area: filters;
+}
+
+.searchPageResults {
+  grid-area: results;
+}

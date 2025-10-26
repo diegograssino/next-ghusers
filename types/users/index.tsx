@@ -165,9 +165,6 @@ interface Owner {
   user_view_type: string;
   site_admin: boolean;
 }
-export interface CardGridProps {
-  children: React.ReactNode;
-}
 
 export interface CardProps {
   user: User;
@@ -180,10 +177,6 @@ export interface CardWidgetProps {
 export interface UserDetailProps {
   user: User;
   repos: Repo[];
-}
-
-export interface CardGridSkeletonProps {
-  cards?: number;
 }
 
 export interface SearchInputProps

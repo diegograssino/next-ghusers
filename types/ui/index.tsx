@@ -1,6 +1,7 @@
 import { pageMessages } from "@/features/ui/PageMessage/PageMessage.constants";
 import Link from "next/link";
 import { ElementType, HTMLAttributes, JSX } from "react";
+import { PerPageConfig } from "../shared";
 
 export type ColorVariants =
   | "default"
@@ -61,4 +62,13 @@ export type Icons = {
 
 export interface PageMessageProps {
   message: keyof typeof pageMessages;
+}
+
+export interface CardGridProps extends HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
+  perPageConfig?: PerPageConfig[keyof PerPageConfig];
+}
+
+export interface CardGridSkeletonProps {
+  perPageConfig?: PerPageConfig[keyof PerPageConfig];
 }

@@ -11,7 +11,7 @@
   height: 100%;
   box-sizing: border-box;
   border: 2px solid $color-accent2;
-  border-radius: 0.5rem;
+  border-radius: $border-radius;
   padding: 1rem;
   padding-right: 3rem;
   font-size: 1.25rem;

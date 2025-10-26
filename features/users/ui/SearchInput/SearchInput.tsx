@@ -28,6 +28,8 @@ const SearchInput = ({
         value={value}
         onChange={onChange}
         type="text"
+        autoComplete="off"
+        name="search"
         {...otherProps}
         className={searchInput}
         disabled={isLoading}
