@@ -14,11 +14,16 @@ const pinoConfig: pino.LoggerOptions = {
   },
 };
 
-if (config.serverUrl && typeof window !== "undefined" && navigator) {
+if (
+  config.serverUrl &&
+  typeof window !== "undefined" &&
+  navigator &&
+  process.env.NODE_ENV === "production"
+) {
   pinoConfig.browser = {
     ...pinoConfig.browser,
     transmit: {
-      level: "info",
+      level: "error",
       send: (level: pino.Level, logEvent: pino.LogEvent) => {
         const msg = logEvent.messages[0];
 
