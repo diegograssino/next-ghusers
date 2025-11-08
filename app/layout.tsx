@@ -1,4 +1,4 @@
-import { Container, Footer, Header } from "@/features/ui";
+import { Container, Footer, Header } from "@/features/shared/ui";
 import "@/styles/globals.scss";
 import clsx from "clsx";
 import type { Metadata } from "next";

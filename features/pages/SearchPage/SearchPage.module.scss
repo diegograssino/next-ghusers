@@ -9,6 +9,7 @@
     "info"
     "results";
   gap: 2rem;
+  height: 100%;
 
   @media (min-width: $screen-md) {
     grid-template-columns: 1fr 2fr;

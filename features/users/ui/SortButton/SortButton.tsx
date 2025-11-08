@@ -1,4 +1,4 @@
-import { Typography } from "@/features/ui";
+import { Typography } from "@/features/shared/ui";
 import { SortButtonProps } from "@/types";
 import styles from "./SortButton.module.scss";
 

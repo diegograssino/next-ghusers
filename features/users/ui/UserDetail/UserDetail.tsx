@@ -1,4 +1,4 @@
-import { Anchor, Typography } from "@/features/ui";
+import { Anchor, Typography } from "@/features/shared/ui";
 import { UserDetailProps } from "@/types";
 import { IconLink } from "@tabler/icons-react";
 import Image from "next/image";

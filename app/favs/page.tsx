@@ -1,6 +1,6 @@
 "use client";
 import FavsPage from "@/features/pages/FavsPage/FavsPage";
-import { PageMessage } from "@/features/ui";
+import { PageMessage } from "@/features/shared/ui";
 import { FavsContext } from "@/features/users/contexts/FavsContext";
 import { fetchUser } from "@/features/users/services";
 import { useQueries } from "@tanstack/react-query";

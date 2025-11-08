@@ -16,3 +16,8 @@ export interface PageConfig {
   perPageConfig: PerPageConfig[keyof PerPageConfig];
   searchTermParam: string | undefined;
 }
+
+// Logger types
+export interface LogContext {
+  [key: string]: unknown;
+}

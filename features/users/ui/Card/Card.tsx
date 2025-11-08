@@ -1,4 +1,4 @@
-import { Typography } from "@/features/ui";
+import { Typography } from "@/features/shared/ui";
 import { CardProps } from "@/types";
 import Image from "next/image";
 import Link from "next/link";

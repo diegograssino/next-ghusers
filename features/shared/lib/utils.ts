@@ -15,3 +15,7 @@ export async function getPageConfig(
 
   return { perPageConfig, searchTermParam };
 }
+
+export function formatNumber(num: number): string {
+  return num.toLocaleString();
+}

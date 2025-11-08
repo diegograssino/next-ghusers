@@ -1,16 +1,17 @@
-// Helper to handle fetch errors more gracefully
+import { log } from "@/features/shared/lib/logger";
+
 export function handleFetchError(error: unknown, context: string): never {
   if (error instanceof Error) {
     if (error.name === "AbortError") {
-      console.warn(`${context}: Request timed out`);
+      log.warn("Request timed out", { context, errorName: error.name });
       throw new Error(`Request timed out. Please try again.`);
     }
     if (error.message.includes("fetch")) {
-      console.warn(`${context}: Network error`, error);
+      log.warn("Network error detected", { context, error: error.message });
       throw new Error("Network error. Please check your connection.");
     }
   }
-  console.error(`${context}: Unexpected error`, error);
+  log.error("Unexpected error occurred", { context, error });
   throw error;
 }
 

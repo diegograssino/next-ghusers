@@ -1,14 +1,20 @@
 "use client";
 import { useSearchTerm } from "@/features/shared/hooks";
-import { PageMessage, Typography } from "@/features/ui";
+import { PageMessage } from "@/features/shared/ui";
 import useInfiniteUsers from "@/features/users/queries";
 import { Card, CardGrid, SearchInput } from "@/features/users/ui";
+import SearchResults from "@/features/users/ui/SearchResults/SearchResults";
 import { SearchPageProps } from "@/types";
 import InfiniteScroll from "react-infinite-scroller";
 import styles from "./SearchPage.module.scss";
 
-const { searchPage, searchPageAside, searchPageResults, searchPageInfo } =
-  styles;
+const {
+  searchPage,
+  searchPageAside,
+  searchPageResults,
+  searchPageInfo,
+  searchPageSearch,
+} = styles;
 
 const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
   // TODO Implement proper skeletons instead of loading message
@@ -30,19 +36,19 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
   return (
     <div className={searchPage}>
       <div className={searchPageInfo}>
-        {/* TODO Fix this UI and componentize */}
-        {totalCount && (
-          <Typography as="p">{`${totalCount} results`}</Typography>
-        )}
+        <SearchResults totalCount={totalCount} />
       </div>
-      <SearchInput
-        value={inputValue}
-        onChange={handleSearchTermChange}
-        autoFocus
-        placeholder="Search users..."
-      />
+      <div className={searchPageSearch}>
+        <SearchInput
+          value={inputValue}
+          onChange={handleSearchTermChange}
+          autoFocus
+          placeholder="Search users..."
+        />
+      </div>
+
       <aside className={searchPageAside}>{/* TODO filters */}</aside>
-      <main className={searchPageResults}>
+      <div className={searchPageResults}>
         {isError ? (
           <PageMessage message="error" />
         ) : isLoading ? (
@@ -64,7 +70,7 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
             </CardGrid>
           </InfiniteScroll>
         )}
-      </main>
+      </div>
     </div>
   );
 };

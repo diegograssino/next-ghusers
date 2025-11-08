@@ -1,4 +1,4 @@
-import { pageMessages } from "@/features/ui/PageMessage/PageMessage.constants";
+import { pageMessages } from "@/features/shared/ui/PageMessage/PageMessage.constants";
 import Link from "next/link";
 import { ElementType, HTMLAttributes, JSX } from "react";
 import { PerPageConfig } from "../shared";
@@ -71,4 +71,8 @@ export interface CardGridProps extends HTMLAttributes<HTMLDivElement> {
 
 export interface CardGridSkeletonProps {
   perPageConfig?: PerPageConfig[keyof PerPageConfig];
+}
+
+export interface SearchResultsProps {
+  totalCount?: number | undefined;
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import Container from "../Container/Container";
 import FavsAnchor from "../FavsAnchor/FavsAnchor";
 import Typography from "../Typography/Typography";

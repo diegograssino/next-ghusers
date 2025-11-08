@@ -1,19 +1,30 @@
 import { DeviceType } from "@/types";
 import { NextRequest, NextResponse, userAgent } from "next/server";
+import { log } from "./features/shared/lib/logger";
 
 export function middleware(request: NextRequest) {
   const url = request.nextUrl;
-  const { device } = userAgent(request);
-  // device.type can be: 'mobile', 'tablet', 'console', 'smarttv',
-  // 'wearable', 'embedded', or undefined (for desktop browsers)
-  const deviceType: DeviceType = (device.type as DeviceType) || "desktop";
-
-  console.log(
-    "Resolved device type: ",
-    deviceType,
-    " setting d param accordingly."
-  );
+  const ua = userAgent(request);
+  const deviceType: DeviceType = (ua.device.type as DeviceType) || "desktop";
 
   url.searchParams.set("d", deviceType);
+
+  const isPageRoute =
+    !url.pathname.match(
+      /\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|json|xml|txt)$/
+    ) &&
+    !url.pathname.startsWith("/_next/") &&
+    !url.pathname.startsWith("/api/");
+
+  if (isPageRoute) {
+    log.info("Page visited", {
+      pathname: url.pathname,
+      searchParams: Object.fromEntries(url.searchParams),
+      device: deviceType,
+      os: ua.os.name,
+      browser: ua.browser.name,
+    });
+  }
+
   return NextResponse.rewrite(url);
 }
