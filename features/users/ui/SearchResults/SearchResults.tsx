@@ -7,16 +7,22 @@ const { searchResults } = styles;
 
 const SearchResults = ({ totalCount }: SearchResultsProps) => {
   if (!totalCount) {
-    return null;
+    return (
+      <p className={searchResults}>
+        <Typography as="span" size="sm">
+          Showing all results
+        </Typography>
+      </p>
+    );
   }
   const isOneUserFound = totalCount === 1;
 
   return (
     <p className={searchResults}>
-      <Typography as="span" size="sm" weight="bold">
+      <Typography as="span" size="sm" weight="bold" variant="accent2">
         {formatNumber(totalCount)}
       </Typography>
-      <Typography as="span" size="sm">
+      <Typography as="span" size="sm" variant="accent2">
         {isOneUserFound ? "result" : "results"}
       </Typography>
     </p>

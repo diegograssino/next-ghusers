@@ -3,7 +3,6 @@ import { useSearchTerm } from "@/features/shared/hooks";
 import { PageMessage } from "@/features/shared/ui";
 import useInfiniteUsers from "@/features/users/queries";
 import { Card, CardGrid, SearchInput } from "@/features/users/ui";
-import SearchResults from "@/features/users/ui/SearchResults/SearchResults";
 import { SearchPageProps } from "@/types";
 import InfiniteScroll from "react-infinite-scroller";
 import styles from "./SearchPage.module.scss";
@@ -36,11 +35,12 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
   return (
     <div className={searchPage}>
       <div className={searchPageInfo}>
-        <SearchResults totalCount={totalCount} />
+        {/* TODO Create info module, will have promotions or similar */}
       </div>
       <div className={searchPageSearch}>
         <SearchInput
           value={inputValue}
+          totalCount={totalCount}
           onChange={handleSearchTermChange}
           autoFocus
           placeholder="Search users..."

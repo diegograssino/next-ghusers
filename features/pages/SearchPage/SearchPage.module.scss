@@ -6,7 +6,6 @@
   grid-template-rows: auto auto auto;
   grid-template-areas:
     "search"
-    "info"
     "results";
   gap: 2rem;
   height: 100%;
@@ -36,10 +35,6 @@
   }
 }
 
-.searchPageInfo {
-  grid-area: info;
-}
-
 .searchPageSearch {
   grid-area: search;
 }
@@ -50,4 +45,8 @@
 
 .searchPageResults {
   grid-area: results;
+}
+
+.searchPageInfo {
+  grid-area: info;
 }

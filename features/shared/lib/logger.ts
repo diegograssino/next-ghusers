@@ -1,5 +1,6 @@
 import { LogContext } from "@/types";
 import pino from "pino";
+// TODO Add log support
 
 const config = {
   serverUrl: process.env.REACT_APP_API_PATH || "http://localhost:3000",

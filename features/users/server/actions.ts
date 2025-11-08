@@ -1,4 +1,5 @@
 "use server";
+// TODO Verify error handling and logging
 
 import { FetchUsersParams, FetchUsersResult } from "@/types/users";
 import {

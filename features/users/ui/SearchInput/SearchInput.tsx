@@ -3,11 +3,14 @@ import { SharedContext } from "@/features/shared/contexts/SharedContext";
 import { SearchInputProps } from "@/types";
 import { IconRotate, IconSearch } from "@tabler/icons-react";
 import clsx from "clsx";
-import { useContext } from "react";
+import { useSearchParams } from "next/navigation";
+import { useContext, useEffect, useRef } from "react";
+import SearchResults from "../SearchResults/SearchResults";
 import styles from "./SearchInput.module.scss";
 
 const {
   searchInputContainer,
+  searchInputInnerContainer,
   searchInput,
   searchInputIcon,
   searchInputLoading,
@@ -15,28 +18,56 @@ const {
 
 const SearchInput = ({
   value,
+  totalCount,
   onChange = () => {},
-  ...otherProps
 }: SearchInputProps) => {
-  // TODO Should be smaller on mobile
-  // TODO make the search bar sticky on top when scrolling
   const { isLoading } = useContext(SharedContext);
+  const searchParams = useSearchParams();
+  const queryParam = searchParams.get("q") || "";
+  const inputRef = useRef<HTMLInputElement>(null);
+  const initialCursorPosition = value.length > 0 ? value.length : 0;
+  const cursorPositionRef = useRef<number>(initialCursorPosition);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    cursorPositionRef.current = e.target.selectionStart || 0;
+    onChange(e);
+  };
+
+  const handleFocusAndCursorPosition = () => {
+    if (inputRef.current) {
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+          const savedPosition = cursorPositionRef.current;
+          inputRef.current.setSelectionRange(savedPosition, savedPosition);
+        }
+      }, 0);
+    }
+  };
+
+  useEffect(() => {
+    handleFocusAndCursorPosition();
+  }, [queryParam]);
 
   return (
     <div className={searchInputContainer}>
-      <input
-        value={value}
-        onChange={onChange}
-        type="text"
-        autoComplete="off"
-        name="search"
-        {...otherProps}
-        className={searchInput}
-        disabled={isLoading}
-      />
-      <div className={clsx(searchInputIcon, isLoading && searchInputLoading)}>
-        {!isLoading ? <IconSearch stroke={2} /> : <IconRotate stroke={2} />}
+      <div className={searchInputInnerContainer}>
+        <input
+          ref={inputRef}
+          value={value}
+          onChange={handleChange}
+          type="text"
+          autoComplete="off"
+          name="search"
+          autoFocus={true}
+          className={searchInput}
+          disabled={isLoading}
+        />
+        <div className={clsx(searchInputIcon, isLoading && searchInputLoading)}>
+          {!isLoading ? <IconSearch stroke={2} /> : <IconRotate stroke={2} />}
+        </div>
       </div>
+      <SearchResults totalCount={totalCount} />
     </div>
   );
 };

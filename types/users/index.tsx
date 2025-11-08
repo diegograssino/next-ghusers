@@ -1,5 +1,3 @@
-import { InputHTMLAttributes } from "react";
-
 export interface FetchUsersResult {
   users: User[];
   nextSince: string | null;
@@ -177,11 +175,6 @@ export interface CardWidgetProps {
 export interface UserDetailProps {
   user: User;
   repos: Repo[];
-}
-
-export interface SearchInputProps
-  extends InputHTMLAttributes<HTMLInputElement> {
-  value: string;
 }
 
 export interface SortButtonProps {
