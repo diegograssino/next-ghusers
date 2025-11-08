@@ -2,17 +2,16 @@ import { log } from "@/features/shared/lib/logger";
 
 export function handleFetchError(error: unknown, context: string): never {
   if (error instanceof Error) {
-    if (error.name === "AbortError") {
-      log.warn("Request timed out", { context, errorName: error.name });
-      throw new Error(`Request timed out. Please try again.`);
-    }
-    if (error.message.includes("fetch")) {
-      log.warn("Network error detected", { context, error: error.message });
-      throw new Error("Network error. Please check your connection.");
-    }
+    log.error("Server error occurred", {
+      context,
+      errorName: error.name,
+      message: error.message,
+      stack: error.stack,
+    });
+  } else {
+    log.error("Server error occurred", { context, error });
   }
-  log.error("Unexpected error occurred", { context, error });
-  throw error;
+  throw new Error("Server error occurred");
 }
 
 export function parseNext(linkHeader: string): string | null {
