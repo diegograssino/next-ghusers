@@ -3,6 +3,7 @@ import FavsPage from "@/features/pages/FavsPage/FavsPage";
 import { PageMessage } from "@/features/shared/ui";
 import { FavsContext } from "@/features/users/contexts/FavsContext";
 import { fetchUser } from "@/features/users/services";
+import { User } from "@/types";
 import { useQueries } from "@tanstack/react-query";
 import { useContext } from "react";
 
@@ -35,5 +36,5 @@ export default function Favs() {
   }
 
   const loadedUsers = users.map((user) => user.data).filter(Boolean);
-  return <FavsPage users={loadedUsers} />;
+  return <FavsPage users={loadedUsers as User[]} />;
 }
