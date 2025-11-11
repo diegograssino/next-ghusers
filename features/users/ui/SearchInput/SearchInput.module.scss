@@ -48,13 +48,13 @@
   @include property-per-breakpoint(
     padding,
     (
-      base: 0.5rem,
-      sm: 0.55rem,
-      md: 0.6rem,
-      lg: 0.65rem,
-      xl: 0.7rem,
-      2xl: 0.72rem,
-      3xl: 0.75rem,
+      base: $input-padding-base,
+      sm: $input-padding-sm,
+      md: $input-padding-md,
+      lg: $input-padding-lg,
+      xl: $input-padding-xl,
+      2xl: $input-padding-2xl,
+      3xl: $input-padding-3xl,
     )
   );
 

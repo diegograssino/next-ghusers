@@ -37,6 +37,11 @@
 
 .searchPageSearch {
   grid-area: search;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: $color-background;
+  padding: 1rem 0;
 }
 
 .searchPageFilters {

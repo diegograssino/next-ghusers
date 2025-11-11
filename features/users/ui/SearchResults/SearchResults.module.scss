@@ -1,6 +1,21 @@
+@use "../../../../styles/abstracts" as *;
+@use "../../../../styles/mixins" as *;
+
 .searchResults {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0 0 0 1.25rem;
+  padding: 0;
+  @include property-per-breakpoint(
+    padding-left,
+    (
+      base: $input-padding-base,
+      sm: $input-padding-sm,
+      md: $input-padding-md,
+      lg: $input-padding-lg,
+      xl: $input-padding-xl,
+      2xl: $input-padding-2xl,
+      3xl: $input-padding-3xl,
+    )
+  );
 }

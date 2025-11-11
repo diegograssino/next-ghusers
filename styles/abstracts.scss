@@ -50,6 +50,15 @@ $screen-3xl: 1920px !default;
 // Border Radius
 $border-radius: 0.75rem !default;
 
+// Spacing - Input Padding
+$input-padding-base: 0.5rem !default;
+$input-padding-sm: 0.55rem !default;
+$input-padding-md: 0.6rem !default;
+$input-padding-lg: 0.65rem !default;
+$input-padding-xl: 0.7rem !default;
+$input-padding-2xl: 0.72rem !default;
+$input-padding-3xl: 0.75rem !default;
+
 // Animations
 $animation-pulse-duration: 2s !default;
 $animation-pulse-timing: infinite !default;
