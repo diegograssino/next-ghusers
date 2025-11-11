@@ -9,7 +9,7 @@ const SearchResults = ({ totalCount }: SearchResultsProps) => {
   if (!totalCount) {
     return (
       <p className={searchResults}>
-        <Typography as="span" size="sm">
+        <Typography as="span" size="sm" variant="accent2">
           Showing all results
         </Typography>
       </p>
