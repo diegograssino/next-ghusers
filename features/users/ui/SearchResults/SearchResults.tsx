@@ -6,23 +6,14 @@ import styles from "./SearchResults.module.scss";
 const { searchResults } = styles;
 
 const SearchResults = ({ totalCount }: SearchResultsProps) => {
-  if (!totalCount) {
-    return (
-      <p className={searchResults}>
-        <Typography as="span" size="sm" variant="accent2">
-          Showing all results
-        </Typography>
-      </p>
-    );
-  }
   const isOneUserFound = totalCount === 1;
 
   return (
     <p className={searchResults}>
-      <Typography as="span" size="sm" weight="bold" variant="accent2">
-        {formatNumber(totalCount)}
+      <Typography as="span" size="xs" variant="accent2">
+        {!totalCount ? `Showing all ` : formatNumber(totalCount)}
       </Typography>
-      <Typography as="span" size="sm" variant="accent2">
+      <Typography as="span" size="xs" variant="accent2">
         {isOneUserFound ? "result" : "results"}
       </Typography>
     </p>

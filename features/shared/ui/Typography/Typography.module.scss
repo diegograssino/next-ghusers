@@ -43,6 +43,21 @@
   font-weight: $font-weight-bold;
 }
 
+.xs {
+  @include property-per-breakpoint(
+    font-size,
+    (
+      base: 0.625rem,
+      sm: 0.6875rem,
+      md: 0.75rem,
+      lg: 0.8125rem,
+      xl: 0.875rem,
+      2xl: 0.9375rem,
+      3xl: 1rem,
+    )
+  );
+}
+
 .sm {
   @include property-per-breakpoint(
     font-size,

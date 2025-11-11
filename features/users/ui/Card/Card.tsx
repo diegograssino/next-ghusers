@@ -8,7 +8,6 @@ import styles from "./Card.module.scss";
 const { card, cardContent, cardOptions } = styles;
 
 const Card = ({ user }: CardProps) => {
-  // TODO Add more info to the card
   // TODO Improve card design
   // TODO The image should have a placeholder and a better loading strategy
   // TODO The cards are shuffling on hover, more noticeable on safari, seems to be the border
@@ -24,7 +23,7 @@ const Card = ({ user }: CardProps) => {
           priority
         />
         <div className={cardContent}>
-          <Typography as="h3" weight="bold" size="lg" truncate>
+          <Typography as="h3" weight="bold" size="md" truncate>
             {user.login}
           </Typography>
         </div>

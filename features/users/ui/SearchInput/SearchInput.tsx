@@ -21,6 +21,7 @@ const SearchInput = ({
   totalCount,
   onChange = () => {},
 }: SearchInputProps) => {
+  // TODO Seems that the lost of focus issue came back when adding the loading state
   const { isLoading } = useContext(SharedContext);
   const searchParams = useSearchParams();
   const queryParam = searchParams.get("q") || "";
