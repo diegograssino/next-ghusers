@@ -62,6 +62,7 @@ const SearchInput = ({
           autoFocus={true}
           className={searchInput}
           disabled={isLoading}
+          placeholder="Search users ..."
         />
         <div className={clsx(searchInputIcon, isLoading && searchInputLoading)}>
           {!isLoading ? <IconSearch stroke={2} /> : <IconRotate stroke={2} />}
