@@ -21,7 +21,6 @@ const SearchInput = ({
   totalCount,
   onChange = () => {},
 }: SearchInputProps) => {
-  // TODO Seems that the lost of focus issue came back when adding the loading state
   const { isLoading } = useContext(SharedContext);
   const searchParams = useSearchParams();
   const queryParam = searchParams.get("q") || "";
@@ -49,6 +48,13 @@ const SearchInput = ({
   useEffect(() => {
     handleFocusAndCursorPosition();
   }, [queryParam]);
+
+  useEffect(() => {
+    // Restore focus when loading finishes, helps on firt search
+    if (!isLoading) {
+      handleFocusAndCursorPosition();
+    }
+  }, [isLoading]);
 
   return (
     <div className={searchInputContainer}>

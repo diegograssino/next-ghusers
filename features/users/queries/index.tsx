@@ -30,9 +30,9 @@ export const useInfiniteUsers = (
     initialPageParam: query ? "1" : "0",
     getNextPageParam: (lastPage) => lastPage.nextSince,
     staleTime: 1000 * 60,
-    // Ensure we use an initial query param from server side
+    // Only use initialData on first load server-side, not when query changes
     initialData:
-      initialData && (!query || !isClient)
+      initialData && !isClient
         ? {
             pages: [initialData],
             pageParams: [query ? "1" : "0"],

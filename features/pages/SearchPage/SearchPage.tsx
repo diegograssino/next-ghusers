@@ -2,7 +2,7 @@
 import { useSearchTerm } from "@/features/shared/hooks";
 import { PageMessage } from "@/features/shared/ui";
 import useInfiniteUsers from "@/features/users/queries";
-import { Card, CardGrid, SearchInput } from "@/features/users/ui";
+import { Card, CardGrid, CardSkeleton, SearchInput } from "@/features/users/ui";
 import { SearchPageProps } from "@/types";
 import InfiniteScroll from "react-infinite-scroller";
 import styles from "./SearchPage.module.scss";
@@ -16,7 +16,6 @@ const {
 } = styles;
 
 const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
-  // TODO Implement proper skeletons instead of loading message
   // TODO scrollbar make the ui shuffley
   const { perPageConfig, searchTermParam } = pageConfig;
   const { searchTerm, inputValue, handleSearchTermChange } =
@@ -52,7 +51,13 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
         {isError ? (
           <PageMessage message="error" />
         ) : isLoading ? (
-          <PageMessage message="loading" />
+          <CardGrid perPageConfig={perPageConfig}>
+            {Array.from({ length: parseInt(perPageConfig.items) }).map(
+              (_, i) => (
+                <CardSkeleton key={`skeleton-${i}`} />
+              )
+            )}
+          </CardGrid>
         ) : isNoResults ? (
           <PageMessage message="noResults" />
         ) : (

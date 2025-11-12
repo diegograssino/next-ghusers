@@ -11,10 +11,6 @@ export const useSearchTerm = (initialSearchTerm = "", debounceMs = 1000) => {
   // TODO Add parsing/validation for searchTerm
 
   useEffect(() => {
-    if (initialSearchTerm && debouncedSearchTerm === initialSearchTerm) {
-      return;
-    }
-
     const params = new URLSearchParams(searchParams);
 
     if (debouncedSearchTerm.trim()) {
@@ -30,7 +26,7 @@ export const useSearchTerm = (initialSearchTerm = "", debounceMs = 1000) => {
       const newUrl = params.toString() ? `?${params.toString()}` : "/";
       router.replace(newUrl, { scroll: false });
     }
-  }, [debouncedSearchTerm, router, searchParams, initialSearchTerm]);
+  }, [debouncedSearchTerm, router, searchParams]);
 
   const handleSearchTermChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

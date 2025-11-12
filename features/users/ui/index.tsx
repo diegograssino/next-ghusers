@@ -1,4 +1,4 @@
-export { default as Card } from "./Card/Card";
+export { default as Card, CardSkeleton } from "./Card/Card";
 export { default as CardGrid } from "./CardGrid/CardGrid";
 export { default as FavsWidget } from "./FavsWidget/FavsWidget";
 export { default as SearchInput } from "./SearchInput/SearchInput";

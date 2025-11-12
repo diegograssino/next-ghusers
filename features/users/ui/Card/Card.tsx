@@ -5,7 +5,7 @@ import Link from "next/link";
 import FavsWidget from "../FavsWidget/FavsWidget";
 import styles from "./Card.module.scss";
 
-const { card, cardContent, cardOptions } = styles;
+const { card, cardContent, cardOptions, cardSkeleton } = styles;
 
 const Card = ({ user }: CardProps) => {
   // TODO Improve card design
@@ -36,3 +36,7 @@ const Card = ({ user }: CardProps) => {
 };
 
 export default Card;
+
+export const CardSkeleton = () => {
+  return <div className={cardSkeleton} data-testid="card-skeleton"></div>;
+};
