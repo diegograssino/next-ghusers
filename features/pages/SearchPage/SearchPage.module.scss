@@ -41,7 +41,7 @@
   top: 0;
   z-index: 10;
   background-color: $color-background;
-  padding: 1rem 0;
+  padding: 0 0 1rem 0;
 }
 
 .searchPageFilters {
@@ -54,4 +54,21 @@
 
 .searchPageInfo {
   grid-area: info;
+  position: relative;
+  height: 100px;
+  width: 100%;
+  max-width: 600px;
+  overflow: hidden;
+  border-radius: $border-radius;
+}
+
+.searchPageInfoImage {
+  object-fit: cover;
+  border-radius: $border-radius;
+  transition: $transition-transform;
+  transform-origin: center;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 }
