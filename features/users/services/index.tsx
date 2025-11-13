@@ -1,3 +1,4 @@
+import { PER_PAGE_CONFIGS } from "@/features/shared/constants";
 import { FetchUsersParams, FetchUsersResult, Repo, User } from "@/types";
 import {
   extractSince,
@@ -5,7 +6,6 @@ import {
   handleFetchError,
   parseNext,
 } from "../lib/utils";
-import { USERS_PER_PAGE_DEFAULT } from "../queries/constants";
 
 export const fetchUser = async (id: number): Promise<User> => {
   try {
@@ -46,7 +46,7 @@ export const fetchUserDetail = async (
 };
 
 export const fetchUsers = async ({
-  perPageParam = USERS_PER_PAGE_DEFAULT,
+  perPageParam = PER_PAGE_CONFIGS.desktop.items,
   pageParam = "1",
   queryParam = "",
 }: FetchUsersParams): Promise<FetchUsersResult> => {

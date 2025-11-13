@@ -4,9 +4,9 @@ import { PerPageConfig } from "../../../types";
 export const PER_PAGE_CONFIGS: PerPageConfig = {
   mobile: { items: "10", columns: "1" },
   tablet: { items: "12", columns: "1" },
-  desktop: { items: "48", columns: "2" },
-  console: { items: "64", columns: "2" },
-  smarttv: { items: "64", columns: "2" },
+  desktop: { items: "20", columns: "2" },
+  console: { items: "40", columns: "2" },
+  smarttv: { items: "40", columns: "2" },
   wearable: { items: "8", columns: "1" },
-  embedded: { items: "48", columns: "2" },
+  embedded: { items: "20", columns: "2" },
 };

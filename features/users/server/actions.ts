@@ -1,6 +1,7 @@
 "use server";
 // TODO Verify error handling and logging
 
+import { PER_PAGE_CONFIGS } from "@/features/shared/constants";
 import { FetchUsersParams, FetchUsersResult } from "@/types/users";
 import {
   extractSince,
@@ -8,10 +9,9 @@ import {
   handleFetchError,
   parseNext,
 } from "../lib/utils";
-import { USERS_PER_PAGE_DEFAULT } from "../queries/constants";
 
 export async function fetchUsersAction({
-  perPageParam = USERS_PER_PAGE_DEFAULT,
+  perPageParam = PER_PAGE_CONFIGS.desktop.items,
   pageParam = "1",
   queryParam = "",
 }: FetchUsersParams): Promise<FetchUsersResult> {

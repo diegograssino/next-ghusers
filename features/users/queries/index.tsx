@@ -1,13 +1,13 @@
+import { PER_PAGE_CONFIGS } from "@/features/shared/constants";
 import { SharedContext } from "@/features/shared/contexts/SharedContext";
 import { FetchUsersResult } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCallback, useContext, useMemo } from "react";
 import { fetchUsers } from "../services";
-import { USERS_PER_PAGE_DEFAULT } from "./constants";
 
 export const useInfiniteUsers = (
   query = "",
-  perPage = USERS_PER_PAGE_DEFAULT,
+  perPage = PER_PAGE_CONFIGS.desktop.items,
   initialData?: FetchUsersResult
 ) => {
   const { isClient } = useContext(SharedContext);
