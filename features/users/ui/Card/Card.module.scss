@@ -1,4 +1,5 @@
 @use "../../../../styles/abstracts" as *;
+@use "../../../../styles/mixins" as *;
 
 .card {
   display: flex;
@@ -10,31 +11,67 @@
   border: 2px solid $color-accent2;
   transition: $transition-fast;
   overflow: hidden;
+  @include property-per-breakpoint(
+    flex-direction,
+    (
+      base: column,
+      lg: row,
+    )
+  );
+  @include hover-on-non-touch(border-color, $color-accent);
+}
 
-  &:hover {
-    border-color: $color-foreground;
-  }
+.cardImageContainer {
+  position: relative;
+}
 
-  &:hover img {
-    transform: scale(1.05);
-  }
+.cardImageContainer {
+  position: relative;
+  height: 9.375rem;
+  overflow: hidden;
+  @include property-per-breakpoint(
+    width,
+    (
+      base: 100%,
+      lg: 9.375rem,
+    )
+  );
+}
 
-  img {
-    transition: $transition-transform;
-    transform-origin: center;
-  }
+.cardImage {
+  object-fit: cover;
+  transition: $transition-transform;
+  transform-origin: center;
 
-  &Content {
-    padding: 1rem;
-    overflow: hidden;
-  }
+  @include hover-on-non-touch(transform, scale(1.05));
+}
 
-  &Options {
-    padding: 1rem;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-  }
+.cardContent {
+  overflow: hidden;
+  @include property-per-breakpoint(
+    padding,
+    (
+      base: 0.75rem,
+      lg: 1rem,
+    )
+  );
+}
+
+.cardOptions {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  @include property-per-breakpoint(
+    padding,
+    (
+      base: 0.75rem,
+      lg: 1rem,
+    )
+  );
+}
+
+.cardContentatSymbol {
+  color: $color-accent2;
 }
 
 .cardSkeleton {

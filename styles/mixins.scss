@@ -40,3 +40,11 @@
     }
   }
 }
+
+@mixin hover-on-non-touch($property, $value) {
+  @media (hover: hover) {
+    &:hover {
+      #{$property}: $value;
+    }
+  }
+}
