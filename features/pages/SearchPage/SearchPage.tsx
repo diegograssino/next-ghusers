@@ -3,9 +3,8 @@ import { useSearchTerm } from "@/features/shared/hooks";
 import { PageMessage } from "@/features/shared/ui";
 import useInfiniteUsers from "@/features/users/queries";
 import { Card, CardGrid, CardSkeleton, SearchInput } from "@/features/users/ui";
+import SearchPromoSection from "@/features/users/ui/SearchPromoSection/SearchPromoSection";
 import { SearchPageProps } from "@/types";
-import Image from "next/image";
-import Link from "next/link";
 import InfiniteScroll from "react-infinite-scroller";
 import styles from "./SearchPage.module.scss";
 
@@ -15,7 +14,6 @@ const {
   searchPageResults,
   searchPageInfo,
   searchPageSearch,
-  searchPageInfoImage,
 } = styles;
 
 const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
@@ -37,29 +35,16 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
   return (
     <div className={searchPage}>
       <div className={searchPageInfo}>
-        <Link
-          href="https://github.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            src="/gh-promo.webp"
-            alt="GitHub Users Banner"
-            fill
-            className={searchPageInfoImage}
-          />
-        </Link>
+        <SearchPromoSection />
       </div>
       <div className={searchPageSearch}>
         <SearchInput
           value={inputValue}
           totalCount={totalCount}
           onChange={handleSearchTermChange}
-          autoFocus
           placeholder="Search users..."
         />
       </div>
-
       <aside className={searchPageAside}>{/* TODO filters */}</aside>
       <div className={searchPageResults}>
         {isError ? (

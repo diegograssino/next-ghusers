@@ -20,6 +20,7 @@ const SearchInput = ({
   value,
   totalCount,
   onChange = () => {},
+  ...otherInputProps
 }: SearchInputProps) => {
   const { isLoading } = useContext(SharedContext);
   const searchParams = useSearchParams();
@@ -60,16 +61,16 @@ const SearchInput = ({
     <div className={searchInputContainer}>
       <div className={searchInputInnerContainer}>
         <input
-          ref={inputRef}
-          value={value}
-          onChange={handleChange}
+          {...otherInputProps}
           type="text"
-          autoComplete="off"
           name="search"
-          autoFocus={true}
           className={searchInput}
           disabled={isLoading}
-          placeholder="Search users ..."
+          onChange={handleChange}
+          ref={inputRef}
+          value={value}
+          autoComplete="off"
+          autoFocus={true}
         />
         <div className={clsx(searchInputIcon, isLoading && searchInputLoading)}>
           {!isLoading ? <IconSearch stroke={2} /> : <IconRotate stroke={2} />}
