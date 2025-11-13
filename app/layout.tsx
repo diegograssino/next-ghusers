@@ -2,16 +2,16 @@ import { Container, Footer, Header } from "@/features/shared/ui";
 import "@/styles/globals.scss";
 import clsx from "clsx";
 import type { Metadata } from "next";
-import { Poppins, Roboto } from "next/font/google";
+import { Mona_Sans, Noto_Sans } from "next/font/google";
 import Providers from "./providers";
 
-const primaryFont = Roboto({
+const primaryFont = Noto_Sans({
   variable: "--font-primary",
   subsets: ["latin"],
   weight: ["400", "700"],
 });
 
-const secondaryFont = Poppins({
+const secondaryFont = Mona_Sans({
   variable: "--font-secondary",
   subsets: ["latin"],
   weight: ["400", "700"],

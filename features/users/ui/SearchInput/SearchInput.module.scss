@@ -33,6 +33,7 @@
   background-color: $color-background;
   color: $color-foreground;
   transition: $transition-fast;
+  font-family: $font-primary;
   @include property-per-breakpoint(
     font-size,
     (
