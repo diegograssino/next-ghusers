@@ -43,7 +43,7 @@
   top: calc($layout-navbar-height - 1px);
   z-index: 10;
   background-color: $color-background;
-  padding: 1rem 0 1rem 0;
+  padding: 1rem 0 0 0;
 
   @media (max-width: #{$screen-sm - 1px}) {
     top: $layout-navbar-height;
@@ -56,6 +56,7 @@
   top: $layout-navbar-height;
   z-index: 9;
   background-color: $color-background;
+  margin-top: 1rem;
   padding: 1rem 0 1rem 0;
   align-self: start;
   @include property-per-breakpoint(
@@ -69,7 +70,7 @@
 
 .searchPageResults {
   grid-area: results;
-  padding: 1rem 0 1rem 0;
+  padding: 2rem 0 1rem 0;
 }
 
 .searchPageInfo {

@@ -9,6 +9,7 @@ const SearchResults = ({ totalCount }: SearchResultsProps) => {
   // TODO Work on responsivness
   // TODO Check if height should not fit the content instead to have a fixed value
   const isOneUserFound = totalCount === 1;
+  const filtersMock = ["Sort: Ascending"];
 
   return (
     <div className={searchResults}>
@@ -20,6 +21,13 @@ const SearchResults = ({ totalCount }: SearchResultsProps) => {
           {isOneUserFound ? ` result` : ` results`}
         </Typography>
       </p>
+      {filtersMock.map((filter) => (
+        <p key={filter} className={searchResultsPill}>
+          <Typography as="span" size="xs" variant="primary">
+            {filter}
+          </Typography>
+        </p>
+      ))}
     </div>
   );
 };

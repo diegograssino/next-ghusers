@@ -9,7 +9,7 @@
     min-height,
     (
       base: unset,
-      md: 100vh,
+      md: calc(50vh - $layout-navbar-height),
     )
   );
 }
