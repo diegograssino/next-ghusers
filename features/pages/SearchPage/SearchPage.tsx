@@ -3,6 +3,7 @@ import { useSearchTerm } from "@/features/shared/hooks";
 import { PageMessage } from "@/features/shared/ui";
 import useInfiniteUsers from "@/features/users/queries";
 import { Card, CardGrid, CardSkeleton, SearchInput } from "@/features/users/ui";
+import SearchPageFilters from "@/features/users/ui/SearchPageFilters/SearchPageFilters";
 import SearchPromoSection from "@/features/users/ui/SearchPromoSection/SearchPromoSection";
 import { SearchPageProps } from "@/types";
 import InfiniteScroll from "react-infinite-scroller";
@@ -45,7 +46,9 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
           placeholder="Search users..."
         />
       </div>
-      <aside className={searchPageAside}>{/* TODO filters */}</aside>
+      <aside className={searchPageAside}>
+        <SearchPageFilters />
+      </aside>
       <div className={searchPageResults}>
         {isError ? (
           <PageMessage message="error" />
@@ -65,7 +68,7 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
             loadMore={handleLoadMore}
             hasMore={isMore}
             //   TODO Check if we can detect the page height without killing the ssr to adjust the value as high as possible
-            threshold={700}
+            threshold={600}
           >
             <CardGrid perPageConfig={perPageConfig}>
               {users.map((user, i) => (

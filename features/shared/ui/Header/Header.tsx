@@ -8,14 +8,19 @@ import styles from "./Header.module.scss";
 const { navbar, navbarContainer } = styles;
 
 const Header = () => {
+  // TODO Add a logo image
+  // TODO Work in responsiveness
+  // TODO Add a mobile menu
+  // TODO Add dynamic height based on scroll, should be smaller when scrolling down
+
   return (
     <header className={navbar} data-testid="header">
       <Container>
         <nav className={navbarContainer}>
           <Link href="/">
-            <Typography as="h1" size="lg" weight="bold" variant="primary">
+            <Typography as="h1" size="md" weight="bold" variant="primary">
               Github{" "}
-              <Typography as="span" size="lg" weight="bold" variant="accent">
+              <Typography as="span" size="md" weight="bold" variant="accent">
                 Users
               </Typography>
             </Typography>

@@ -1,0 +1,15 @@
+@use "../../../../styles/abstracts" as *;
+@use "../../../../styles/mixins" as *;
+
+.searchPageFilters {
+  background-color: $color-accent2;
+  border-radius: $border-radius;
+  padding: 2rem;
+  @include property-per-breakpoint(
+    min-height,
+    (
+      base: unset,
+      md: 100vh,
+    )
+  );
+}

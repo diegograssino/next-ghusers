@@ -17,7 +17,6 @@ const {
 } = styles;
 
 const Card = ({ user }: CardProps) => {
-  // TODO The image should have a placeholder and a better loading strategy
   // TODO The cards are shuffling on hover, more noticeable on safari, seems to be the border
 
   return (

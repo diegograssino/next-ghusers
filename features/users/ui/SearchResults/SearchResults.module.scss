@@ -3,9 +3,13 @@
 
 .searchResults {
   display: flex;
-  align-items: center;
+  align-items: start;
   gap: 0.25rem;
-  padding: 0;
+  padding: 0.5rem;
+  background-color: $color-accent2;
+  height: 4rem;
+  border: 2px solid $color-accent2;
+  border-radius: 0 0 $border-radius $border-radius;
   @include property-per-breakpoint(
     padding-left,
     (
@@ -18,4 +22,11 @@
       3xl: $input-padding-3xl,
     )
   );
+}
+
+.searchResultsPill {
+  background-color: $color-accent;
+  padding: 0.25rem 0.5rem;
+  border: 2px solid $color-accent;
+  border-radius: $border-radius;
 }

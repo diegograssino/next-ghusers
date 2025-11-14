@@ -4,7 +4,6 @@
 .searchInputContainer {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
 }
 
 .searchInputInnerContainer {
@@ -28,7 +27,7 @@
   height: 100%;
   box-sizing: border-box;
   border: 2px solid $color-accent2;
-  border-radius: $border-radius;
+  border-radius: $border-radius $border-radius 0 0;
   padding-right: 3rem;
   background-color: $color-background;
   color: $color-foreground;

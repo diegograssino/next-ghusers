@@ -3,20 +3,24 @@ import { Typography } from "@/features/shared/ui";
 import { SearchResultsProps } from "@/types";
 import styles from "./SearchResults.module.scss";
 
-const { searchResults } = styles;
+const { searchResults, searchResultsPill } = styles;
 
 const SearchResults = ({ totalCount }: SearchResultsProps) => {
+  // TODO Work on responsivness
+  // TODO Check if height should not fit the content instead to have a fixed value
   const isOneUserFound = totalCount === 1;
 
   return (
-    <p className={searchResults}>
-      <Typography as="span" size="xs" variant="accent2">
-        {!totalCount ? `Showing all ` : formatNumber(totalCount)}
-      </Typography>
-      <Typography as="span" size="xs" variant="accent2">
-        {isOneUserFound ? "result" : "results"}
-      </Typography>
-    </p>
+    <div className={searchResults}>
+      <p className={searchResultsPill}>
+        <Typography as="span" size="xs" variant="primary">
+          {!totalCount ? `Showing all` : formatNumber(totalCount)}
+        </Typography>
+        <Typography as="span" size="xs" variant="primary">
+          {isOneUserFound ? ` result` : ` results`}
+        </Typography>
+      </p>
+    </div>
   );
 };
 

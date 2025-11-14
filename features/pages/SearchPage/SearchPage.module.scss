@@ -4,13 +4,13 @@
 .searchPage {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto auto auto;
+  grid-template-rows: auto auto 1fr;
   grid-template-areas:
     "search"
     "filters"
     "results";
-  gap: 2rem;
-  height: 100%;
+  gap: 0rem 2rem;
+  min-height: 100vh;
 
   @media (min-width: $screen-md) {
     grid-template-columns: 1fr 2fr;
@@ -40,23 +40,41 @@
 .searchPageSearch {
   grid-area: search;
   position: sticky;
-  top: 0;
+  top: calc($layout-navbar-height - 1px);
   z-index: 10;
   background-color: $color-background;
-  padding: 0 0 1rem 0;
+  padding: 1rem 0 1rem 0;
+
+  @media (max-width: #{$screen-sm - 1px}) {
+    top: $layout-navbar-height;
+  }
 }
 
-.searchPageFilters,
 .searchPageAside {
   grid-area: filters;
+  position: sticky;
+  top: $layout-navbar-height;
+  z-index: 9;
+  background-color: $color-background;
+  padding: 1rem 0 1rem 0;
+  align-self: start;
+  @include property-per-breakpoint(
+    display,
+    (
+      base: none,
+      md: block,
+    )
+  );
 }
 
 .searchPageResults {
   grid-area: results;
+  padding: 1rem 0 1rem 0;
 }
 
 .searchPageInfo {
   grid-area: info;
+  padding: 1rem 0 1rem 0;
   @include property-per-breakpoint(
     display,
     (

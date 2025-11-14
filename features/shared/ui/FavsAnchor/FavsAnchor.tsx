@@ -7,7 +7,7 @@ const FavsAnchor = () => {
   const { favs } = useContext(FavsContext);
 
   return (
-    <Anchor variant="primary" href="./favs">
+    <Anchor variant="primary" size="sm" href="./favs">
       Favs ({favs.length})
     </Anchor>
   );
