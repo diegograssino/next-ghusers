@@ -42,7 +42,7 @@
   position: sticky;
   top: calc($layout-navbar-height - 1px);
   z-index: 10;
-  background-color: $color-background;
+  background: linear-gradient(to bottom, $color-background 0%, $color-background 70%, transparent 100%);
   padding: 1rem 0 0 0;
 
   @media (max-width: #{$screen-sm - 1px}) {

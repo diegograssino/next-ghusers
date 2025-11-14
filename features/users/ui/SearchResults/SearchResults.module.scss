@@ -7,7 +7,6 @@
   gap: 0.25rem;
   padding: 0.5rem;
   background-color: $color-accent2;
-  height: 4rem;
   border: 2px solid $color-accent2;
   border-radius: 0 0 $border-radius $border-radius;
   @include property-per-breakpoint(

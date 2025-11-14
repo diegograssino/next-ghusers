@@ -8,6 +8,7 @@ const { searchResults, searchResultsPill } = styles;
 const SearchResults = ({ totalCount }: SearchResultsProps) => {
   // TODO Work on responsivness
   // TODO Check if height should not fit the content instead to have a fixed value
+  // TODO Give proper name to component, should be filters applied
   const isOneUserFound = totalCount === 1;
   const filtersMock = ["Sort: Ascending"];
 
