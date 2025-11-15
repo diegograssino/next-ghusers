@@ -2,14 +2,4 @@
 @use "../../../../styles/mixins" as *;
 
 .searchPageFilters {
-  background-color: $color-accent2;
-  border-radius: $border-radius;
-  padding: 2rem;
-  @include property-per-breakpoint(
-    min-height,
-    (
-      base: unset,
-      md: calc(50vh - $layout-navbar-height),
-    )
-  );
 }

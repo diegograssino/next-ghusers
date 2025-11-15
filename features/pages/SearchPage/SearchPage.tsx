@@ -4,21 +4,17 @@ import { PageMessage } from "@/features/shared/ui";
 import useInfiniteUsers from "@/features/users/queries";
 import { Card, CardGrid, CardSkeleton, SearchInput } from "@/features/users/ui";
 import SearchPageFilters from "@/features/users/ui/SearchPageFilters/SearchPageFilters";
-import SearchPromoSection from "@/features/users/ui/SearchPromoSection/SearchPromoSection";
 import { SearchPageProps } from "@/types";
 import InfiniteScroll from "react-infinite-scroller";
 import styles from "./SearchPage.module.scss";
 
-const {
-  searchPage,
-  searchPageAside,
-  searchPageResults,
-  searchPageInfo,
-  searchPageSearch,
-} = styles;
+const { searchPage, searchPageAside, searchPageResults, searchPageSearch } =
+  styles;
 
 const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
   // TODO scrollbar make the ui shuffley
+  // TODO on changing search term the scroll should go to top
+  // TODO Add Hero section
   const { perPageConfig, searchTermParam } = pageConfig;
   const { searchTerm, inputValue, handleSearchTermChange } =
     useSearchTerm(searchTermParam);
@@ -35,19 +31,15 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
 
   return (
     <div className={searchPage}>
-      <div className={searchPageInfo}>
-        <SearchPromoSection />
-      </div>
       <div className={searchPageSearch}>
         <SearchInput
           value={inputValue}
-          totalCount={totalCount}
           onChange={handleSearchTermChange}
           placeholder="Search users..."
         />
       </div>
       <aside className={searchPageAside}>
-        <SearchPageFilters />
+        <SearchPageFilters totalCount={totalCount} />
       </aside>
       <div className={searchPageResults}>
         {isError ? (

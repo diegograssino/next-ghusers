@@ -1,0 +1,42 @@
+@use "../../../../styles/abstracts.scss" as *;
+@use "../../../../styles/mixins.scss" as *;
+
+.favsAnchor {
+  display: flex;
+  align-items: center;
+  @include property-per-breakpoint(
+    gap,
+    (
+      base: 0.25rem,
+      xl: 0.5rem,
+    )
+  );
+}
+
+.favsAnchorIcon {
+  color: $color-foreground;
+  @include property-per-breakpoint(
+    width,
+    (
+      base: 0.75rem,
+      sm: 0.8125rem,
+      md: 0.875rem,
+      lg: 0.9375rem,
+      xl: 1rem,
+      2xl: 1.0625rem,
+      3xl: 1.125rem,
+    )
+  );
+  @include property-per-breakpoint(
+    height,
+    (
+      base: 0.75rem,
+      sm: 0.8125rem,
+      md: 0.875rem,
+      lg: 0.9375rem,
+      xl: 1rem,
+      2xl: 1.0625rem,
+      3xl: 1.125rem,
+    )
+  );
+}

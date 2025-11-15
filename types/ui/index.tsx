@@ -74,11 +74,10 @@ export interface CardGridSkeletonProps {
 }
 
 export interface SearchInputProps
-  extends InputHTMLAttributes<HTMLInputElement>,
-    SearchResultsProps {
+  extends InputHTMLAttributes<HTMLInputElement> {
   value: string;
 }
 
-export interface SearchResultsProps {
+export interface SearchFiltersInfoProps {
   totalCount?: number | undefined;
 }

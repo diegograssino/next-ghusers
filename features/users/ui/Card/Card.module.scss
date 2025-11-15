@@ -9,8 +9,11 @@
   border-radius: $border-radius;
   position: relative;
   border: 2px solid $color-accent2;
+  box-shadow: 0 4px 12px 0 color-mix(in srgb, $color-secondary 5%, transparent),
+    0 2px 8px 0 color-mix(in srgb, $color-secondary 3%, transparent);
   transition: $transition-fast;
   overflow: hidden;
+  background-color: $color-accent2;
   @include property-per-breakpoint(
     flex-direction,
     (

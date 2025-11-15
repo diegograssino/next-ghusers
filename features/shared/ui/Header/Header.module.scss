@@ -1,4 +1,5 @@
 @use "../../../../styles/abstracts.scss" as *;
+@use "../../../../styles/mixins" as *;
 
 .navbar {
   background-color: $color-secondary;
@@ -13,4 +14,45 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.navbarBrand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  @include property-per-breakpoint(
+    gap,
+    (
+      base: 0.25rem,
+      xl: 0.5rem,
+    )
+  );
+}
+
+.navbarIcon {
+  color: $color-foreground;
+  @include property-per-breakpoint(
+    width,
+    (
+      base: 0.875rem,
+      sm: 0.9375rem,
+      md: 1rem,
+      lg: 1.125rem,
+      xl: 1.25rem,
+      2xl: 1.375rem,
+      3xl: 1.5rem,
+    )
+  );
+  @include property-per-breakpoint(
+    height,
+    (
+      base: 0.875rem,
+      sm: 0.9375rem,
+      md: 1rem,
+      lg: 1.125rem,
+      xl: 1.25rem,
+      2xl: 1.375rem,
+      3xl: 1.5rem,
+    )
+  );
 }

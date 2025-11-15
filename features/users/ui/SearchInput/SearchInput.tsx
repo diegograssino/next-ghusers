@@ -5,7 +5,6 @@ import { IconRotate, IconSearch } from "@tabler/icons-react";
 import clsx from "clsx";
 import { useSearchParams } from "next/navigation";
 import { useContext, useEffect, useRef } from "react";
-import SearchResults from "../SearchResults/SearchResults";
 import styles from "./SearchInput.module.scss";
 
 const {
@@ -18,7 +17,6 @@ const {
 
 const SearchInput = ({
   value,
-  totalCount,
   onChange = () => {},
   ...otherInputProps
 }: SearchInputProps) => {
@@ -76,7 +74,6 @@ const SearchInput = ({
           {!isLoading ? <IconSearch stroke={2} /> : <IconRotate stroke={2} />}
         </div>
       </div>
-      <SearchResults totalCount={totalCount} />
     </div>
   );
 };

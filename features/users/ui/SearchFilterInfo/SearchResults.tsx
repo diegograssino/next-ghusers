@@ -1,36 +1,38 @@
 import { formatNumber } from "@/features/shared/lib/utils";
 import { Typography } from "@/features/shared/ui";
-import { SearchResultsProps } from "@/types";
-import styles from "./SearchResults.module.scss";
+import { SearchFiltersInfoProps } from "@/types";
+import { IconX } from "@tabler/icons-react";
+import styles from "./SearchFilterIsnfo.module.scss";
 
-const { searchResults, searchResultsPill } = styles;
+const { searchFiltersInfo, searchFiltersInfoPill, searchFiltersInfoPillIcon } =
+  styles;
 
-const SearchResults = ({ totalCount }: SearchResultsProps) => {
+const SearchFiltersInfo = ({ totalCount }: SearchFiltersInfoProps) => {
   // TODO Work on responsivness
-  // TODO Check if height should not fit the content instead to have a fixed value
-  // TODO Give proper name to component, should be filters applied
+  // TODO Componentize each pill, should receive the text and an optional onRemove callback
   const isOneUserFound = totalCount === 1;
   const filtersMock = ["Sort: Ascending"];
 
   return (
-    <div className={searchResults}>
-      <p className={searchResultsPill}>
+    <div className={searchFiltersInfo}>
+      <div className={searchFiltersInfoPill}>
         <Typography as="span" size="xs" variant="primary">
           {!totalCount ? `Showing all` : formatNumber(totalCount)}
         </Typography>
         <Typography as="span" size="xs" variant="primary">
           {isOneUserFound ? ` result` : ` results`}
         </Typography>
-      </p>
+      </div>
       {filtersMock.map((filter) => (
-        <p key={filter} className={searchResultsPill}>
+        <div key={filter} className={searchFiltersInfoPill}>
           <Typography as="span" size="xs" variant="primary">
             {filter}
           </Typography>
-        </p>
+          <IconX className={searchFiltersInfoPillIcon} />
+        </div>
       ))}
     </div>
   );
 };
 
-export default SearchResults;
+export default SearchFiltersInfo;

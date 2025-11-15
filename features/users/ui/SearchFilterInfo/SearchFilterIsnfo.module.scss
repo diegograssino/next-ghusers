@@ -1,0 +1,50 @@
+@use "../../../../styles/abstracts" as *;
+@use "../../../../styles/mixins" as *;
+
+.searchFiltersInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 0.5rem;
+}
+
+.searchFiltersInfoPill {
+  background-color: $color-accent;
+  padding: 0.25rem 0.5rem;
+  border: 2px solid $color-accent;
+  border-radius: $border-radius;
+  display: flex;
+  align-items: center;
+}
+
+.searchFiltersInfoPillIcon {
+  color: $color-primary;
+  background-color: $color-error;
+  border-radius: 100%;
+  padding: 0.125rem;
+  margin-left: 0.5rem;
+  @include property-per-breakpoint(
+    width,
+    (
+      base: 0.625rem,
+      sm: 0.6875rem,
+      md: 0.75rem,
+      lg: 0.8125rem,
+      xl: 0.875rem,
+      2xl: 0.9375rem,
+      3xl: 1rem,
+    )
+  );
+  @include property-per-breakpoint(
+    height,
+    (
+      base: 0.625rem,
+      sm: 0.6875rem,
+      md: 0.75rem,
+      lg: 0.8125rem,
+      xl: 0.875rem,
+      2xl: 0.9375rem,
+      3xl: 1rem,
+    )
+  );
+}
