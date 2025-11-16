@@ -1,10 +1,9 @@
 @use "../../../../styles/abstracts.scss" as *;
-// TODO Center properly
 
 .pageMessage {
   display: flex;
   justify-content: center;
-  align-items: center;
+  margin-top: 10rem;
   text-align: center;
   height: 100%;
   padding-bottom: $layout-footer-height;

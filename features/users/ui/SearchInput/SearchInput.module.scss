@@ -26,8 +26,8 @@
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  border: 2px solid $color-accent2;
-  border-radius: $border-radius $border-radius 0 0;
+  border: 2px solid $color-foreground;
+  border-radius: $border-radius;
   padding-right: 3rem;
   background-color: $color-background;
   color: $color-foreground;

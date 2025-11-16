@@ -21,7 +21,8 @@ const Typography = ({
         styles[variant],
         styles[weight],
         styles[size],
-        truncate && ellipsis
+        truncate && ellipsis,
+        otherProps.className
       )}
     >
       {children}

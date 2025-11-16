@@ -30,7 +30,7 @@
 }
 
 .navbarIcon {
-  color: $color-foreground;
+  color: $color-primary;
   @include property-per-breakpoint(
     width,
     (

@@ -14,6 +14,6 @@ export interface FavsPageProps {
   users: User[];
 }
 
-export interface SearchPageFiltersProps {
+export interface FiltersProps {
   totalCount: number | undefined;
 }

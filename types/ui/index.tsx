@@ -78,6 +78,11 @@ export interface SearchInputProps
   value: string;
 }
 
-export interface SearchFiltersInfoProps {
+export interface FiltersInfoProps {
   totalCount?: number | undefined;
+}
+
+export interface PillProps {
+  label: string;
+  onRemove?: () => void;
 }
