@@ -1,5 +1,6 @@
 import { Typography } from "@/features/shared/ui";
 import { CardProps } from "@/types";
+import { clsx } from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { genericBlurData } from "../../lib/constants";
@@ -14,6 +15,8 @@ const {
   cardImage,
   cardImageContainer,
   cardContentatSymbol,
+  cardContentSkeleton,
+  cardOptionsSkeleton,
 } = styles;
 
 const Card = ({ user }: CardProps) => {
@@ -51,5 +54,17 @@ const Card = ({ user }: CardProps) => {
 export default Card;
 
 export const CardSkeleton = () => {
-  return <div className={cardSkeleton} data-testid="card-skeleton" />;
+  return (
+    <article className={clsx(card, cardSkeleton)} data-testid="card-skeleton">
+      <div className={cardImageContainer}>
+        <div className={cardImage} />
+      </div>
+      <div className={cardContent}>
+        <div className={cardContentSkeleton} />
+      </div>
+      <div className={cardOptions}>
+        <div className={cardOptionsSkeleton} />
+      </div>
+    </article>
+  );
 };

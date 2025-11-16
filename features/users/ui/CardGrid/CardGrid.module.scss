@@ -13,20 +13,3 @@
     gap: 1.5rem;
   }
 }
-
-.cardGridSkeleton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 0.75rem;
-
-  @media (min-width: $screen-xl) {
-    margin-top: 1rem;
-  }
-
-  border-radius: $border-radius;
-  width: 100%;
-  height: 9.375rem;
-  animation: $animation-pulse;
-  background-color: $color-accent2;
-}

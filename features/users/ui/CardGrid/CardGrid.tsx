@@ -1,20 +1,22 @@
+import { PER_PAGE_CONFIGS } from "@/features/shared/constants";
+import { getUniqueId } from "@/features/shared/lib/utils";
 import { CardGridProps, CardGridSkeletonProps } from "@/types";
+import { CardSkeleton } from "../Card/Card";
 import styles from "./CardGrid.module.scss";
 
-const { cardGrid, cardGridSkeleton } = styles;
+const { cardGrid } = styles;
 
 export const CardGridSkeleton = ({ perPageConfig }: CardGridSkeletonProps) => {
-  const cards = perPageConfig ? parseInt(perPageConfig.items) : 3;
-  const cols = perPageConfig?.columns || "1";
-
+  const cols = perPageConfig?.columns || PER_PAGE_CONFIGS.desktop.columns;
   return (
     <div
-      className={cardGridSkeleton}
-      data-testid="card-grid-skeleton"
+      className={cardGrid}
       style={{ "--grid-cols": cols } as React.CSSProperties}
     >
-      {Array.from({ length: cards }).map((_, i) => (
-        <div className={cardGridSkeleton} key={"card-skeleton-" + i} />
+      {Array.from({
+        length: 3 * parseInt(cols),
+      }).map(() => (
+        <CardSkeleton key={getUniqueId()} />
       ))}
     </div>
   );

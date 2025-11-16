@@ -1,3 +1,4 @@
+import { getUniqueId } from "@/features/shared/lib/utils";
 import { Card, CardGrid, SortButton } from "@/features/users/ui";
 import { FavsPageProps } from "@/types";
 import { useState } from "react";
@@ -15,8 +16,8 @@ const FavsPage = ({ users }: FavsPageProps) => {
     <>
       <SortButton onSort={handleSort} sortOrder={sortOrder} />
       <CardGrid>
-        {sortedUsers.map((user, i) => (
-          <Card key={user.login + i} user={user} />
+        {sortedUsers.map((user) => (
+          <Card key={getUniqueId()} user={user} />
         ))}
       </CardGrid>
     </>

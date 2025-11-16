@@ -44,7 +44,7 @@ export const fetchUserDetail = async (
     return handleFetchError(error, "fetchUserDetail");
   }
 };
-
+// TODO Refactor to avoid code duplication with server action
 export const fetchUsers = async ({
   perPageParam = PER_PAGE_CONFIGS.desktop.items,
   pageParam = "1",

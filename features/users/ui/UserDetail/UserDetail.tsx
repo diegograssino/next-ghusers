@@ -1,3 +1,4 @@
+import { getUniqueId } from "@/features/shared/lib/utils";
 import { Anchor, Typography } from "@/features/shared/ui";
 import { UserDetailProps } from "@/types";
 import { IconLink } from "@tabler/icons-react";
@@ -66,8 +67,8 @@ const UserDetail = ({ user, repos }: UserDetailProps) => {
         </Typography>
         {repos.length > 0 ? (
           <ul className={detailReposList}>
-            {repos.map((repo, i) => (
-              <li key={repo.id + i} className={detailReposItem}>
+            {repos.map((repo) => (
+              <li key={getUniqueId()} className={detailReposItem}>
                 <IconLink className={detailReposItemIcon} />
                 <Anchor
                   href={repo.html_url}
