@@ -15,7 +15,6 @@ const { searchPage, searchPageAside, searchPageResults, searchPageSearch } =
 
 const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
   // TODO scrollbar make the ui shuffley
-  // TODO on changing search term the scroll should go to top
   // TODO Add Hero section
   const {
     perPageConfig,

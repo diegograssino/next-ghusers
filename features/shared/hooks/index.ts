@@ -24,7 +24,7 @@ export const useSearchTerm = (initialSearchTerm = "", debounceMs = 1000) => {
 
     if (currentQuery !== newQuery) {
       const newUrl = params.toString() ? `?${params.toString()}` : "/";
-      router.replace(newUrl, { scroll: false });
+      router.replace(newUrl, { scroll: true });
     }
   }, [debouncedSearchTerm, router, searchParams]);
 
