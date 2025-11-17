@@ -14,12 +14,12 @@ export const useSearchTerm = (initialSearchTerm = "", debounceMs = 1000) => {
     const params = new URLSearchParams(searchParams);
 
     if (debouncedSearchTerm.trim()) {
-      params.set("q", debouncedSearchTerm.trim());
+      params.set("l", debouncedSearchTerm.trim());
     } else {
-      params.delete("q");
+      params.delete("l");
     }
 
-    const currentQuery = searchParams.get("q") || "";
+    const currentQuery = searchParams.get("l") || "";
     const newQuery = debouncedSearchTerm.trim();
 
     if (currentQuery !== newQuery) {

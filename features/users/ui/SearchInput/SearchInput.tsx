@@ -15,14 +15,10 @@ const {
   searchInputLoading,
 } = styles;
 
-const SearchInput = ({
-  value,
-  onChange = () => {},
-  ...otherInputProps
-}: SearchInputProps) => {
+const SearchInput = ({ value, onChange = () => {} }: SearchInputProps) => {
   const { isLoading } = useContext(SharedContext);
   const searchParams = useSearchParams();
-  const queryParam = searchParams.get("q") || "";
+  const queryParam = searchParams.get("l") || "";
   const inputRef = useRef<HTMLInputElement>(null);
   const initialCursorPosition = value.length > 0 ? value.length : 0;
   const cursorPositionRef = useRef<number>(initialCursorPosition);
@@ -59,7 +55,6 @@ const SearchInput = ({
     <div className={searchInputContainer}>
       <div className={searchInputInnerContainer}>
         <input
-          {...otherInputProps}
           type="text"
           name="search"
           className={searchInput}
@@ -69,6 +64,7 @@ const SearchInput = ({
           value={value}
           autoComplete="off"
           autoFocus={true}
+          placeholder="Search users..."
         />
         <div className={clsx(searchInputIcon, isLoading && searchInputLoading)}>
           {!isLoading ? <IconSearch stroke={2} /> : <IconRotate stroke={2} />}

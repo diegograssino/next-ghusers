@@ -1,16 +1,17 @@
 import { PER_PAGE_CONFIGS } from "@/features/shared/constants";
 import { getUniqueId } from "@/features/shared/lib/utils";
 import { CardGridProps, CardGridSkeletonProps } from "@/types";
+import clsx from "clsx";
 import { CardSkeleton } from "../Card/Card";
 import styles from "./CardGrid.module.scss";
 
-const { cardGrid } = styles;
+const { cardGrid, cardGridSkeleton } = styles;
 
 export const CardGridSkeleton = ({ perPageConfig }: CardGridSkeletonProps) => {
   const cols = perPageConfig?.columns || PER_PAGE_CONFIGS.desktop.columns;
   return (
     <div
-      className={cardGrid}
+      className={clsx(cardGrid, cardGridSkeleton)}
       style={{ "--grid-cols": cols } as React.CSSProperties}
     >
       {Array.from({

@@ -12,9 +12,11 @@ export type PerPageConfig = Record<
   { items: string; columns: string }
 >;
 
+export type QueryParams = Record<string, string | undefined>;
+
 export interface PageConfig {
   perPageConfig: PerPageConfig[keyof PerPageConfig];
-  searchTermParam: string | undefined;
+  queryParams: QueryParams;
 }
 
 // Logger types

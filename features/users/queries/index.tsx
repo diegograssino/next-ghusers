@@ -3,7 +3,7 @@ import { SharedContext } from "@/features/shared/contexts/SharedContext";
 import { FetchUsersResult } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCallback, useContext, useMemo } from "react";
-import { fetchUsers } from "../services";
+import { fetchUsersService } from "../services";
 
 export const useInfiniteUsers = (
   query = "",
@@ -22,10 +22,10 @@ export const useInfiniteUsers = (
   } = useInfiniteQuery({
     queryKey: ["users", query, perPage],
     queryFn: ({ pageParam = query ? "1" : "0" }) =>
-      fetchUsers({
+      fetchUsersService({
         perPageParam: perPage,
         pageParam,
-        queryParam: query,
+        queryParams: { l: query },
       }),
     initialPageParam: query ? "1" : "0",
     getNextPageParam: (lastPage) => lastPage.nextSince,

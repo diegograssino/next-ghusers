@@ -17,7 +17,10 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
   // TODO scrollbar make the ui shuffley
   // TODO on changing search term the scroll should go to top
   // TODO Add Hero section
-  const { perPageConfig, searchTermParam } = pageConfig;
+  const {
+    perPageConfig,
+    queryParams: { l: searchTermParam },
+  } = pageConfig;
   const { searchTerm, inputValue, handleSearchTermChange } =
     useSearchTerm(searchTermParam);
 
@@ -34,11 +37,7 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
   return (
     <div className={searchPage}>
       <div className={searchPageSearch}>
-        <SearchInput
-          value={inputValue}
-          onChange={handleSearchTermChange}
-          placeholder="Search users..."
-        />
+        <SearchInput value={inputValue} onChange={handleSearchTermChange} />
       </div>
       <aside className={searchPageAside}>
         <SearchPageFilters totalCount={totalCount} />

@@ -1,3 +1,5 @@
+import { QueryParams } from "../shared";
+
 export interface FetchUsersResult {
   users: User[];
   nextSince: string | null;
@@ -7,7 +9,7 @@ export interface FetchUsersResult {
 export interface FetchUsersParams {
   perPageParam?: string;
   pageParam?: string;
-  queryParam?: string;
+  queryParams?: QueryParams;
 }
 
 export interface User {
