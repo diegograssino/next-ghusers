@@ -1,5 +1,5 @@
 "use client";
-import { useSearchTerm } from "@/features/shared/hooks";
+import { useLoginTerm } from "@/features/shared/hooks";
 import { getUniqueId } from "@/features/shared/lib/utils";
 import { PageMessage } from "@/features/shared/ui";
 import useInfiniteUsers from "@/features/users/queries";
@@ -16,12 +16,9 @@ const { searchPage, searchPageAside, searchPageResults, searchPageSearch } =
 const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
   // TODO scrollbar make the ui shuffley
   // TODO Add Hero section
-  const {
-    perPageConfig,
-    queryParams: { l: searchTermParam },
-  } = pageConfig;
-  const { searchTerm, inputValue, handleSearchTermChange } =
-    useSearchTerm(searchTermParam);
+  const { perPageConfig, queryParams } = pageConfig;
+  const { loginTerm, inputValue, handleSearchTermChange } =
+    useLoginTerm(queryParams);
 
   const {
     users,
@@ -31,7 +28,7 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
     isMore,
     totalCount,
     handleLoadMore,
-  } = useInfiniteUsers(searchTerm, perPageConfig.items, initialUsers);
+  } = useInfiniteUsers(loginTerm, perPageConfig.items, initialUsers);
 
   return (
     <div className={searchPage}>
