@@ -1,6 +1,6 @@
 import { pageMessages } from "@/features/shared/ui/PageMessage/PageMessage.constants";
 import Link from "next/link";
-import { ElementType, HTMLAttributes, InputHTMLAttributes, JSX } from "react";
+import { ElementType, HTMLAttributes, JSX } from "react";
 import { PerPageConfig } from "../shared";
 
 export type ColorVariants =
@@ -73,16 +73,23 @@ export interface CardGridSkeletonProps {
   perPageConfig?: PerPageConfig[keyof PerPageConfig];
 }
 
-export interface SearchInputProps
-  extends InputHTMLAttributes<HTMLInputElement> {
+export interface SearchInputProps {
   value: string;
-}
-
-export interface FiltersInfoProps {
-  totalCount?: number | undefined;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export interface PillProps {
   label: string;
   onRemove?: () => void;
 }
+
+export interface FiltersInfoProps {
+  totalCount: number | undefined;
+  activeFilters?: string[];
+}
+
+export interface FiltersInputProps {
+  followersInputValue?: string;
+  onFollowersChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+export interface FiltersProps extends FiltersInfoProps, FiltersInputProps {}

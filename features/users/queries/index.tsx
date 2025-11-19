@@ -1,12 +1,12 @@
 import { PER_PAGE_CONFIGS } from "@/features/shared/constants";
 import { SharedContext } from "@/features/shared/contexts/SharedContext";
-import { FetchUsersResult } from "@/types";
+import { FetchUsersResult, QueryParams } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCallback, useContext, useMemo } from "react";
 import { fetchUsersService } from "../services";
 
 export const useInfiniteUsers = (
-  query = "",
+  queryParams: QueryParams = { l: "", f: "" },
   perPage = PER_PAGE_CONFIGS.desktop.items,
   initialData?: FetchUsersResult
 ) => {
@@ -20,14 +20,14 @@ export const useInfiniteUsers = (
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["users", query, perPage],
-    queryFn: ({ pageParam = query ? "1" : "0" }) =>
+    queryKey: ["users", queryParams, perPage],
+    queryFn: ({ pageParam = queryParams.l || queryParams.f ? "1" : "0" }) =>
       fetchUsersService({
         perPageParam: perPage,
         pageParam,
-        queryParams: { l: query },
+        queryParams,
       }),
-    initialPageParam: query ? "1" : "0",
+    initialPageParam: queryParams.l || queryParams.f ? "1" : "0",
     getNextPageParam: (lastPage) => lastPage.nextSince,
     staleTime: 1000 * 60,
     // Only use initialData on first load server-side, not when query changes
@@ -35,7 +35,7 @@ export const useInfiniteUsers = (
       initialData && !isClient
         ? {
             pages: [initialData],
-            pageParams: [query ? "1" : "0"],
+            pageParams: [queryParams.l || queryParams.f ? "1" : "0"],
           }
         : undefined,
   });

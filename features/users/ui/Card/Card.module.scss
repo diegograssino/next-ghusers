@@ -45,8 +45,12 @@
   object-fit: cover;
   transition: $transition-transform;
   transform-origin: center;
+}
 
-  @include hover-on-non-touch(transform, scale(1.05));
+.card:hover .cardImage {
+  @media (hover: hover) and (pointer: fine) {
+    transform: scale(1.05);
+  }
 }
 
 .cardContent {

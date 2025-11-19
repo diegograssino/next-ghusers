@@ -11,7 +11,7 @@ export async function fetchUsersAction({
   pageParam = "1",
   queryParams = DEFAULT_QUERY_PARAMS,
 }: FetchUsersParams): Promise<FetchUsersResult> {
-  return fetchUsers(queryParams, pageParam, perPageParam);
+  return fetchUsers({ queryParams, pageParam, perPageParam });
 }
 
 export async function fetchUserAction(id: number) {

@@ -1,11 +1,15 @@
 "use client";
-import { useLoginTerm } from "@/features/shared/hooks";
+import { useSearch } from "@/features/shared/hooks";
 import { getUniqueId } from "@/features/shared/lib/utils";
 import { PageMessage } from "@/features/shared/ui";
 import useInfiniteUsers from "@/features/users/queries";
-import { Card, CardGrid, SearchInput } from "@/features/users/ui";
-import { CardGridSkeleton } from "@/features/users/ui/CardGrid/CardGrid";
-import SearchPageFilters from "@/features/users/ui/SearchPageFilters/Filters";
+import {
+  Card,
+  CardGrid,
+  CardGridSkeleton,
+  Filters,
+  SearchInput,
+} from "@/features/users/ui";
 import { SearchPageProps } from "@/types";
 import InfiniteScroll from "react-infinite-scroller";
 import styles from "./SearchPage.module.scss";
@@ -14,11 +18,16 @@ const { searchPage, searchPageAside, searchPageResults, searchPageSearch } =
   styles;
 
 const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
-  // TODO scrollbar make the ui shuffley
-  // TODO Add Hero section
+  // TODO fix page always shows scrollbar, when is not present it make the ui shuffley
+  // TODO Add Hero section, then the scroll true on the router push in the hook should go to the search section, not to top of the page
   const { perPageConfig, queryParams } = pageConfig;
-  const { loginTerm, inputValue, handleSearchTermChange } =
-    useLoginTerm(queryParams);
+  // TODO This hook should be per input to avoid unnecesary re renders, not all in one
+  const {
+    loginInputValue,
+    handleLoginTermChange,
+    followersInputValue,
+    handleFollowersChange,
+  } = useSearch(queryParams);
 
   const {
     users,
@@ -28,15 +37,19 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
     isMore,
     totalCount,
     handleLoadMore,
-  } = useInfiniteUsers(loginTerm, perPageConfig.items, initialUsers);
+  } = useInfiniteUsers(queryParams, perPageConfig.items, initialUsers);
 
   return (
     <div className={searchPage}>
       <div className={searchPageSearch}>
-        <SearchInput value={inputValue} onChange={handleSearchTermChange} />
+        <SearchInput value={loginInputValue} onChange={handleLoginTermChange} />
       </div>
       <aside className={searchPageAside}>
-        <SearchPageFilters totalCount={totalCount} />
+        <Filters
+          totalCount={totalCount}
+          followersInputValue={followersInputValue}
+          onFollowersChange={handleFollowersChange}
+        />
       </aside>
       <div className={searchPageResults}>
         {isError ? (

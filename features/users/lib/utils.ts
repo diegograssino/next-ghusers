@@ -1,4 +1,8 @@
+import { PER_PAGE_CONFIGS } from "@/features/shared/constants";
 import { log } from "@/features/shared/lib/logger";
+import { QueryParams } from "@/types";
+import { FetchUsersParams } from "@/types/users";
+import { DEFAULT_QUERY_PARAMS } from "./constants";
 
 export function handleFetchError(error: unknown, context: string): never {
   if (error instanceof Error) {
@@ -59,31 +63,40 @@ export const getFetchOptions = (): RequestInit => {
 };
 
 export function getFetchUsersUrl(
-  queryParams: { l?: string },
+  queryParams: QueryParams,
   isSearch: boolean,
   pageParam: string,
   perPageParam: string,
   page: string | number
 ): string {
-  const searchTermParam = queryParams.l || "";
-
   if (isSearch) {
-    return `https://api.github.com/search/users?q=${encodeURIComponent(
-      searchTermParam + " in:login"
-    )}&page=${page}&per_page=${perPageParam}`;
+    const queryParts = [];
+
+    if ("f" in queryParams && queryParams.f) {
+      queryParts.push(`followers:>${queryParams.f}`);
+    }
+
+    if ("l" in queryParams && queryParams.l) {
+      queryParts.push(`${queryParams.l}+in:login`);
+    }
+
+    const searchQuery = queryParts.join("+");
+    return `https://api.github.com/search/users?q=${searchQuery}&page=${page}&per_page=${perPageParam}`;
   } else {
     return `https://api.github.com/users?since=${pageParam}&per_page=${perPageParam}`;
   }
 }
 
-export async function fetchUsers(
-  queryParams: { l?: string },
-  pageParam: string,
-  perPageParam: string
-) {
+export async function fetchUsers({
+  queryParams = DEFAULT_QUERY_PARAMS,
+  pageParam = "1",
+  perPageParam = PER_PAGE_CONFIGS.desktop.items,
+}: FetchUsersParams) {
   const fetchOptions = getFetchOptions();
-  const searchTermParam = queryParams.l || "";
-  const isSearch = !!searchTermParam;
+  const isSearch = !!(
+    (queryParams && "l" in queryParams && queryParams.l) ||
+    (queryParams && "f" in queryParams && queryParams.f)
+  );
   const page = isSearch
     ? Number(pageParam) < 1
       ? 1
@@ -96,7 +109,6 @@ export async function fetchUsers(
     perPageParam,
     page
   );
-
   try {
     const res = await fetch(url, fetchOptions);
 

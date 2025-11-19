@@ -16,16 +16,15 @@ const {
   filtersInfoAppliedTitleContainer,
 } = styles;
 
-const FiltersInfo = ({ totalCount }: FiltersInfoProps) => {
+const FiltersInfo = ({ totalCount, activeFilters = [] }: FiltersInfoProps) => {
   // TODO Work on responsivness
   const isOneUserFound = totalCount === 1;
-  // TODO Replace with real filters
-  const filtersMock: string[] = [];
-  const isFiltersApplied = filtersMock.length > 0;
+  const isFiltersApplied = activeFilters.length > 0;
 
   return (
     <div className={filtersInfo}>
       <section className={filtersInfoCount}>
+        {/* TODO Show a skeleton or loader on loading */}
         <Typography as="span" size="sm">
           {!totalCount ? `Showing all` : formatNumber(totalCount)}
         </Typography>
@@ -53,7 +52,8 @@ const FiltersInfo = ({ totalCount }: FiltersInfoProps) => {
           ) : null}
         </div>
         <div className={filtersInfoPillsContainer}>
-          {filtersMock.map((filter, i) => (
+          {activeFilters.map((filter: string, i: number) => (
+            // TODO add remove filter function
             <Pill label={filter} key={i} />
           ))}
         </div>
