@@ -14,6 +14,15 @@ export type PerPageConfig = Record<
 
 export type QueryParams = Record<string, string | undefined>;
 
+export interface Params {
+  param: string;
+  value: string;
+}
+
+export interface FilterParams extends Params {
+  label: string;
+}
+
 export interface PageConfig {
   perPageConfig: PerPageConfig[keyof PerPageConfig];
   queryParams: QueryParams;

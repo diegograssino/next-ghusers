@@ -1,5 +1,14 @@
 import { QueryParams } from "../shared";
 
+// Valid filter keys
+export type ValidFilterKeys = "l" | "f";
+
+// Valid filter labels
+export type ValidFilterLabels = "login" | "followers";
+
+// Helper type for valid filter params
+export type ValidFilterParams = Partial<Pick<QueryParams, ValidFilterKeys>>;
+
 export interface FetchUsersResult {
   users: User[];
   nextSince: string | null;

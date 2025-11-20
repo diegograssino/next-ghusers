@@ -1,8 +1,62 @@
 import { PER_PAGE_CONFIGS } from "@/features/shared/constants";
 import { log } from "@/features/shared/lib/logger";
-import { QueryParams } from "@/types";
-import { FetchUsersParams } from "@/types/users";
-import { DEFAULT_QUERY_PARAMS } from "./constants";
+import { FilterParams, Params, QueryParams } from "@/types";
+import {
+  FetchUsersParams,
+  ValidFilterKeys,
+  ValidFilterParams,
+} from "@/types/users";
+import {
+  DEFAULT_QUERY_PARAMS,
+  VALID_FILTER_KEYS,
+  VALID_FILTER_PARAMS,
+  VALID_FOLLOWERS_VALUES,
+} from "./constants";
+
+export function validateFilterParams(
+  params: Partial<QueryParams>
+): ValidFilterParams {
+  const validParams: ValidFilterParams = {};
+
+  Object.keys(params).forEach((key) => {
+    if (VALID_FILTER_KEYS.includes(key as ValidFilterKeys)) {
+      validParams[key as ValidFilterKeys] = params[key];
+    }
+  });
+
+  return validParams;
+}
+
+export function getFilterByLabel(label: string) {
+  return VALID_FILTER_PARAMS.find((filter) => filter.label === label);
+}
+
+export function validateFollowersValue(value: string): boolean {
+  return VALID_FOLLOWERS_VALUES.includes(
+    value as (typeof VALID_FOLLOWERS_VALUES)[number]
+  );
+}
+
+export function addFilterParamLabel(params: Params): FilterParams | undefined {
+  const filterConfig = VALID_FILTER_PARAMS.find(
+    (filter) => filter.param === params.param
+  );
+
+  if (filterConfig) {
+    // Additional validation for followers filter
+    if (filterConfig.param === "f" && !validateFollowersValue(params.value)) {
+      return undefined;
+    }
+
+    return {
+      param: params.param,
+      value: params.value,
+      label: filterConfig.label,
+    };
+  }
+
+  return undefined;
+}
 
 export function handleFetchError(error: unknown, context: string): never {
   if (error instanceof Error) {
