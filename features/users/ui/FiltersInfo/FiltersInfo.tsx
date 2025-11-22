@@ -1,3 +1,4 @@
+import { useSharedContext } from "@/features/shared/contexts/SharedContext";
 import { formatNumber } from "@/features/shared/lib/utils";
 import { Typography } from "@/features/shared/ui";
 import { formatFilterLabel } from "@/features/shared/ui/utils";
@@ -7,7 +8,7 @@ import { FiltersInfoProps } from "@/types/ui";
 
 import { IconX } from "@tabler/icons-react";
 import Pill from "../Pill/Pill";
-import styles from "./FilterIsnfo.module.scss";
+import styles from "./FilterInfo.module.scss";
 
 const {
   filtersInfo,
@@ -18,26 +19,35 @@ const {
   filtersInfoAppliedButton,
   filtersInfoAppliedIcon,
   filtersInfoAppliedTitleContainer,
+  filtersInfoCountPlaceholder,
 } = styles;
 
 const FiltersInfo = ({ totalCount }: FiltersInfoProps) => {
+  const { isLoadingUsers } = useSharedContext();
   const { filters, clearFilters, removeFilter } = useFiltersContext();
 
   // TODO Work on responsivness
   const isOneUserFound = totalCount === 1;
   const nonLoginFilters = getNonLoginFilters(filters);
   const isOtherFiltersApplied = nonLoginFilters.length > 0;
+  // TODO Showing all results texts still being present when is loading
+  const isLoadingTotalCount = isLoadingUsers && totalCount === undefined;
 
   return (
     <div className={filtersInfo}>
       <section className={filtersInfoCount}>
-        {/* TODO Show a skeleton or loader on loading */}
-        <Typography as="span" size="sm">
-          {!totalCount ? `Showing all` : formatNumber(totalCount)}
-        </Typography>
-        <Typography as="span" size="sm">
-          {isOneUserFound ? ` result` : ` results`}
-        </Typography>
+        {!isLoadingTotalCount ? (
+          <>
+            <Typography as="span" size="sm">
+              {!totalCount ? `Showing all` : formatNumber(totalCount)}
+            </Typography>
+            <Typography as="span" size="sm">
+              {isOneUserFound ? ` result` : ` results`}
+            </Typography>
+          </>
+        ) : (
+          <div className={filtersInfoCountPlaceholder} />
+        )}
       </section>
       <section className={filtersInfoApplied}>
         <div className={filtersInfoAppliedTitleContainer}>

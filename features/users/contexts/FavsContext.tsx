@@ -7,7 +7,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { SharedContext } from "../../shared/contexts/SharedContext";
+import { useSharedContext } from "../../shared/contexts/SharedContext";
 
 interface FavsProviderProps {
   children: React.ReactNode;
@@ -20,24 +20,14 @@ interface FavsContextProps {
   checkFav: (id: number) => boolean;
 }
 
-export const FavsContext = createContext<FavsContextProps>({
-  favs: [],
-  addFav: () => {},
-  removeFav: () => {},
-  checkFav: () => false,
-});
+export const FavsContext = createContext<FavsContextProps | undefined>(
+  undefined
+);
 
 export const FavsProvider = ({ children }: FavsProviderProps) => {
   const [favs, setFavs] = useState<number[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
-  const sharedContext = useContext(SharedContext);
-
-  if (!sharedContext) {
-    // TODO Handle this error properly
-    throw new Error("FavsProvider must be used within a SharedProvider");
-  }
-
-  const { isClient } = sharedContext;
+  const { isClient } = useSharedContext();
 
   // Load favs from localStorage on mount
   useEffect(() => {
@@ -88,4 +78,12 @@ export const FavsProvider = ({ children }: FavsProviderProps) => {
   return (
     <FavsContext.Provider value={contextValue}>{children}</FavsContext.Provider>
   );
+};
+
+export const useFavsContext = () => {
+  const context = useContext(FavsContext);
+  if (context === undefined) {
+    throw new Error("useFavsContext must be used within a FavsProvider");
+  }
+  return context;
 };

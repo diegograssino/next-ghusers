@@ -22,11 +22,27 @@
   gap: 0.25rem;
 }
 
+.filtersInfoCountPlaceholder {
+  @include property-per-breakpoint(
+    height,
+    (
+      base: 0.75rem,
+      sm: 0.8125rem,
+      md: 0.875rem,
+      lg: 0.9375rem,
+      xl: 1rem,
+      2xl: 1.0625rem,
+      3xl: 1.125rem,
+    )
+  );
+}
+
 .filtersInfoApplied {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .filtersInfoAppliedTitle {

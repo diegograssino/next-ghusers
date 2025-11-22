@@ -1,10 +1,10 @@
 "use client";
-import { SharedContext } from "@/features/shared/contexts/SharedContext";
+import { useSharedContext } from "@/features/shared/contexts/SharedContext";
 import { useFiltersContext } from "@/features/users/contexts/FiltersContext";
 import { IconRotate, IconSearch } from "@tabler/icons-react";
 import clsx from "clsx";
 import { useSearchParams } from "next/navigation";
-import { useContext, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import styles from "./SearchInput.module.scss";
 
 const {
@@ -16,7 +16,7 @@ const {
 } = styles;
 
 const SearchInput = () => {
-  const { isLoading } = useContext(SharedContext);
+  const { isLoadingUsers } = useSharedContext();
   const { loginInputValue, updateFilters } = useFiltersContext();
   const searchParams = useSearchParams();
   const queryParam = searchParams.get("login") || "";
@@ -47,11 +47,11 @@ const SearchInput = () => {
   }, [queryParam]);
 
   useEffect(() => {
-    // Restore focus when loading finishes, helps on firt search
-    if (!isLoading) {
+    // DOC Restore focus when loading finishes, helps on firt search
+    if (!isLoadingUsers) {
       handleFocusAndCursorPosition();
     }
-  }, [isLoading]);
+  }, [isLoadingUsers]);
 
   return (
     <div className={searchInputContainer}>
@@ -60,7 +60,7 @@ const SearchInput = () => {
           type="text"
           name="search"
           className={searchInput}
-          disabled={isLoading}
+          disabled={isLoadingUsers}
           onChange={handleChange}
           ref={inputRef}
           value={loginInputValue}
@@ -68,8 +68,17 @@ const SearchInput = () => {
           autoFocus={true}
           placeholder="Search users..."
         />
-        <div className={clsx(searchInputIcon, isLoading && searchInputLoading)}>
-          {!isLoading ? <IconSearch stroke={2} /> : <IconRotate stroke={2} />}
+        <div
+          className={clsx(
+            searchInputIcon,
+            isLoadingUsers && searchInputLoading
+          )}
+        >
+          {!isLoadingUsers ? (
+            <IconSearch stroke={2} />
+          ) : (
+            <IconRotate stroke={2} />
+          )}
         </div>
       </div>
     </div>

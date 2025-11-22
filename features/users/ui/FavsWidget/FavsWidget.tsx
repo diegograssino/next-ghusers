@@ -2,14 +2,14 @@
 import { CardWidgetProps } from "@/types";
 import { IconStar, IconStarFilled } from "@tabler/icons-react";
 import clsx from "clsx";
-import { useCallback, useContext, useMemo } from "react";
-import { FavsContext } from "../../contexts/FavsContext";
+import { useCallback, useMemo } from "react";
+import { useFavsContext } from "../../contexts/FavsContext";
 import styles from "./FavsWidget.module.scss";
 
 const { FavsWidgetEmptyStar, FavsWidgetFilledStar } = styles;
 
 const FavsWidget = ({ id }: CardWidgetProps) => {
-  const { checkFav, addFav, removeFav } = useContext(FavsContext);
+  const { checkFav, addFav, removeFav } = useFavsContext();
   const isFav = useMemo(() => checkFav(id), [checkFav, id]);
 
   const handleFav = useCallback(

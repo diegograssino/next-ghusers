@@ -1,16 +1,14 @@
 "use client";
 import FavsPage from "@/features/pages/FavsPage/FavsPage";
 import { PageMessage } from "@/features/shared/ui";
-import { FavsContext } from "@/features/users/contexts/FavsContext";
+import { useFavsContext } from "@/features/users/contexts/FavsContext";
 import { fetchUserService } from "@/features/users/services";
 import { User } from "@/types";
 import { useQueries } from "@tanstack/react-query";
-import { useContext } from "react";
 
 export default function Favs() {
-  const { favs } = useContext(FavsContext);
+  const { favs } = useFavsContext();
 
-  // TODO move fetching logic to a service
   // TODO Create a noFavs pageMessage instead of noResults
   const users = useQueries({
     queries: favs.map((id) => ({
