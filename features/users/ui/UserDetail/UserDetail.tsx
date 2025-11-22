@@ -36,7 +36,7 @@ const UserDetail = ({ user, repos }: UserDetailProps) => {
             height={300}
           />
           <div>
-            <FavsWidget id={user.id} />
+            <FavsWidget id={user.id} user={user} />
           </div>
         </header>
         <div className={detailInfo}>
