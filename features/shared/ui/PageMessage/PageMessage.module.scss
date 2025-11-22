@@ -1,0 +1,10 @@
+@use "../../../../styles/abstracts.scss" as *;
+
+.pageMessage {
+  display: flex;
+  justify-content: center;
+  margin-top: 10rem;
+  text-align: center;
+  height: 100%;
+  padding-bottom: $layout-footer-height;
+}

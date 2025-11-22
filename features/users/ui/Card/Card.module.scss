@@ -1,38 +1,87 @@
 @use "../../../../styles/abstracts" as *;
+@use "../../../../styles/mixins" as *;
 
 .card {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   gap: 1rem;
-  border-radius: 0.75rem;
+  border-radius: $border-radius;
   position: relative;
   border: 2px solid $color-accent2;
+  box-shadow: 0 4px 12px 0 color-mix(in srgb, $color-secondary 5%, transparent),
+    0 2px 8px 0 color-mix(in srgb, $color-secondary 3%, transparent);
   transition: $transition-fast;
   overflow: hidden;
+  background-color: $color-accent2;
+  @include property-per-breakpoint(
+    flex-direction,
+    (
+      base: column,
+      lg: row,
+    )
+  );
+  @include hover-on-non-touch(border-color, $color-accent);
+}
 
-  &:hover {
-    border-color: $color-foreground;
-  }
+.cardImageContainer {
+  position: relative;
+}
 
-  &:hover img {
+.cardImageContainer {
+  position: relative;
+  height: 9.375rem;
+  overflow: hidden;
+  @include property-per-breakpoint(
+    width,
+    (
+      base: 100%,
+      lg: 9.375rem,
+    )
+  );
+}
+
+.cardImage {
+  object-fit: cover;
+  transition: $transition-transform;
+  transform-origin: center;
+}
+
+.card:hover .cardImage {
+  @media (hover: hover) and (pointer: fine) {
     transform: scale(1.05);
   }
+}
 
-  img {
-    transition: $transition-transform;
-    transform-origin: center;
-  }
+.cardContent {
+  overflow: hidden;
+  @include property-per-breakpoint(
+    padding,
+    (
+      base: 0.75rem,
+      lg: 1rem,
+    )
+  );
+}
 
-  &Content {
-    padding: 1rem;
-    overflow: hidden;
-  }
+.cardOptions {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  @include property-per-breakpoint(
+    padding,
+    (
+      base: 0.75rem,
+      lg: 1rem,
+    )
+  );
+}
 
-  &Options {
-    padding: 1rem;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-  }
+.cardContentatSymbol {
+  color: $color-accent2;
+}
+
+.cardSkeleton {
+  min-height: 9.625rem;
+  animation: $animation-pulse;
 }

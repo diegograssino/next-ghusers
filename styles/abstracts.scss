@@ -1,16 +1,16 @@
 // TODO Refactor folder structure for variables, add animatios to a mixins file
 // Base Colors (used to define CSS custom properties)
-$base-color-primary: #ffffff !default;
-$base-color-secondary: #1f2937 !default;
-$base-color-primary-dark: #f9fafb !default;
-$base-color-secondary-dark: #111827 !default;
+$base-color-primary: #f5f5f5 !default;
+$base-color-secondary: #4a4a4a !default;
+$base-color-primary-dark: #e5e5e5 !default;
+$base-color-secondary-dark: #2a2a2a !default;
 $base-color-accent: #3b82f6 !default;
-$base-color-accent2: #6b7280 !default;
+$base-color-accent2: #fff !default;
 $base-color-success: #10b981 !default;
 $base-color-error: #ef4444 !default;
 $base-color-warning: #f59e0b !default;
-$base-color-accent-dark: #2563eb !default;
-$base-color-accent2-dark: #4b5563 !default;
+$base-color-accent-dark: #60a5fa !default;
+$base-color-accent2-dark: #3f3f3f !default;
 $base-color-success-dark: #059669 !default;
 $base-color-error-dark: #dc2626 !default;
 $base-color-warning-dark: #d97706 !default;
@@ -27,7 +27,7 @@ $color-error: var(--color-error) !default;
 $color-warning: var(--color-warning) !default;
 
 // Layout
-$layout-navbar-height: 4rem !default;
+$layout-navbar-height: 2.75rem !default;
 $layout-footer-height: 5rem !default;
 
 // Typography
@@ -46,6 +46,18 @@ $screen-lg: 1024px !default;
 $screen-xl: 1280px !default;
 $screen-2xl: 1440px !default;
 $screen-3xl: 1920px !default;
+
+// Border Radius
+$border-radius: 0.75rem !default;
+
+// Spacing - Input Padding
+$input-padding-base: 0.5rem !default;
+$input-padding-sm: 0.55rem !default;
+$input-padding-md: 0.6rem !default;
+$input-padding-lg: 0.65rem !default;
+$input-padding-xl: 0.7rem !default;
+$input-padding-2xl: 0.72rem !default;
+$input-padding-3xl: 0.75rem !default;
 
 // Animations
 $animation-pulse-duration: 2s !default;

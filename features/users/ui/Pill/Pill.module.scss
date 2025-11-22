@@ -1,0 +1,60 @@
+@use "../../../../styles/abstracts" as *;
+@use "../../../../styles/mixins" as *;
+
+.pill {
+  //   background-color: $color-secondary;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: fit-content;
+}
+
+.pillIcon {
+  color: $color-secondary;
+  background-color: $color-primary;
+  border-radius: 100%;
+  border: 2px solid $color-foreground;
+  flex-shrink: 0;
+  @include hover-on-non-touch(border-color, $color-accent);
+  padding: 0.125rem;
+  cursor: pointer;
+  @include property-per-breakpoint(
+    width,
+    (
+      base: 0.625rem,
+      sm: 0.6875rem,
+      md: 0.75rem,
+      lg: 0.8125rem,
+      xl: 0.875rem,
+      2xl: 0.9375rem,
+      3xl: 1rem,
+    )
+  );
+  @include property-per-breakpoint(
+    height,
+    (
+      base: 0.625rem,
+      sm: 0.6875rem,
+      md: 0.75rem,
+      lg: 0.8125rem,
+      xl: 0.875rem,
+      2xl: 0.9375rem,
+      3xl: 1rem,
+    )
+  );
+}
+
+.pillLabel {
+  max-width: 220px;
+  @include property-per-breakpoint(
+    max-width,
+    (
+      base: 13.75rem,
+      lg: 7.75rem,
+      xl: 10.9375rem,
+      2xl: 16.75rem,
+      3xl: 18.5rem,
+    )
+  );
+}

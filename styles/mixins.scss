@@ -1,0 +1,50 @@
+@use "sass:map";
+@use "abstracts" as *;
+
+@mixin property-per-breakpoint($property, $values) {
+  #{$property}: map.get($values, base);
+
+  @if map.has-key($values, sm) {
+    @media (min-width: $screen-sm) {
+      #{$property}: map.get($values, sm);
+    }
+  }
+
+  @if map.has-key($values, md) {
+    @media (min-width: $screen-md) {
+      #{$property}: map.get($values, md);
+    }
+  }
+
+  @if map.has-key($values, lg) {
+    @media (min-width: $screen-lg) {
+      #{$property}: map.get($values, lg);
+    }
+  }
+
+  @if map.has-key($values, xl) {
+    @media (min-width: $screen-xl) {
+      #{$property}: map.get($values, xl);
+    }
+  }
+
+  @if map.has-key($values, 2xl) {
+    @media (min-width: $screen-2xl) {
+      #{$property}: map.get($values, 2xl);
+    }
+  }
+
+  @if map.has-key($values, 3xl) {
+    @media (min-width: $screen-3xl) {
+      #{$property}: map.get($values, 3xl);
+    }
+  }
+}
+
+@mixin hover-on-non-touch($property, $value) {
+  @media (hover: hover) {
+    &:hover {
+      #{$property}: $value;
+    }
+  }
+}

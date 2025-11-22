@@ -1,14 +1,17 @@
-import { FetchUsersResult } from "@/types";
+import { PER_PAGE_CONFIGS } from "@/features/shared/constants";
+import { SharedContext } from "@/features/shared/contexts/SharedContext";
+import { FetchUsersResult, QueryParams } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useCallback, useMemo } from "react";
-import { fetchUsers } from "../services";
-import { USERS_PER_PAGE } from "./constants";
+import { useCallback, useContext, useMemo } from "react";
+import { DEFAULT_QUERY_PARAMS } from "../lib/constants";
+import { fetchUsersService } from "../services";
 
 export const useInfiniteUsers = (
-  query = "",
-  perPage = USERS_PER_PAGE,
+  queryParams: QueryParams = DEFAULT_QUERY_PARAMS,
+  perPage = PER_PAGE_CONFIGS.desktop.items,
   initialData?: FetchUsersResult
 ) => {
+  const { isClient } = useContext(SharedContext);
   const {
     data,
     error,
@@ -18,25 +21,29 @@ export const useInfiniteUsers = (
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["users", query, perPage],
-    queryFn: ({ pageParam = query ? "1" : "0" }) =>
-      fetchUsers({
+    queryKey: ["users", queryParams, perPage],
+    queryFn: ({
+      pageParam = queryParams.login || queryParams.followers ? "1" : "0",
+    }) =>
+      fetchUsersService({
         perPageParam: perPage,
         pageParam,
-        queryParam: query,
+        queryParams,
       }),
-    initialPageParam: query ? "1" : "0",
+    initialPageParam: queryParams.login || queryParams.followers ? "1" : "0",
     getNextPageParam: (lastPage) => lastPage.nextSince,
     staleTime: 1000 * 60,
+    // Only use initialData on first load server-side, not when query changes
     initialData:
-      initialData && !query
+      initialData && !isClient
         ? {
             pages: [initialData],
-            pageParams: [query ? "1" : "0"],
+            pageParams: [
+              queryParams.login || queryParams.followers ? "1" : "0",
+            ],
           }
         : undefined,
   });
-
   const handleLoadMore = useCallback(() => {
     if (hasNextPage && !isFetching) {
       fetchNextPage();
@@ -54,6 +61,9 @@ export const useInfiniteUsers = (
   const isMore = useMemo(() => {
     return hasNextPage && !isFetching;
   }, [hasNextPage, isFetching]);
+  const totalCount = useMemo(() => {
+    return data?.pages[0]?.totalCount || undefined;
+  }, [data]);
 
   return {
     users: flattenedUsers,
@@ -66,6 +76,7 @@ export const useInfiniteUsers = (
     isMore,
     isLoading,
     isNoResults,
+    totalCount,
     handleLoadMore,
   };
 };

@@ -1,0 +1,30 @@
+@use "@/styles/abstracts" as *;
+
+.filtersInputs {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.filterInputsFollowers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.filterInputsFollowersTitle {
+  margin-bottom: 1rem;
+}
+
+.filterInputsFollowersLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.filterInputsFollowersCheckbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: $color-accent;
+}

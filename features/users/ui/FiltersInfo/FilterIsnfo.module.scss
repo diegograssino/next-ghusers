@@ -1,0 +1,82 @@
+@use "../../../../styles/abstracts" as *;
+@use "../../../../styles/mixins" as *;
+
+.filtersInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 2.5rem;
+  width: 100%;
+}
+
+.filtersInfoPillsContainer {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filtersInfoCount {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.filtersInfoApplied {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.filtersInfoAppliedTitle {
+  display: flex;
+  justify-content: start;
+}
+
+.filtersInfoAppliedIcon {
+  color: $color-secondary;
+  background-color: $color-primary;
+  border-radius: 100%;
+  border: 2px solid $color-foreground;
+  @include hover-on-non-touch(border-color, $color-accent);
+  padding: 0.125rem;
+  cursor: pointer;
+  @include property-per-breakpoint(
+    width,
+    (
+      base: 0.625rem,
+      sm: 0.6875rem,
+      md: 0.75rem,
+      lg: 0.8125rem,
+      xl: 0.875rem,
+      2xl: 0.9375rem,
+      3xl: 1rem,
+    )
+  );
+  @include property-per-breakpoint(
+    height,
+    (
+      base: 0.625rem,
+      sm: 0.6875rem,
+      md: 0.75rem,
+      lg: 0.8125rem,
+      xl: 0.875rem,
+      2xl: 0.9375rem,
+      3xl: 1rem,
+    )
+  );
+}
+
+.filtersInfoAppliedTitleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.filtersInfoAppliedButton {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}

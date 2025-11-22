@@ -1,4 +1,10 @@
-import { InputHTMLAttributes } from "react";
+import { QueryParams } from "../shared";
+
+export type ValidFilterKeys = "login" | "followers";
+
+export type ValidFilterLabels = "login" | "followers";
+
+export type ValidFilterParams = Partial<Pick<QueryParams, ValidFilterKeys>>;
 
 export interface FetchUsersResult {
   users: User[];
@@ -9,7 +15,7 @@ export interface FetchUsersResult {
 export interface FetchUsersParams {
   perPageParam?: string;
   pageParam?: string;
-  queryParam?: string;
+  queryParams?: QueryParams;
 }
 
 export interface User {
@@ -165,9 +171,6 @@ interface Owner {
   user_view_type: string;
   site_admin: boolean;
 }
-export interface CardGridProps {
-  children: React.ReactNode;
-}
 
 export interface CardProps {
   user: User;
@@ -180,15 +183,6 @@ export interface CardWidgetProps {
 export interface UserDetailProps {
   user: User;
   repos: Repo[];
-}
-
-export interface CardGridSkeletonProps {
-  cards?: number;
-}
-
-export interface SearchInputProps
-  extends InputHTMLAttributes<HTMLInputElement> {
-  value: string;
 }
 
 export interface SortButtonProps {

@@ -1,6 +1,7 @@
-import { pageMessages } from "@/features/ui/PageMessage/PageMessage.constants";
+import { pageMessages } from "@/features/shared/ui/PageMessage/PageMessage.constants";
 import Link from "next/link";
 import { ElementType, HTMLAttributes, JSX } from "react";
+import { PerPageConfig } from "../shared";
 
 export type ColorVariants =
   | "default"
@@ -15,7 +16,7 @@ export type ColorVariants =
 
 export type WeightVariants = "thin" | "normal" | "bold";
 
-export type Sizes = "sm" | "md" | "lg" | "xl";
+export type Sizes = "xs" | "sm" | "md" | "lg" | "xl";
 export interface ContainerProps extends HTMLAttributes<HTMLOrSVGElement> {
   as?: ElementType;
 }
@@ -61,4 +62,22 @@ export type Icons = {
 
 export interface PageMessageProps {
   message: keyof typeof pageMessages;
+}
+
+export interface CardGridProps extends HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
+  perPageConfig?: PerPageConfig[keyof PerPageConfig];
+}
+
+export interface CardGridSkeletonProps {
+  perPageConfig?: PerPageConfig[keyof PerPageConfig];
+}
+
+export interface PillProps {
+  label: string;
+  onRemove?: () => void;
+}
+
+export interface FiltersInfoProps {
+  totalCount?: number;
 }
