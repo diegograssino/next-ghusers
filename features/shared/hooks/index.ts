@@ -1,9 +1,10 @@
 import { QueryParams } from "@/types";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
 
 export const useUrl = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const updateUrlFromFilters = useCallback(
@@ -32,11 +33,12 @@ export const useUrl = () => {
         currentLoginQuery !== newLoginQuery ||
         currentFollowersQuery !== newFollowersQuery
       ) {
-        const newUrl = params.toString() ? `?${params.toString()}` : "/";
+        const queryString = params.toString();
+        const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
         router.replace(newUrl, { scroll: true });
       }
     },
-    [router, searchParams]
+    [router, pathname, searchParams]
   );
 
   const getFiltersFromUrl = useCallback(() => {

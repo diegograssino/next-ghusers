@@ -44,7 +44,7 @@ const Card = ({ user }: CardProps) => {
           </Typography>
         </div>
         <div className={cardOptions}>
-          <FavsWidget id={user.id} />
+          <FavsWidget id={user.id} user={user} />
         </div>
       </article>
     </Link>

@@ -11,5 +11,5 @@ export interface SearchPageProps {
 }
 
 export interface FavsPageProps {
-  users: User[];
+  pageConfig: PageConfig;
 }
