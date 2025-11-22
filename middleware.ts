@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
   const ua = userAgent(request);
   const deviceType: DeviceType = (ua.device.type as DeviceType) || "desktop";
 
-  url.searchParams.set("d", deviceType);
+  url.searchParams.set("device", deviceType);
 
   const isPageRoute =
     !url.pathname.match(

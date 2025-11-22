@@ -1,6 +1,8 @@
 import { getUniqueId } from "@/features/shared/lib/utils";
 import { Typography } from "@/features/shared/ui";
-import { FiltersInputProps } from "@/types";
+import { formatFilterLabel } from "@/features/shared/ui/utils";
+import { useFiltersContext } from "@/features/users/contexts/FiltersContext";
+import { VALID_FOLLOWERS_VALUES } from "@/features/users/lib/constants";
 import styles from "./FiltersInputs.module.scss";
 
 const {
@@ -11,27 +13,17 @@ const {
   filterInputsFollowersCheckbox,
 } = styles;
 
-const FiltersInputs = ({
-  followersInputValue,
-  onFollowersChange,
-}: FiltersInputProps) => {
-  const followerOptions = [
-    { label: "All", value: "" },
-    { label: ">100", value: "100" },
-    { label: ">1000", value: "1000" },
-    { label: ">5000", value: "5000" },
-    { label: ">10000", value: "10000" },
-  ];
-
-  const handleFollowersChange = (
+const FiltersInputs = () => {
+  const { followersInputValue, updateFilters } = useFiltersContext();
+  const followerOptions = VALID_FOLLOWERS_VALUES.map((value) => ({
+    label: value === "" ? "All" : formatFilterLabel("followers", value),
+    value,
+  }));
+  const handleFollowerFilter = (
     e: React.ChangeEvent<HTMLInputElement>,
     value: string
   ) => {
-    Object.defineProperty(e.target, "value", {
-      value: value,
-      writable: false,
-    });
-    onFollowersChange?.(e);
+    updateFilters({ param: "followers", value });
   };
 
   return (
@@ -50,7 +42,7 @@ const FiltersInputs = ({
             <input
               type="checkbox"
               checked={followersInputValue === option.value}
-              onChange={(e) => handleFollowersChange(e, option.value)}
+              onChange={(e) => handleFollowerFilter(e, option.value)}
               className={filterInputsFollowersCheckbox}
             />
             <Typography as="span" size="sm">

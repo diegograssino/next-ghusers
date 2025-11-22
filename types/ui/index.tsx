@@ -73,23 +73,11 @@ export interface CardGridSkeletonProps {
   perPageConfig?: PerPageConfig[keyof PerPageConfig];
 }
 
-export interface SearchInputProps {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
 export interface PillProps {
   label: string;
   onRemove?: () => void;
 }
 
 export interface FiltersInfoProps {
-  totalCount: number | undefined;
-  activeFilters?: string[];
+  totalCount?: number;
 }
-
-export interface FiltersInputProps {
-  followersInputValue?: string;
-  onFollowersChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-export interface FiltersProps extends FiltersInfoProps, FiltersInputProps {}

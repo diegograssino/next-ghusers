@@ -1,28 +1,17 @@
-import { FiltersProps } from "@/types";
 import FiltersInfo from "../FiltersInfo/FiltersInfo";
 import FiltersInputs from "../FiltersInputs/FiltersInputs";
 import styles from "./Filters.module.scss";
-const { filters } = styles;
+const { filtersContainer } = styles;
 
-const Filters = ({
-  totalCount,
-  followersInputValue,
-  onFollowersChange,
-}: FiltersProps) => {
-  // Generate active filters array
-  const activeFilters: string[] = [];
+interface FiltersProps {
+  totalCount?: number | undefined;
+}
 
-  if (followersInputValue && followersInputValue !== "") {
-    activeFilters.push(`>${followersInputValue} followers`);
-  }
-
+const Filters = ({ totalCount }: FiltersProps) => {
   return (
-    <div className={filters}>
-      <FiltersInfo totalCount={totalCount} activeFilters={activeFilters} />
-      <FiltersInputs
-        followersInputValue={followersInputValue}
-        onFollowersChange={onFollowersChange}
-      />
+    <div className={filtersContainer}>
+      <FiltersInfo totalCount={totalCount} />
+      <FiltersInputs />
     </div>
   );
 };

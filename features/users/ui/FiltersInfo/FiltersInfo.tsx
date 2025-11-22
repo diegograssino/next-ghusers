@@ -1,6 +1,10 @@
 import { formatNumber } from "@/features/shared/lib/utils";
 import { Typography } from "@/features/shared/ui";
-import { FiltersInfoProps } from "@/types";
+import { formatFilterLabel } from "@/features/shared/ui/utils";
+import { useFiltersContext } from "@/features/users/contexts/FiltersContext";
+import { getNonLoginFilters } from "@/features/users/lib/utils";
+import { FiltersInfoProps } from "@/types/ui";
+
 import { IconX } from "@tabler/icons-react";
 import Pill from "../Pill/Pill";
 import styles from "./FilterIsnfo.module.scss";
@@ -16,10 +20,13 @@ const {
   filtersInfoAppliedTitleContainer,
 } = styles;
 
-const FiltersInfo = ({ totalCount, activeFilters = [] }: FiltersInfoProps) => {
+const FiltersInfo = ({ totalCount }: FiltersInfoProps) => {
+  const { filters, clearFilters, removeFilter } = useFiltersContext();
+
   // TODO Work on responsivness
   const isOneUserFound = totalCount === 1;
-  const isFiltersApplied = activeFilters.length > 0;
+  const nonLoginFilters = getNonLoginFilters(filters);
+  const isOtherFiltersApplied = nonLoginFilters.length > 0;
 
   return (
     <div className={filtersInfo}>
@@ -40,10 +47,10 @@ const FiltersInfo = ({ totalCount, activeFilters = [] }: FiltersInfoProps) => {
             weight="bold"
             className={filtersInfoAppliedTitle}
           >
-            {isFiltersApplied ? "Filters applied" : "No filters applied"}
+            {isOtherFiltersApplied ? "Filters applied" : "No filters applied"}
           </Typography>
-          {isFiltersApplied ? (
-            <button className={filtersInfoAppliedButton}>
+          {isOtherFiltersApplied ? (
+            <button className={filtersInfoAppliedButton} onClick={clearFilters}>
               <Typography as="span" size="xs">
                 Clear
               </Typography>
@@ -52,9 +59,12 @@ const FiltersInfo = ({ totalCount, activeFilters = [] }: FiltersInfoProps) => {
           ) : null}
         </div>
         <div className={filtersInfoPillsContainer}>
-          {activeFilters.map((filter: string, i: number) => (
-            // TODO add remove filter function
-            <Pill label={filter} key={i} />
+          {nonLoginFilters.map(([filterKey, filterValue]) => (
+            <Pill
+              key={filterKey}
+              label={formatFilterLabel(filterKey as "followers", filterValue!)}
+              onRemove={() => removeFilter(filterKey as "followers")}
+            />
           ))}
         </div>
       </section>

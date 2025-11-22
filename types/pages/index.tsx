@@ -1,8 +1,8 @@
-import { DeviceType, PageConfig } from "../shared";
+import { PageConfig } from "../shared";
 import { FetchUsersResult, User } from "../users";
 
 export interface PageParamsProps {
-  searchParams: Promise<{ d?: DeviceType; q?: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export interface SearchPageProps {

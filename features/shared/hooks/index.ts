@@ -1,69 +1,61 @@
-import { DEFAULT_QUERY_PARAMS } from "@/features/users/lib/constants";
 import { QueryParams } from "@/types";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
-import { useDebounceValue } from "usehooks-ts";
+import { useCallback, useEffect } from "react";
 
-export const useSearch = (
-  queryParams: QueryParams = DEFAULT_QUERY_PARAMS,
-  debounceMs = 1000
-) => {
+export const useUrl = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const initialLoginTerm = queryParams.l || "";
-  const initialFollowersTerm = queryParams.f || "";
-  const [loginTerm, setLoginTerm] = useState(initialLoginTerm);
-  const [followersTerm, setFollowersTerm] = useState(initialFollowersTerm);
-  const [debouncedLoginTerm] = useDebounceValue(loginTerm, debounceMs);
-  const [debouncedFollowersTerm] = useDebounceValue(followersTerm, debounceMs);
-  // TODO Add parsing/validation for searchTerm
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams);
+  const updateUrlFromFilters = useCallback(
+    (filters: QueryParams) => {
+      const params = new URLSearchParams(searchParams);
 
-    // Handle 'l' parameter (login search term) with debouncing
-    if (debouncedLoginTerm.trim()) {
-      params.set("l", debouncedLoginTerm.trim());
-    } else {
-      params.delete("l");
-    }
+      // TODO Refactor this logic, not hardcoded params or better abstraction
+      if (filters.login?.trim()) {
+        params.set("login", filters.login.trim());
+      } else {
+        params.delete("login");
+      }
+      // TODO Refactor this logic, not hardcoded params or better abstraction
+      if (filters.followers?.trim()) {
+        params.set("followers", filters.followers.trim());
+      } else {
+        params.delete("followers");
+      }
 
-    // Handle 'f' parameter (followers) with debouncing
-    if (debouncedFollowersTerm.trim()) {
-      params.set("f", debouncedFollowersTerm.trim());
-    } else {
-      params.delete("f");
-    }
+      const currentLoginQuery = searchParams.get("login") || "";
+      const newLoginQuery = filters.login?.trim() || "";
+      const currentFollowersQuery = searchParams.get("followers") || "";
+      const newFollowersQuery = filters.followers?.trim() || "";
 
-    const currentLoginQuery = searchParams.get("l") || "";
-    const newLoginQuery = debouncedLoginTerm.trim();
-    const currentFollowersQuery = searchParams.get("f") || "";
-    const newFollowersQuery = debouncedFollowersTerm.trim();
-
-    // Update URL if either parameter has changed
-    if (
-      currentLoginQuery !== newLoginQuery ||
-      currentFollowersQuery !== newFollowersQuery
-    ) {
-      const newUrl = params.toString() ? `?${params.toString()}` : "/";
-      router.replace(newUrl, { scroll: true });
-    }
-  }, [debouncedLoginTerm, debouncedFollowersTerm, router, searchParams]);
-
-  const handleTerm = useCallback(
-    (setter: (value: string) => void) =>
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        setter(e.target.value);
-      },
-    []
+      if (
+        currentLoginQuery !== newLoginQuery ||
+        currentFollowersQuery !== newFollowersQuery
+      ) {
+        const newUrl = params.toString() ? `?${params.toString()}` : "/";
+        router.replace(newUrl, { scroll: true });
+      }
+    },
+    [router, searchParams]
   );
 
+  const getFiltersFromUrl = useCallback(() => {
+    return {
+      login: searchParams.get("login") || "",
+      followers: searchParams.get("followers") || "",
+    };
+  }, [searchParams]);
+
   return {
-    loginTerm: debouncedLoginTerm,
-    followersTerm: debouncedFollowersTerm,
-    loginInputValue: loginTerm,
-    followersInputValue: followersTerm,
-    handleLoginTermChange: handleTerm(setLoginTerm),
-    handleFollowersChange: handleTerm(setFollowersTerm),
+    updateUrlFromFilters,
+    getFiltersFromUrl,
   };
+};
+
+export const useFiltersToUrl = (filters: QueryParams) => {
+  const { updateUrlFromFilters } = useUrl();
+
+  useEffect(() => {
+    updateUrlFromFilters(filters);
+  }, [filters, updateUrlFromFilters]);
 };

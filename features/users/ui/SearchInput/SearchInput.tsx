@@ -1,6 +1,6 @@
 "use client";
 import { SharedContext } from "@/features/shared/contexts/SharedContext";
-import { SearchInputProps } from "@/types";
+import { useFiltersContext } from "@/features/users/contexts/FiltersContext";
 import { IconRotate, IconSearch } from "@tabler/icons-react";
 import clsx from "clsx";
 import { useSearchParams } from "next/navigation";
@@ -15,17 +15,19 @@ const {
   searchInputLoading,
 } = styles;
 
-const SearchInput = ({ value, onChange = () => {} }: SearchInputProps) => {
+const SearchInput = () => {
   const { isLoading } = useContext(SharedContext);
+  const { loginInputValue, updateFilters } = useFiltersContext();
   const searchParams = useSearchParams();
-  const queryParam = searchParams.get("l") || "";
+  const queryParam = searchParams.get("login") || "";
   const inputRef = useRef<HTMLInputElement>(null);
-  const initialCursorPosition = value.length > 0 ? value.length : 0;
+  const initialCursorPosition =
+    loginInputValue.length > 0 ? loginInputValue.length : 0;
   const cursorPositionRef = useRef<number>(initialCursorPosition);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     cursorPositionRef.current = e.target.selectionStart || 0;
-    onChange(e);
+    updateFilters({ param: "login", value: e.target.value });
   };
 
   const handleFocusAndCursorPosition = () => {
@@ -61,7 +63,7 @@ const SearchInput = ({ value, onChange = () => {} }: SearchInputProps) => {
           disabled={isLoading}
           onChange={handleChange}
           ref={inputRef}
-          value={value}
+          value={loginInputValue}
           autoComplete="off"
           autoFocus={true}
           placeholder="Search users..."

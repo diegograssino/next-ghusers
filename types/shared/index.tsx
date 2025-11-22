@@ -25,10 +25,9 @@ export interface FilterParams extends Params {
 
 export interface PageConfig {
   perPageConfig: PerPageConfig[keyof PerPageConfig];
-  queryParams: QueryParams;
+  initialFilters: QueryParams;
 }
 
-// Logger types
 export interface LogContext {
   [key: string]: unknown;
 }

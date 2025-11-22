@@ -1,7 +1,8 @@
 "use client";
-import { useSearch } from "@/features/shared/hooks";
+import { useFiltersToUrl } from "@/features/shared/hooks";
 import { getUniqueId } from "@/features/shared/lib/utils";
 import { PageMessage } from "@/features/shared/ui";
+import { useFiltersContext } from "@/features/users/contexts/FiltersContext";
 import useInfiniteUsers from "@/features/users/queries";
 import {
   Card,
@@ -20,14 +21,10 @@ const { searchPage, searchPageAside, searchPageResults, searchPageSearch } =
 const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
   // TODO fix page always shows scrollbar, when is not present it make the ui shuffley
   // TODO Add Hero section, then the scroll true on the router push in the hook should go to the search section, not to top of the page
-  const { perPageConfig, queryParams } = pageConfig;
-  // TODO This hook should be per input to avoid unnecesary re renders, not all in one
-  const {
-    loginInputValue,
-    handleLoginTermChange,
-    followersInputValue,
-    handleFollowersChange,
-  } = useSearch(queryParams);
+  // TODO We should handle when the followers is set to an invalid value manually on the URL
+  const { perPageConfig } = pageConfig;
+  const { filters } = useFiltersContext();
+  useFiltersToUrl(filters);
 
   const {
     users,
@@ -37,19 +34,15 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
     isMore,
     totalCount,
     handleLoadMore,
-  } = useInfiniteUsers(queryParams, perPageConfig.items, initialUsers);
+  } = useInfiniteUsers(filters, perPageConfig.items, initialUsers);
 
   return (
     <div className={searchPage}>
       <div className={searchPageSearch}>
-        <SearchInput value={loginInputValue} onChange={handleLoginTermChange} />
+        <SearchInput />
       </div>
       <aside className={searchPageAside}>
-        <Filters
-          totalCount={totalCount}
-          followersInputValue={followersInputValue}
-          onFollowersChange={handleFollowersChange}
-        />
+        <Filters totalCount={totalCount} />
       </aside>
       <div className={searchPageResults}>
         {isError ? (

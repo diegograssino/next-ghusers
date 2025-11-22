@@ -13,6 +13,14 @@ import {
   VALID_FOLLOWERS_VALUES,
 } from "./constants";
 
+export function getNonLoginFilters(
+  filters: Record<string, string | undefined>
+) {
+  return Object.entries(filters)
+    .filter(([key]) => key !== "login")
+    .filter(([, value]) => value && value.trim() !== "");
+}
+
 export function validateFilterParams(
   params: Partial<QueryParams>
 ): ValidFilterParams {
@@ -43,8 +51,10 @@ export function addFilterParamLabel(params: Params): FilterParams | undefined {
   );
 
   if (filterConfig) {
-    // Additional validation for followers filter
-    if (filterConfig.param === "f" && !validateFollowersValue(params.value)) {
+    if (
+      filterConfig.param === "followers" &&
+      !validateFollowersValue(params.value)
+    ) {
       return undefined;
     }
 
@@ -99,7 +109,6 @@ export function extractSince(url: string): string | null {
 }
 
 export const getFetchOptions = (): RequestInit => {
-  // Auto-detect environment: server-side has process.env.GITHUB_TOKEN, client-side has NEXT_PUBLIC_GITHUB_TOKEN
   const isServer = typeof window === "undefined";
   const token = isServer
     ? process.env.GITHUB_TOKEN
@@ -126,12 +135,12 @@ export function getFetchUsersUrl(
   if (isSearch) {
     const queryParts = [];
 
-    if ("f" in queryParams && queryParams.f) {
-      queryParts.push(`followers:>${queryParams.f}`);
+    if ("followers" in queryParams && queryParams.followers) {
+      queryParts.push(`followers:>${queryParams.followers}`);
     }
 
-    if ("l" in queryParams && queryParams.l) {
-      queryParts.push(`${queryParams.l}+in:login`);
+    if ("login" in queryParams && queryParams.login) {
+      queryParts.push(`${queryParams.login}+in:login`);
     }
 
     const searchQuery = queryParts.join("+");
@@ -148,8 +157,8 @@ export async function fetchUsers({
 }: FetchUsersParams) {
   const fetchOptions = getFetchOptions();
   const isSearch = !!(
-    (queryParams && "l" in queryParams && queryParams.l) ||
-    (queryParams && "f" in queryParams && queryParams.f)
+    (queryParams && "login" in queryParams && queryParams.login) ||
+    (queryParams && "followers" in queryParams && queryParams.followers)
   );
   const page = isSearch
     ? Number(pageParam) < 1
