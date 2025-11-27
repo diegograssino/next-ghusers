@@ -9,6 +9,8 @@ const Hero = ({ route }: HeroProps) => {
 
   return (
     <section className={hero}>
+      {/* TODO Add background image */}
+      {/* TODO This should came as a children */}
       <Typography weight="bold" size="xl" as="h2" variant="primary">
         {title}
       </Typography>
