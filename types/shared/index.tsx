@@ -35,6 +35,7 @@ export interface LogContext {
 export interface Route {
   label: string;
   href: string;
+  heroText?: string;
 }
 
 export interface Routes {

@@ -40,7 +40,8 @@
 .searchPageSearch {
   grid-area: search;
   position: sticky;
-  top: calc($layout-navbar-height - 1px);
+  // TODO this 1px could be tricky, refactor it to use a better approach
+  top: calc($layout-navbar-height + $layout-breadcrumbs-height - 1px);
   z-index: 10;
   background: linear-gradient(
     to bottom,
@@ -51,14 +52,14 @@
   padding: 1rem 0 0 0;
 
   @media (max-width: #{$screen-sm - 1px}) {
-    top: $layout-navbar-height;
+    top: calc($layout-navbar-height + $layout-breadcrumbs-height);
   }
 }
 
 .searchPageAside {
   grid-area: filters;
   position: sticky;
-  top: $layout-navbar-height;
+  top: calc($layout-navbar-height + $layout-breadcrumbs-height);
   z-index: 9;
   background-color: $color-background;
   padding: 1rem 0 1rem 0;

@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { IconBrandGithub } from "@tabler/icons-react";
-import Breadcrumbs from "../Breadcrumbs/Breadcrumbs";
+import { ROUTES } from "../../constants";
 import Container from "../Container/Container";
 import FavsAnchor from "../FavsAnchor/FavsAnchor";
 import Typography from "../Typography/Typography";
@@ -17,8 +17,7 @@ const Header = () => {
     <header className={header} data-testid="header">
       <Container>
         <nav className={headerNavbarContainer}>
-          {/* TODO Links should be in a constants file */}
-          <Link href="/" className={headerNavbarBrand}>
+          <Link href={ROUTES.HOME.href} className={headerNavbarBrand}>
             <IconBrandGithub className={headerNavbarIcon} />
             <Typography as="h1" size="md" weight="bold" variant="primary">
               Github{" "}
@@ -33,7 +32,6 @@ const Header = () => {
             </li>
           </ul>
         </nav>
-        <Breadcrumbs />
       </Container>
     </header>
   );

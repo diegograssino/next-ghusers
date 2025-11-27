@@ -1,16 +1,20 @@
 "use client";
 
 import { ROUTES } from "@/features/shared/constants";
-import { Route } from "@/types";
+import { BreadcrumbsProps, Route } from "@/types";
 import { usePathname } from "next/navigation";
+import { Fragment } from "react";
 import { getUniqueId } from "../../lib/utils";
 import Anchor from "../Anchor/Anchor";
 import Typography from "../Typography/Typography";
 import styles from "./Breadcrumbs.module.scss";
 
-const { breadcrumbs } = styles;
+const { breadcrumbs, breadcrumbsContainer } = styles;
 
-const Breadcrumbs = () => {
+const Breadcrumbs = ({
+  variant = undefined,
+  size = "sm",
+}: BreadcrumbsProps) => {
   const pathname = usePathname();
   const pathnameParts = pathname.split("/").filter(Boolean);
 
@@ -55,32 +59,34 @@ const Breadcrumbs = () => {
 
   return (
     <nav className={breadcrumbs}>
-      {routes.map((route, index) => {
-        const isLast = index === routes.length - 1;
-        return (
-          <Typography
-            as="span"
-            size="sm"
-            weight={isLast ? "bold" : "normal"}
-            key={getUniqueId()}
-          >
-            {index > 0 ? (
-              <Typography as="span" size="sm" weight="normal">
-                /
-              </Typography>
-            ) : null}
-            {isLast ? (
-              <Typography as="span" size="sm" weight="normal">
-                {route.label}
-              </Typography>
-            ) : (
-              <Anchor size="sm" href={route.href} weight="normal">
-                {route.label}
-              </Anchor>
-            )}
-          </Typography>
-        );
-      })}
+      <div className={breadcrumbsContainer}>
+        {routes.map((route, index) => {
+          const isLast = index === routes.length - 1;
+          return (
+            <Fragment key={getUniqueId()}>
+              {index > 0 ? (
+                <Typography as="span" size={size} variant={variant}>
+                  /
+                </Typography>
+              ) : null}
+              {isLast ? (
+                <Typography
+                  as="span"
+                  size={size}
+                  weight="bold"
+                  variant={variant}
+                >
+                  {route.label}
+                </Typography>
+              ) : (
+                <Anchor size={size} href={route.href} variant={variant}>
+                  {route.label}
+                </Anchor>
+              )}
+            </Fragment>
+          );
+        })}
+      </div>
     </nav>
   );
 };

@@ -1,0 +1,11 @@
+@use "../../../../styles/abstracts.scss" as *;
+
+.hero {
+  width: 100%;
+  height: 20vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom, $color-accent, $color-accent2);
+  border-radius: $border-radius;
+}

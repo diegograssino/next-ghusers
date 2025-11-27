@@ -1,4 +1,4 @@
-import { Container, Footer, Header } from "@/features/shared/ui";
+import { Breadcrumbs, Container, Footer, Header } from "@/features/shared/ui";
 import "@/styles/globals.scss";
 import clsx from "clsx";
 import type { Metadata } from "next";
@@ -40,6 +40,7 @@ export default function RootLayout({
         <body>
           <div className="globalLayout">
             <Header />
+            <Breadcrumbs />
             <Container as="main">{children}</Container>
             <Footer />
           </div>

@@ -15,13 +15,14 @@ export const ROUTES: Routes = {
   HOME: {
     label: "Home",
     href: "/",
+    heroText: "Discover GitHub Users",
   },
   FAVS: {
     label: "Favorites",
     href: "/favs",
   },
   USER_DETAIL: (id: number | string) => ({
-    label: `User ${id}`,
+    label: id.toString(),
     href: `/${id}`,
   }),
 };
