@@ -12,6 +12,7 @@ import styles from "./FavsPage.module.scss";
 const { favsPage, favsPageAside, favsPageResults, favsPageSearch } = styles;
 
 const FavsPage = ({ pageConfig }: FavsPageProps) => {
+  // TODO UI should show clearly that is a favs page, not a search page, maybe it should be the dashboard and the search be below the user data, orders and controls
   const { favs, updateFav } = useFavsContext();
   const { filters } = useFiltersContext();
   useFiltersToUrl(filters);

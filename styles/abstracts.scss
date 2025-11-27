@@ -28,6 +28,11 @@ $color-warning: var(--color-warning) !default;
 
 // Layout
 $layout-navbar-height: 2.75rem !default;
+$layout-breadcrumbs-height: 1.25rem !default;
+// TODO Add everything to vars
+$layout-header-height: calc(
+  2.75rem + layout-breadcrumbs-height + 0.5rem
+) !default;
 $layout-footer-height: 5rem !default;
 
 // Typography

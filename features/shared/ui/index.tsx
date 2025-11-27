@@ -1,4 +1,5 @@
 export { default as Anchor } from "./Anchor/Anchor";
+export { default as Breadcrumbs } from "./Breadcrumbs/Breadcrumbs";
 export { default as Container } from "./Container/Container";
 export { default as FavsAnchor } from "./FavsAnchor/FavsAnchor";
 export { default as Footer } from "./Footer/Footer";

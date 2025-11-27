@@ -1,4 +1,5 @@
 "use client";
+import { ROUTES } from "@/features/shared/constants";
 import { useFavsContext } from "@/features/users/contexts/FavsContext";
 import { IconStarFilled } from "@tabler/icons-react";
 import Anchor from "../Anchor/Anchor";
@@ -10,7 +11,7 @@ const FavsAnchor = () => {
   const { favs } = useFavsContext();
 
   return (
-    <Anchor variant="primary" size="sm" href="./favs">
+    <Anchor variant="primary" size="sm" href={ROUTES.FAVS.href}>
       <div className={favsAnchor}>
         <IconStarFilled className={favsAnchorIcon} />
         <span>({favs.length})</span>

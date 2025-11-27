@@ -31,3 +31,14 @@ export interface PageConfig {
 export interface LogContext {
   [key: string]: unknown;
 }
+
+export interface Route {
+  label: string;
+  href: string;
+}
+
+export interface Routes {
+  HOME: Route;
+  FAVS: Route;
+  USER_DETAIL: (id: number | string) => Route;
+}

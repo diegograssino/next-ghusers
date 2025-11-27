@@ -1,9 +1,11 @@
 import { useSharedContext } from "@/features/shared/contexts/SharedContext";
 import { formatNumber } from "@/features/shared/lib/utils";
 import { Typography } from "@/features/shared/ui";
-import { formatFilterLabel } from "@/features/shared/ui/utils";
 import { useFiltersContext } from "@/features/users/contexts/FiltersContext";
-import { getNonLoginFilters } from "@/features/users/lib/utils";
+import {
+  formatFilterLabel,
+  getNonLoginFilters,
+} from "@/features/users/lib/utils";
 import { FiltersInfoProps } from "@/types/ui";
 
 import { IconX } from "@tabler/icons-react";
