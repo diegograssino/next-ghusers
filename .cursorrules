@@ -1178,13 +1178,15 @@ API
 
 ## Code Comments
 
-### Comment Labels - REQUIRED
+### Comment Labels - REQUIRED - NO EXCEPTIONS
 
-- **ALL comments MUST use TODO Tree extension labels** - no comments without labels
-- Use `// TODO` for future improvements, refactoring, or enhancements (yellow highlight)
-- Use `// FIX` for bugs that need fixing or known issues (red highlight)
-- Use `// DOC` for documentation notes, explanations, or important context (green highlight)
+- **ALL comments MUST use TODO Tree extension labels** - **NO COMMENTS WITHOUT LABELS, THIS IS MANDATORY, NOT OPTIONAL**
+- **CRITICAL**: Comments without labels are **FORBIDDEN**. Only use comments with labels:
+  - `// TODO` for future improvements, refactoring, or enhancements (yellow highlight)
+  - `// FIX` for bugs that need fixing or known issues (red highlight)
+  - `// DOC` for documentation notes, explanations, or important context - **ONLY for hacky things or exceptions that need explanation**
 - **Never write comments without one of these labels** - this ensures all comments are tracked by the TODO Tree extension
+- **If a comment is not TODO, FIX, or necessary DOC for hacky things/exceptions, DO NOT WRITE IT** - code should be self-documenting
 
 ### Comment Examples
 

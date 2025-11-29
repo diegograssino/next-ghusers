@@ -1,4 +1,7 @@
-import { PER_PAGE_CONFIGS } from "@/features/shared/constants";
+import {
+  FETCH_TIMEOUT_MS,
+  PER_PAGE_CONFIGS,
+} from "@/features/shared/constants";
 import { log } from "@/features/shared/lib/logger";
 import { FilterParams, Params, QueryParams } from "@/types";
 import {
@@ -8,6 +11,7 @@ import {
 } from "@/types/users";
 import {
   DEFAULT_QUERY_PARAMS,
+  FIRST_PAGE_PARAM,
   VALID_FILTER_KEYS,
   VALID_FILTER_PARAMS,
   VALID_FOLLOWERS_VALUES,
@@ -135,8 +139,7 @@ export const getFetchOptions = (): RequestInit => {
       "User-Agent": "GitHub-Users-App",
       ...(token && { Authorization: `Bearer ${token}` }),
     },
-    // TODO Add timeout to envs or constants file
-    signal: AbortSignal.timeout(10000),
+    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
   };
 };
 
@@ -167,7 +170,7 @@ export const getFetchUsersUrl = (
 
 export const fetchUsers = async ({
   queryParams = DEFAULT_QUERY_PARAMS,
-  pageParam = "1",
+  pageParam = FIRST_PAGE_PARAM,
   perPageParam = PER_PAGE_CONFIGS.desktop.items,
 }: FetchUsersParams) => {
   const fetchOptions = getFetchOptions();

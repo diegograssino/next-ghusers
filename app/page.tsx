@@ -1,6 +1,7 @@
 import SearchPage from "@/features/pages/SearchPage/SearchPage";
 import { getPageConfig } from "@/features/shared/lib/utils";
 import { FiltersProvider } from "@/features/users/contexts/FiltersContext";
+import { INITIAL_PAGE_PARAM } from "@/features/users/lib/constants";
 import { fetchUsersAction } from "@/features/users/server/actions";
 import { PageParamsProps } from "@/types";
 
@@ -10,7 +11,7 @@ const Home = async (pageParams: PageParamsProps) => {
 
   const initialUsers = await fetchUsersAction({
     perPageParam: pageConfig.perPageConfig.items,
-    pageParam: "0",
+    pageParam: INITIAL_PAGE_PARAM,
     queryParams: pageConfig.initialFilters,
   });
 

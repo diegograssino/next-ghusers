@@ -5,6 +5,7 @@ import { useFiltersToUrl } from "@/features/shared/hooks";
 import { getUniqueId } from "@/features/shared/lib/utils";
 import { Hero, PageMessage } from "@/features/shared/ui";
 import { useFiltersContext } from "@/features/users/contexts/FiltersContext";
+import { INTERSECTION_OBSERVER_THRESHOLD } from "@/features/users/lib/constants";
 import useInfiniteUsers from "@/features/users/queries";
 import {
   Card,
@@ -61,8 +62,8 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
                 />
               }
               // TODO Check if we can detect the page height without killing the ssr to adjust the value as high as possible
-              // TODO Check the best value for the threshold, 1000 seems to be a good value, but we should test it with different screen sizes, we can control the value via a config device value
-              threshold={1000}
+              // TODO Make threshold configurable by device type (currently using constant INTERSECTION_OBSERVER_THRESHOLD)
+              threshold={INTERSECTION_OBSERVER_THRESHOLD}
             >
               <CardGrid perPageConfig={perPageConfig}>
                 {users.map((user) => (

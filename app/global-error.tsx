@@ -2,7 +2,7 @@
 
 import { PageMessage } from "@/features/shared/ui";
 
-export default function GlobalError() {
+const GlobalError = () => {
   return (
     <html>
       <body>
@@ -10,4 +10,6 @@ export default function GlobalError() {
       </body>
     </html>
   );
-}
+};
+
+export default GlobalError;

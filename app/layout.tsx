@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { Mona_Sans, Noto_Sans } from "next/font/google";
 import Providers from "./providers";
 
+// TODO Move font configuration to a separate file
 const primaryFont = Noto_Sans({
   variable: "--font-primary",
   subsets: ["latin"],
@@ -17,6 +18,7 @@ const secondaryFont = Mona_Sans({
   weight: ["400", "700"],
 });
 
+// TODO Improve Metadata
 export const metadata: Metadata = {
   title: "Github Users by diegograssino",
   description:
@@ -26,11 +28,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <Providers>
       <html
@@ -48,4 +50,6 @@ export default function RootLayout({
       </html>
     </Providers>
   );
-}
+};
+
+export default RootLayout;

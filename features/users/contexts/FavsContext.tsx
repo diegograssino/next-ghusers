@@ -18,7 +18,8 @@ interface FavsProviderProps {
 
 interface FavoredUser {
   user: User;
-  timestamp: number; // Unix timestamp in milliseconds
+  // DOC Unix timestamp in milliseconds
+  timestamp: number;
 }
 
 interface FavsContextProps {
@@ -86,7 +87,8 @@ export const FavsProvider = ({ children }: FavsProviderProps) => {
     }
 
     if (addingFavsRef.current.has(user.id)) {
-      return; // Already being added
+      // DOC Already being added
+      return;
     }
 
     setAddingFavs((current) => new Set(current).add(user.id));

@@ -1,5 +1,7 @@
 import { PageMessage } from "@/features/shared/ui";
 
-export default function NotFound() {
+const NotFound = () => {
   return <PageMessage message="notFound" />;
-}
+};
+
+export default NotFound;

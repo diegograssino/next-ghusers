@@ -1,9 +1,17 @@
-import { PER_PAGE_CONFIGS } from "@/features/shared/constants";
+import {
+  PER_PAGE_CONFIGS,
+  STALE_TIME_ONE_MINUTE_MS,
+} from "@/features/shared/constants";
 import { useSharedContext } from "@/features/shared/contexts/SharedContext";
 import { FetchUsersResult, QueryParams, User } from "@/types";
 import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo } from "react";
-import { DEFAULT_QUERY_PARAMS, STALE_DATA_THRESHOLD } from "../lib/constants";
+import {
+  DEFAULT_QUERY_PARAMS,
+  FIRST_PAGE_PARAM,
+  INITIAL_PAGE_PARAM,
+  STALE_DATA_THRESHOLD,
+} from "../lib/constants";
 import { fetchUserService, fetchUsersService } from "../services";
 
 export const useInfiniteUsers = (
@@ -23,16 +31,21 @@ export const useInfiniteUsers = (
   } = useInfiniteQuery({
     queryKey: ["users", queryParams, perPage],
     queryFn: ({
-      pageParam = queryParams.login || queryParams.followers ? "1" : "0",
+      pageParam = queryParams.login || queryParams.followers
+        ? FIRST_PAGE_PARAM
+        : INITIAL_PAGE_PARAM,
     }) =>
       fetchUsersService({
         perPageParam: perPage,
         pageParam,
         queryParams,
       }),
-    initialPageParam: queryParams.login || queryParams.followers ? "1" : "0",
+    initialPageParam:
+      queryParams.login || queryParams.followers
+        ? FIRST_PAGE_PARAM
+        : INITIAL_PAGE_PARAM,
     getNextPageParam: (lastPage) => lastPage.nextSince,
-    staleTime: 1000 * 60,
+    staleTime: STALE_TIME_ONE_MINUTE_MS,
     // DOC Only use initialData on first load server-side, not when query changes
     initialData:
       initialData && !isClient

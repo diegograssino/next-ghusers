@@ -1,6 +1,6 @@
 import { PER_PAGE_CONFIGS } from "@/features/shared/constants";
 import { FetchUsersParams, FetchUsersResult, User } from "@/types";
-import { DEFAULT_QUERY_PARAMS } from "../lib/constants";
+import { DEFAULT_QUERY_PARAMS, FIRST_PAGE_PARAM } from "../lib/constants";
 import { fetchUser, fetchUsers } from "../lib/utils";
 
 export const fetchUserService = async (id: number): Promise<User> => {
@@ -12,7 +12,7 @@ export const fetchUsersService = async (
 ): Promise<FetchUsersResult> => {
   const {
     perPageParam = PER_PAGE_CONFIGS.desktop.items,
-    pageParam = "1",
+    pageParam = FIRST_PAGE_PARAM,
     queryParams = DEFAULT_QUERY_PARAMS,
   } = params;
   return fetchUsers({ queryParams, pageParam, perPageParam });

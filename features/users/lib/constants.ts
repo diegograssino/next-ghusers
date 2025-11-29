@@ -22,3 +22,8 @@ export const VALID_FILTER_KEYS = VALID_FILTER_PARAMS.map(
 );
 
 export const STALE_DATA_THRESHOLD = 24 * 60 * 60 * 1000;
+
+export const INITIAL_PAGE_PARAM = "0";
+export const FIRST_PAGE_PARAM = "1";
+
+export const INTERSECTION_OBSERVER_THRESHOLD = 1000;

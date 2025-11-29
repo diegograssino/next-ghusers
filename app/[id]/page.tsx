@@ -7,13 +7,13 @@ import {
 import { UserPageProps } from "@/types";
 import { Params } from "next/dist/server/request/params";
 
-export default async function UserPage({ params }: UserPageProps) {
+const UserPage = async ({ params }: UserPageProps) => {
   const { id } = (await params) as Params;
   const [user, repos] = await Promise.all([
     fetchUserAction(Number(id)),
     fetchUserReposAction(Number(id)),
   ]);
-  // TODO explore implement slugs with username
+  // TODO explore implement slugs with username (if we can)
   // TODO improve error handling and display, now and error is thrown
 
   if (!user) {
@@ -25,4 +25,6 @@ export default async function UserPage({ params }: UserPageProps) {
   }
 
   return <UserDetailPage user={user} repos={repos} />;
-}
+};
+
+export default UserPage;

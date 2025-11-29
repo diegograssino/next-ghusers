@@ -2,6 +2,8 @@
 
 import { PageMessage } from "@/features/shared/ui";
 
-export default function Error() {
+const Error = () => {
   return <PageMessage message="error" />;
-}
+};
+
+export default Error;

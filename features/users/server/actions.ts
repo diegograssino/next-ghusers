@@ -3,12 +3,12 @@
 
 import { PER_PAGE_CONFIGS } from "@/features/shared/constants";
 import { FetchUsersParams, FetchUsersResult } from "@/types/users";
-import { DEFAULT_QUERY_PARAMS } from "../lib/constants";
+import { DEFAULT_QUERY_PARAMS, FIRST_PAGE_PARAM } from "../lib/constants";
 import { fetchUser, fetchUserRepos, fetchUsers } from "../lib/utils";
 
 export const fetchUsersAction = async ({
   perPageParam = PER_PAGE_CONFIGS.desktop.items,
-  pageParam = "1",
+  pageParam = FIRST_PAGE_PARAM,
   queryParams = DEFAULT_QUERY_PARAMS,
 }: FetchUsersParams): Promise<FetchUsersResult> => {
   return fetchUsers({ queryParams, pageParam, perPageParam });
