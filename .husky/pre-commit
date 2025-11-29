@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# Run type generation - warnings are allowed, errors will fail
 npm run type-check:scss:build

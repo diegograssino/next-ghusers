@@ -1,5 +1,5 @@
-import { TypographyProps } from "@/types";
 import { getStyleClass } from "@/features/shared/lib/utils";
+import { TypographyProps } from "@/types";
 import clsx from "clsx";
 import styles from "./Typography.module.scss";
 
