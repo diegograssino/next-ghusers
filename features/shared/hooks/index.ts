@@ -1,3 +1,4 @@
+import { VALID_FILTER_KEYS } from "@/features/users/lib/constants";
 import { QueryParams } from "@/types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
@@ -10,29 +11,26 @@ export const useUrl = () => {
   const updateUrlFromFilters = useCallback(
     (filters: QueryParams) => {
       const params = new URLSearchParams(searchParams);
+      let hasChanges = false;
 
-      // TODO Refactor this logic, not hardcoded params or better abstraction
-      if (filters.login?.trim()) {
-        params.set("login", filters.login.trim());
-      } else {
-        params.delete("login");
-      }
-      // TODO Refactor this logic, not hardcoded params or better abstraction
-      if (filters.followers?.trim()) {
-        params.set("followers", filters.followers.trim());
-      } else {
-        params.delete("followers");
-      }
+      // Iterate over valid filter keys to update URL params dynamically
+      VALID_FILTER_KEYS.forEach((filterKey) => {
+        const filterValue = filters[filterKey]?.trim();
+        const currentValue = searchParams.get(filterKey) || "";
 
-      const currentLoginQuery = searchParams.get("login") || "";
-      const newLoginQuery = filters.login?.trim() || "";
-      const currentFollowersQuery = searchParams.get("followers") || "";
-      const newFollowersQuery = filters.followers?.trim() || "";
+        if (filterValue) {
+          params.set(filterKey, filterValue);
+        } else {
+          params.delete(filterKey);
+        }
 
-      if (
-        currentLoginQuery !== newLoginQuery ||
-        currentFollowersQuery !== newFollowersQuery
-      ) {
+        // Track if any filter value has changed
+        if (currentValue !== (filterValue || "")) {
+          hasChanges = true;
+        }
+      });
+
+      if (hasChanges) {
         const queryString = params.toString();
         const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
         router.replace(newUrl, { scroll: true });
@@ -42,10 +40,14 @@ export const useUrl = () => {
   );
 
   const getFiltersFromUrl = useCallback(() => {
-    return {
-      login: searchParams.get("login") || "",
-      followers: searchParams.get("followers") || "",
-    };
+    const filters: QueryParams = {};
+
+    // Build filters object from valid filter keys in URL
+    VALID_FILTER_KEYS.forEach((filterKey) => {
+      filters[filterKey] = searchParams.get(filterKey) || "";
+    });
+
+    return filters;
   }, [searchParams]);
 
   return {
