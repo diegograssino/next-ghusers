@@ -33,7 +33,7 @@ export const useInfiniteUsers = (
     initialPageParam: queryParams.login || queryParams.followers ? "1" : "0",
     getNextPageParam: (lastPage) => lastPage.nextSince,
     staleTime: 1000 * 60,
-    // Only use initialData on first load server-side, not when query changes
+    // DOC Only use initialData on first load server-side, not when query changes
     initialData:
       initialData && !isClient
         ? {
