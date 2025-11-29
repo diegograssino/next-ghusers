@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   images: { domains: ["avatars.githubusercontent.com"] },
   sassOptions: {
     includePaths: [path.join(process.cwd(), "styles")],
-    prependData: `@use "main" as *;`,
+    prependData: `@use "abstracts/index" as *;`,
   },
 };
 

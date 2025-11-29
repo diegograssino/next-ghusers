@@ -599,9 +599,9 @@ styles/
 ### File Organization
 
 - **`globals.scss`** - Imported in `app/layout.tsx`, contains global styles (layouts and base)
-- **`main.scss`** - **Single contact point** for `prependData` in `next.config.ts`, forwards abstracts (variables, mixins, functions)
-- **`prependData` in `next.config.ts`** - Automatically prepends `main` to all SCSS files (including component modules)
-- **Important**: `main.scss` is the ONLY file that `prependData` references. If you add new folders (beyond abstracts), add them to `main.scss` - it's the single entry point for all core SCSS shared to modules
+- **`main.scss`** - **Single contact point** that forwards abstracts (variables, mixins, functions)
+- **`prependData` in `next.config.ts`** - Automatically prepends `abstracts/index` to all SCSS files (including component modules)
+- **Important**: `main.scss` is the documented contact point. If you add new folders (beyond abstracts), add them to `main.scss`. However, `prependData` uses `abstracts/index` directly to avoid circular dependency with `main.scss` itself
 
 ### SCSS Partial Example
 
