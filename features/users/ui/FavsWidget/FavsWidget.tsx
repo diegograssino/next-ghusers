@@ -5,7 +5,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useFavsContext } from "../../contexts/FavsContext";
 import styles from "./FavsWidget.module.scss";
 
-const { FavsWidgetEmptyStar, FavsWidgetFilledStar } = styles;
+const { favsWidgetEmptyStar, favsWidgetFilledStar } = styles;
 
 interface FavsWidgetProps extends CardWidgetProps {
   user: User;
@@ -47,11 +47,11 @@ const FavsWidget = ({ id, user }: FavsWidgetProps) => {
       }
     >
       {isLoading ? (
-        <IconStar className={FavsWidgetEmptyStar} />
+        <IconStar className={favsWidgetEmptyStar} />
       ) : !isFav ? (
-        <IconStar className={FavsWidgetEmptyStar} />
+        <IconStar className={favsWidgetEmptyStar} />
       ) : (
-        <IconStarFilled className={FavsWidgetFilledStar} />
+        <IconStarFilled className={favsWidgetFilledStar} />
       )}
     </button>
   );

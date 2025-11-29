@@ -3,7 +3,7 @@ import { useSharedContext } from "@/features/shared/contexts/SharedContext";
 import { FetchUsersResult, QueryParams, User } from "@/types";
 import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo } from "react";
-import { DEFAULT_QUERY_PARAMS } from "../lib/constants";
+import { DEFAULT_QUERY_PARAMS, STALE_DATA_THRESHOLD } from "../lib/constants";
 import { fetchUserService, fetchUsersService } from "../services";
 
 export const useInfiniteUsers = (
@@ -85,9 +85,6 @@ interface FavoredUser {
   user: User;
   timestamp: number;
 }
-
-// TODO this value should be a config value
-const STALE_DATA_THRESHOLD = 24 * 60 * 60 * 1000;
 
 export const useInfiniteFavUsers = (
   favs: FavoredUser[],

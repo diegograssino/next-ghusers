@@ -30,9 +30,5 @@
   },
   "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*\\*)\\s*($TAGS)(.*)",
   "todo-tree.regex.regexCaseSensitive": false,
-  "todo-tree.general.tags": [
-    "TODO",
-    "FIX",
-    "DOC"
-  ]
+  "todo-tree.general.tags": ["TODO", "FIX", "DOC"]
 }

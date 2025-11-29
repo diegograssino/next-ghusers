@@ -1,6 +1,5 @@
-import Link from "next/link";
-
 import { IconBrandGithub } from "@tabler/icons-react";
+import Link from "next/link";
 import { ROUTES } from "../../constants";
 import Container from "../Container/Container";
 import FavsAnchor from "../FavsAnchor/FavsAnchor";
