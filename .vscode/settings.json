@@ -7,21 +7,21 @@
   },
   "todo-tree.highlights.customHighlight": {
     "TODO": {
-      "icon": "check",
+      "icon": "checklist",
       "type": "text",
       "foreground": "#000000",
       "background": "#FFF9C4",
       "iconColour": "#F9A825"
     },
     "FIX": {
-      "icon": "tools",
+      "icon": "alert",
       "type": "text",
       "foreground": "#000000",
       "background": "#FFCDD2",
       "iconColour": "#C62828"
     },
     "DOC": {
-      "icon": "document",
+      "icon": "book",
       "type": "text",
       "foreground": "#000000",
       "background": "#C8E6C9",
