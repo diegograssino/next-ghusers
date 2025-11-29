@@ -13,7 +13,6 @@ export const useUrl = () => {
       const params = new URLSearchParams(searchParams);
       let hasChanges = false;
 
-      // Iterate over valid filter keys to update URL params dynamically
       VALID_FILTER_KEYS.forEach((filterKey) => {
         const filterValue = filters[filterKey]?.trim();
         const currentValue = searchParams.get(filterKey) || "";
@@ -24,7 +23,6 @@ export const useUrl = () => {
           params.delete(filterKey);
         }
 
-        // Track if any filter value has changed
         if (currentValue !== (filterValue || "")) {
           hasChanges = true;
         }
@@ -42,7 +40,6 @@ export const useUrl = () => {
   const getFiltersFromUrl = useCallback(() => {
     const filters: QueryParams = {};
 
-    // Build filters object from valid filter keys in URL
     VALID_FILTER_KEYS.forEach((filterKey) => {
       filters[filterKey] = searchParams.get(filterKey) || "";
     });

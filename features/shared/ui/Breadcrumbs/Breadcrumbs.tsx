@@ -26,7 +26,7 @@ const Breadcrumbs = ({
     allParts: string[]
   ): Route => {
     const href = "/" + allParts.slice(0, index + 1).join("/");
-    // Check if it matches any known static route (excluding functions like USER_DETAIL)
+    // DOC Check if it matches any known static route (excluding functions like USER_DETAIL)
     const staticRoutes = Object.values(ROUTES).filter(
       (route) => typeof route === "object" && "href" in route
     ) as Route[];
@@ -37,7 +37,7 @@ const Breadcrumbs = ({
     if (matchingRoute) {
       return matchingRoute;
     }
-    // Check if it's a number (user ID) - for dynamic routes like USER_DETAIL
+    // DOC Check if it's a number (user ID) - for dynamic routes like USER_DETAIL
     const userId = Number(part);
     if (!isNaN(userId) && userId > 0) {
       return ROUTES.USER_DETAIL(userId);

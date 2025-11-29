@@ -53,7 +53,7 @@
   z-index: 9;
   background-color: $color-background;
   padding: 1rem 0;
-  align-self: start;
+  align-self: flex-start;
   @include property-per-breakpoint(
     display,
     (

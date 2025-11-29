@@ -22,7 +22,7 @@ export const SharedProvider = ({ children }: SharedProviderProps) => {
       queryKey: ["users"],
       exact: false,
       predicate: (query) => {
-        // Only consider it loading if the query is in pending state (no data yet)
+        // DOC Only consider it loading if the query is in pending state (no data yet)
         return query.state.status === "pending";
       },
     }) > 0;

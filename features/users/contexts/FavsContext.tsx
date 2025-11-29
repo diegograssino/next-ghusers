@@ -95,7 +95,7 @@ export const FavsProvider = ({ children }: FavsProviderProps) => {
       const completeUser = await fetchUserService(user.id);
 
       setFavs((currentFavs) => {
-        // Double-check it's not already added (race condition protection)
+        // DOC Double-check it's not already added (race condition protection)
         if (!currentFavs.some((fav) => fav.user.id === completeUser.id)) {
           return [
             ...currentFavs,

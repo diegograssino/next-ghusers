@@ -223,11 +223,9 @@ export async function fetchUser(id: number) {
     const res = await fetch(`https://api.github.com/user/${id}`, fetchOptions);
 
     if (!res.ok) {
-      // Check rate limit headers for more info
       const rateLimitRemaining = res.headers.get("x-ratelimit-remaining");
       const rateLimitReset = res.headers.get("x-ratelimit-reset");
 
-      // Try to get error details from response body
       let errorMessage = res.statusText;
       try {
         const errorBody = await res.json();
@@ -235,10 +233,10 @@ export async function fetchUser(id: number) {
           errorMessage = errorBody.message;
         }
       } catch {
-        // If response isn't JSON, use statusText
+        // DOC Fallback to statusText if response isn't JSON
       }
 
-      // Handle 403 errors (could be rate limit, auth, or other)
+      // DOC Handle 403 errors (could be rate limit, auth, or other)
       if (res.status === 403) {
         const isRateLimit =
           rateLimitRemaining === "0" ||
@@ -254,7 +252,6 @@ export async function fetchUser(id: number) {
           isRateLimit,
         });
 
-        // Return null to indicate error, but don't throw
         return null;
       }
 
@@ -263,7 +260,6 @@ export async function fetchUser(id: number) {
 
     return await res.json();
   } catch (error) {
-    // If it's already a handled error, return null
     if (
       error instanceof Error &&
       (error.message.includes("rate limit") || error.message.includes("403"))
@@ -284,11 +280,9 @@ export async function fetchUserRepos(id: number) {
     );
 
     if (!res.ok) {
-      // Check rate limit headers for more info
       const rateLimitRemaining = res.headers.get("x-ratelimit-remaining");
       const rateLimitReset = res.headers.get("x-ratelimit-reset");
 
-      // Try to get error details from response body
       let errorMessage = res.statusText;
       try {
         const errorBody = await res.json();
@@ -296,10 +290,10 @@ export async function fetchUserRepos(id: number) {
           errorMessage = errorBody.message;
         }
       } catch {
-        // If response isn't JSON, use statusText
+        // DOC Fallback to statusText if response isn't JSON
       }
 
-      // Handle 403 errors (could be rate limit, auth, or other)
+      // DOC Handle 403 errors (could be rate limit, auth, or other)
       if (res.status === 403) {
         const isRateLimit =
           rateLimitRemaining === "0" ||
@@ -321,7 +315,6 @@ export async function fetchUserRepos(id: number) {
           url: `https://api.github.com/user/${id}/repos`,
         });
 
-        // Return empty array instead of throwing
         return [];
       }
 
@@ -330,7 +323,6 @@ export async function fetchUserRepos(id: number) {
 
     return await res.json();
   } catch (error) {
-    // If it's already a handled error, return empty array
     if (
       error instanceof Error &&
       (error.message.includes("rate limit") || error.message.includes("403"))
