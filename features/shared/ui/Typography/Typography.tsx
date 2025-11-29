@@ -18,9 +18,9 @@ const Typography = ({
       {...otherProps}
       className={clsx(
         typography,
-        styles[variant],
-        styles[weight],
-        styles[size],
+        variant && styles[variant as keyof typeof styles],
+        weight && styles[weight as keyof typeof styles],
+        size && styles[size as keyof typeof styles],
         truncate && ellipsis,
         otherProps.className
       )}

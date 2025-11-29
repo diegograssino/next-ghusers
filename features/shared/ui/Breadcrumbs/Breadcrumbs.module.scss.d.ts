@@ -1,4 +1,12 @@
-export declare const breadcrumbs: string;
-export declare const breadcrumbsContainer: string;
-export declare const pulse: string;
-export declare const spin: string;
+export type Styles = {
+  'breadcrumbs': string;
+  'breadcrumbsContainer': string;
+  'pulse': string;
+  'spin': string;
+};
+
+export type ClassNames = keyof Styles;
+
+declare const styles: Styles;
+
+export default styles;

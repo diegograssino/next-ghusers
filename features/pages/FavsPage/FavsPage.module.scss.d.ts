@@ -1,6 +1,14 @@
-export declare const favsPage: string;
-export declare const favsPageAside: string;
-export declare const favsPageResults: string;
-export declare const favsPageSearch: string;
-export declare const pulse: string;
-export declare const spin: string;
+export type Styles = {
+  'favsPage': string;
+  'favsPageAside': string;
+  'favsPageResults': string;
+  'favsPageSearch': string;
+  'pulse': string;
+  'spin': string;
+};
+
+export type ClassNames = keyof Styles;
+
+declare const styles: Styles;
+
+export default styles;

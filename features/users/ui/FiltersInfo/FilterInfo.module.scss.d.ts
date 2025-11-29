@@ -1,11 +1,19 @@
-export declare const filtersInfo: string;
-export declare const filtersInfoApplied: string;
-export declare const filtersInfoAppliedButton: string;
-export declare const filtersInfoAppliedIcon: string;
-export declare const filtersInfoAppliedTitle: string;
-export declare const filtersInfoAppliedTitleContainer: string;
-export declare const filtersInfoCount: string;
-export declare const filtersInfoCountPlaceholder: string;
-export declare const filtersInfoPillsContainer: string;
-export declare const pulse: string;
-export declare const spin: string;
+export type Styles = {
+  'filtersInfo': string;
+  'filtersInfoApplied': string;
+  'filtersInfoAppliedButton': string;
+  'filtersInfoAppliedIcon': string;
+  'filtersInfoAppliedTitle': string;
+  'filtersInfoAppliedTitleContainer': string;
+  'filtersInfoCount': string;
+  'filtersInfoCountPlaceholder': string;
+  'filtersInfoPillsContainer': string;
+  'pulse': string;
+  'spin': string;
+};
+
+export type ClassNames = keyof Styles;
+
+declare const styles: Styles;
+
+export default styles;

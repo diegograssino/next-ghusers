@@ -1,2 +1,5 @@
-npm run build
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
+# Run build - warnings are allowed, errors will fail
+npm run build

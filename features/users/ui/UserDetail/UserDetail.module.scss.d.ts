@@ -1,11 +1,19 @@
-export declare const detail: string;
-export declare const detailHeader: string;
-export declare const detailInfo: string;
-export declare const detailInfoSection: string;
-export declare const detailRepos: string;
-export declare const detailReposItem: string;
-export declare const detailReposItemIcon: string;
-export declare const detailReposList: string;
-export declare const detailStats: string;
-export declare const pulse: string;
-export declare const spin: string;
+export type Styles = {
+  'detail': string;
+  'detailHeader': string;
+  'detailInfo': string;
+  'detailInfoSection': string;
+  'detailRepos': string;
+  'detailReposItem': string;
+  'detailReposItemIcon': string;
+  'detailReposList': string;
+  'detailStats': string;
+  'pulse': string;
+  'spin': string;
+};
+
+export type ClassNames = keyof Styles;
+
+declare const styles: Styles;
+
+export default styles;

@@ -1,4 +1,12 @@
-export declare const favsAnchor: string;
-export declare const favsAnchorIcon: string;
-export declare const pulse: string;
-export declare const spin: string;
+export type Styles = {
+  'favsAnchor': string;
+  'favsAnchorIcon': string;
+  'pulse': string;
+  'spin': string;
+};
+
+export type ClassNames = keyof Styles;
+
+declare const styles: Styles;
+
+export default styles;

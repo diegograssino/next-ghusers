@@ -1,9 +1,17 @@
-export declare const card: string;
-export declare const cardContent: string;
-export declare const cardContentatSymbol: string;
-export declare const cardImage: string;
-export declare const cardImageContainer: string;
-export declare const cardOptions: string;
-export declare const cardSkeleton: string;
-export declare const pulse: string;
-export declare const spin: string;
+export type Styles = {
+  'card': string;
+  'cardContent': string;
+  'cardContentatSymbol': string;
+  'cardImage': string;
+  'cardImageContainer': string;
+  'cardOptions': string;
+  'cardSkeleton': string;
+  'pulse': string;
+  'spin': string;
+};
+
+export type ClassNames = keyof Styles;
+
+declare const styles: Styles;
+
+export default styles;

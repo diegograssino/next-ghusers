@@ -1,6 +1,14 @@
-export declare const header: string;
-export declare const headerNavbarBrand: string;
-export declare const headerNavbarContainer: string;
-export declare const headerNavbarIcon: string;
-export declare const pulse: string;
-export declare const spin: string;
+export type Styles = {
+  'header': string;
+  'headerNavbarBrand': string;
+  'headerNavbarContainer': string;
+  'headerNavbarIcon': string;
+  'pulse': string;
+  'spin': string;
+};
+
+export type ClassNames = keyof Styles;
+
+declare const styles: Styles;
+
+export default styles;

@@ -1,17 +1,26 @@
-export declare const accent: string;
-export declare const accent2: string;
-export declare const bold: string;
-export declare const ellipsis: string;
-export declare const inverse: string;
-export declare const lg: string;
-export declare const md: string;
-export declare const normal: string;
-export declare const primary: string;
-export declare const pulse: string;
-export declare const secondary: string;
-export declare const sm: string;
-export declare const spin: string;
-export declare const thin: string;
-export declare const typography: string;
-export declare const xl: string;
-export declare const xs: string;
+export type Styles = {
+  'accent': string;
+  'accent2': string;
+  'bold': string;
+  'default': string;
+  'ellipsis': string;
+  'inverse': string;
+  'lg': string;
+  'md': string;
+  'normal': string;
+  'primary': string;
+  'pulse': string;
+  'secondary': string;
+  'sm': string;
+  'spin': string;
+  'thin': string;
+  'typography': string;
+  'xl': string;
+  'xs': string;
+};
+
+export type ClassNames = keyof Styles;
+
+declare const styles: Styles;
+
+export default styles;

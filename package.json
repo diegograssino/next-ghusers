@@ -10,8 +10,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "type-check:scss": "typed-scss-modules features --watch",
-    "type-check:scss:build": "typed-scss-modules features",
+    "type-check:scss": "typed-scss-modules features --watch --logLevel error",
+    "type-check:scss:build": "typed-scss-modules features --logLevel error",
     "prepare": "husky"
   },
   "dependencies": {

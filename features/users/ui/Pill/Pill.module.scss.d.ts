@@ -1,5 +1,13 @@
-export declare const pill: string;
-export declare const pillIcon: string;
-export declare const pillLabel: string;
-export declare const pulse: string;
-export declare const spin: string;
+export type Styles = {
+  'pill': string;
+  'pillIcon': string;
+  'pillLabel': string;
+  'pulse': string;
+  'spin': string;
+};
+
+export type ClassNames = keyof Styles;
+
+declare const styles: Styles;
+
+export default styles;
