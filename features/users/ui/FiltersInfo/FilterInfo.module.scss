@@ -56,6 +56,7 @@
   border-radius: 100%;
   border: 2px solid $color-foreground;
   @include hover-on-non-touch(border-color, $color-accent);
+
   padding: 0.125rem;
   cursor: pointer;
   @include property-per-breakpoint(

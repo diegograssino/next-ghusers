@@ -3,21 +3,12 @@
 
 .searchPage {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto auto 1fr;
-  grid-template-areas:
-    "search"
-    "filters"
-    "results";
-  gap: 0rem 2rem;
+  grid-template: "search" auto "filters" auto "results" 1fr / 1fr;
+  gap: 0 2rem;
   min-height: 100vh;
 
   @media (min-width: $screen-md) {
-    grid-template-columns: 1fr 2fr;
-    grid-template-rows: auto 1fr;
-    grid-template-areas:
-      "filters search"
-      "filters results";
+    grid-template: "filters search" auto "filters results" 1fr / 1fr 2fr;
   }
 
   @media (min-width: $screen-lg) {
@@ -40,6 +31,7 @@
 .searchPageSearch {
   grid-area: search;
   position: sticky;
+
   // TODO this 1px could be tricky, refactor it to use a better approach
   top: calc($layout-navbar-height + $layout-breadcrumbs-height - 1px);
   z-index: 10;
@@ -49,7 +41,7 @@
     $color-background 20%,
     transparent 100%
   );
-  padding: 1rem 0 0 0;
+  padding: 1rem 0 0;
 
   @media (max-width: #{$screen-sm - 1px}) {
     top: calc($layout-navbar-height + $layout-breadcrumbs-height);
@@ -62,7 +54,7 @@
   top: calc($layout-navbar-height + $layout-breadcrumbs-height);
   z-index: 9;
   background-color: $color-background;
-  padding: 1rem 0 1rem 0;
+  padding: 1rem 0;
   align-self: start;
   @include property-per-breakpoint(
     display,
@@ -75,12 +67,12 @@
 
 .searchPageResults {
   grid-area: results;
-  padding: 2rem 0 1rem 0;
+  padding: 2rem 0 1rem;
 }
 
 .searchPageInfo {
   grid-area: info;
-  padding: 1rem 0 1rem 0;
+  padding: 1rem 0;
   @include property-per-breakpoint(
     display,
     (

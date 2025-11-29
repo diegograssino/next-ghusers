@@ -39,6 +39,7 @@ body {
   > * {
     width: 100%;
   }
+
   // DOC This is a hack to add spacing between every sections but not navbar and breadcrumbs, no breadcrumbs will break this fix
   > *:nth-child(n + 3) {
     margin-top: $layout-row-gap;
