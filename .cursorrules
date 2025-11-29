@@ -600,8 +600,8 @@ styles/
 
 - **`globals.scss`** - Imported in `app/layout.tsx`, contains global styles (layouts and base)
 - **`main.scss`** - **Single contact point** that forwards abstracts (variables, mixins, functions)
-- **`prependData` in `next.config.ts`** - Automatically prepends `abstracts/index` to all SCSS files (including component modules)
-- **Important**: `main.scss` is the documented contact point. If you add new folders (beyond abstracts), add them to `main.scss`. However, `prependData` uses `abstracts/index` directly to avoid circular dependency with `main.scss` itself
+- **Component modules** - Import `main.scss` using `@use "../../../../styles/main" as *;` (adjust path as needed)
+- **Important**: `main.scss` is the single contact point. If you add new folders (beyond abstracts), add them to `main.scss` - it forwards all core SCSS that modules need
 
 ### SCSS Partial Example
 
@@ -636,12 +636,13 @@ $color-secondary: #4a4a4a;
 
 - **This project uses CSS Modules** - all component styles are co-located with components as `.module.scss` files
 - Components are self-contained and don't need global styling
-- **Abstracts (variables, mixins, functions) are automatically available** via `prependData` in `next.config.ts` - no imports needed in component modules
+- **Import `main.scss` in component modules** using `@use "../../../../styles/main" as *;` (adjust relative path as needed)
+- `main.scss` forwards all abstracts (variables, mixins, functions), so importing it gives access to everything
 - **CRITICAL**: Import and destructure styles OUTSIDE the component definition (before the component), not inside
 - This ensures the destructuring happens only once, improving performance
 - Use camelCase for class names
 - Use CSS custom properties and SCSS variables from abstracts
-- Mixins are part of abstracts, so they're automatically available in all component modules
+- Mixins are part of abstracts, so importing `main.scss` gives access to all mixins
 
 ### CSS Class Naming Convention
 
@@ -721,7 +722,7 @@ const Card = ({ isActive, user }: CardProps) => {
 
 ```scss
 // Component.module.scss
-// No imports needed - abstracts (variables, mixins, functions) are automatically available via prependData
+@use "../../../../styles/main" as *;
 
 .card {
   display: flex;
@@ -736,9 +737,9 @@ const Card = ({ isActive, user }: CardProps) => {
 ```
 
 **Important:**
-- **Never add imports to component modules** - abstracts are automatically prepended via `prependData` in `next.config.ts`
-- `prependData` uses `main.scss` as the single contact point, which forwards abstracts
-- All variables, mixins, and functions from abstracts are available in every component module without explicit imports
+- **Always import `main.scss` in component modules** - it's the single contact point for all abstracts
+- Adjust the relative path based on your component's location (e.g., `../../../styles/main` for pages, `../../../../styles/main` for features)
+- `main.scss` forwards all abstracts, so importing it gives access to all variables, mixins, and functions
 
 ### Component Style Usage (Correct Pattern)
 
@@ -757,7 +758,7 @@ const Card = ({ user }: CardProps) => {
 };
 ```
 
-**Note:** Component `.module.scss` files should NOT have any `@use` or `@import` statements - abstracts are automatically available via `prependData` in `next.config.ts`.
+**Note:** Component `.module.scss` files should import `main.scss` at the top: `@use "../../../../styles/main" as *;` (adjust path as needed).
 
 ### Dynamic Style Access (When Using Props)
 
@@ -810,10 +811,13 @@ const Typography = ({ variant }: TypographyProps) => {
 ```
 
 ```scss
-// ❌ WRONG: Don't add imports to component modules
+// ❌ WRONG: Don't import abstracts or mixins directly
 // Component.module.scss
-@use "../../../../styles/abstracts" as *; // ❌ Not needed - automatically available via prependData
-@use "../../../../styles/mixins" as *; // ❌ Not needed - mixins are part of abstracts
+@use "../../../../styles/abstracts" as *; // ❌ Import main.scss instead
+@use "../../../../styles/mixins" as *; // ❌ Mixins are part of abstracts, import main.scss
+
+// ✅ CORRECT: Import main.scss (single contact point)
+@use "../../../../styles/main" as *;
 
 .card {
   // styles

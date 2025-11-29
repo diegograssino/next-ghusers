@@ -1,3 +1,5 @@
+@use "../../../../styles/main" as *;
+
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(var(--grid-cols, 1), minmax(0, 1fr));

@@ -1,3 +1,5 @@
+@use "../../../styles/main" as *;
+
 .favsPage {
   display: grid;
   grid-template: "search" auto "filters" auto "results" 1fr / 1fr;

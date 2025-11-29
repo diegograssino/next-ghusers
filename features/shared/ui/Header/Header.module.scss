@@ -1,3 +1,5 @@
+@use "../../../../styles/main" as *;
+
 .header {
   background-color: $color-secondary;
   box-shadow: 0 2px 4px 0 color-mix(in srgb, $color-secondary 5%, transparent);

@@ -1,3 +1,5 @@
+@use "../../../../styles/main" as *;
+
 .anchor {
   span {
     transition: $transition-fast;
