@@ -1,0 +1,17 @@
+export declare const accent: string;
+export declare const accent2: string;
+export declare const bold: string;
+export declare const ellipsis: string;
+export declare const inverse: string;
+export declare const lg: string;
+export declare const md: string;
+export declare const normal: string;
+export declare const primary: string;
+export declare const pulse: string;
+export declare const secondary: string;
+export declare const sm: string;
+export declare const spin: string;
+export declare const thin: string;
+export declare const typography: string;
+export declare const xl: string;
+export declare const xs: string;
