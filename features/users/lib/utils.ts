@@ -111,8 +111,21 @@ export function extractSince(url: string): string | null {
 export const getFetchOptions = (): RequestInit => {
   const isServer = typeof window === "undefined";
   const token = isServer
-    ? process.env.GITHUB_TOKEN
+    ? process.env.GITHUB_TOKEN || process.env.NEXT_PUBLIC_GITHUB_TOKEN
     : process.env.NEXT_PUBLIC_GITHUB_TOKEN;
+
+  if (isServer && process.env.NODE_ENV === "development") {
+    log.debug("GitHub API token status", {
+      hasToken: !!token,
+      tokenLength: token?.length || 0,
+      tokenPrefix: token?.substring(0, 4) || "none",
+      //TODO Add an env helper to manage this things
+      envVars: {
+        hasGITHUB_TOKEN: !!process.env.GITHUB_TOKEN,
+        hasNEXT_PUBLIC_GITHUB_TOKEN: !!process.env.NEXT_PUBLIC_GITHUB_TOKEN,
+      },
+    });
+  }
 
   return {
     headers: {
@@ -210,11 +223,49 @@ export async function fetchUser(id: number) {
     const res = await fetch(`https://api.github.com/user/${id}`, fetchOptions);
 
     if (!res.ok) {
-      throw new Error(`GitHub API error: ${res.status} ${res.statusText}`);
+      const rateLimitRemaining = res.headers.get("x-ratelimit-remaining");
+      const rateLimitReset = res.headers.get("x-ratelimit-reset");
+
+      let errorMessage = res.statusText;
+      try {
+        const errorBody = await res.json();
+        if (errorBody.message) {
+          errorMessage = errorBody.message;
+        }
+      } catch {
+        // DOC Fallback to statusText if response isn't JSON
+      }
+
+      // DOC Handle 403 errors (could be rate limit, auth, or other)
+      if (res.status === 403) {
+        const isRateLimit =
+          rateLimitRemaining === "0" ||
+          errorMessage.toLowerCase().includes("rate limit");
+
+        log.warn("GitHub API 403 error", {
+          context: "fetchUser",
+          status: res.status,
+          statusText: res.statusText,
+          errorMessage,
+          rateLimitRemaining,
+          rateLimitReset,
+          isRateLimit,
+        });
+
+        return null;
+      }
+
+      throw new Error(`GitHub API error: ${res.status} ${errorMessage}`);
     }
 
     return await res.json();
   } catch (error) {
+    if (
+      error instanceof Error &&
+      (error.message.includes("rate limit") || error.message.includes("403"))
+    ) {
+      return null;
+    }
     return handleFetchError(error, "fetchUser");
   }
 }
@@ -229,11 +280,68 @@ export async function fetchUserRepos(id: number) {
     );
 
     if (!res.ok) {
-      throw new Error(`GitHub API error: ${res.status} ${res.statusText}`);
+      const rateLimitRemaining = res.headers.get("x-ratelimit-remaining");
+      const rateLimitReset = res.headers.get("x-ratelimit-reset");
+
+      let errorMessage = res.statusText;
+      try {
+        const errorBody = await res.json();
+        if (errorBody.message) {
+          errorMessage = errorBody.message;
+        }
+      } catch {
+        // DOC Fallback to statusText if response isn't JSON
+      }
+
+      // DOC Handle 403 errors (could be rate limit, auth, or other)
+      if (res.status === 403) {
+        const isRateLimit =
+          rateLimitRemaining === "0" ||
+          errorMessage.toLowerCase().includes("rate limit");
+        const fetchOptions = getFetchOptions();
+        const hasToken = !!(
+          fetchOptions.headers as HeadersInit & { Authorization?: string }
+        )?.Authorization;
+
+        log.warn("GitHub API 403 error", {
+          context: "fetchUserRepos",
+          status: res.status,
+          statusText: res.statusText,
+          errorMessage,
+          rateLimitRemaining,
+          rateLimitReset,
+          isRateLimit,
+          hasToken,
+          url: `https://api.github.com/user/${id}/repos`,
+        });
+
+        return [];
+      }
+
+      throw new Error(`GitHub API error: ${res.status} ${errorMessage}`);
     }
 
     return await res.json();
   } catch (error) {
+    if (
+      error instanceof Error &&
+      (error.message.includes("rate limit") || error.message.includes("403"))
+    ) {
+      return [];
+    }
     return handleFetchError(error, "fetchUserRepos");
   }
 }
+
+export const formatFilterLabel = (
+  filterKey: "login" | "followers",
+  value: string
+): string => {
+  if (filterKey === "login") {
+    return `"${value}" in username`;
+  }
+  if (filterKey === "followers") {
+    return `>${value} followers`;
+  }
+  return value;
+};

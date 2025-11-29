@@ -26,10 +26,6 @@
 
 .cardImageContainer {
   position: relative;
-}
-
-.cardImageContainer {
-  position: relative;
   height: 9.375rem;
   overflow: hidden;
   @include property-per-breakpoint(

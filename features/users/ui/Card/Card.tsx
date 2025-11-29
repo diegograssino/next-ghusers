@@ -15,8 +15,6 @@ const {
   cardImage,
   cardImageContainer,
   cardContentatSymbol,
-  cardContentSkeleton,
-  cardOptionsSkeleton,
 } = styles;
 
 const Card = ({ user }: CardProps) => {
@@ -44,7 +42,7 @@ const Card = ({ user }: CardProps) => {
           </Typography>
         </div>
         <div className={cardOptions}>
-          <FavsWidget id={user.id} />
+          <FavsWidget id={user.id} user={user} />
         </div>
       </article>
     </Link>
@@ -59,12 +57,8 @@ export const CardSkeleton = () => {
       <div className={cardImageContainer}>
         <div className={cardImage} />
       </div>
-      <div className={cardContent}>
-        <div className={cardContentSkeleton} />
-      </div>
-      <div className={cardOptions}>
-        <div className={cardOptionsSkeleton} />
-      </div>
+      <div className={cardContent} />
+      <div className={cardOptions} />
     </article>
   );
 };

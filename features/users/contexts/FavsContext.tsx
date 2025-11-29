@@ -1,78 +1,145 @@
 "use client";
+import { User } from "@/types";
 import {
   createContext,
   useCallback,
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
-import { SharedContext } from "../../shared/contexts/SharedContext";
+import { useSharedContext } from "../../shared/contexts/SharedContext";
+import { fetchUserService } from "../services";
 
 interface FavsProviderProps {
   children: React.ReactNode;
 }
 
-interface FavsContextProps {
-  favs: number[];
-  addFav: (id: number) => void;
-  removeFav: (id: number) => void;
-  checkFav: (id: number) => boolean;
+interface FavoredUser {
+  user: User;
+  timestamp: number; // Unix timestamp in milliseconds
 }
 
-export const FavsContext = createContext<FavsContextProps>({
-  favs: [],
-  addFav: () => {},
-  removeFav: () => {},
-  checkFav: () => false,
-});
+interface FavsContextProps {
+  favs: FavoredUser[];
+  addFav: (user: User) => Promise<void>;
+  removeFav: (id: number) => void;
+  checkFav: (id: number) => boolean;
+  updateFav: (user: User) => void;
+  isAddingFav: (id: number) => boolean;
+}
+
+export const FavsContext = createContext<FavsContextProps | undefined>(
+  undefined
+);
 
 export const FavsProvider = ({ children }: FavsProviderProps) => {
-  const [favs, setFavs] = useState<number[]>([]);
+  const [favs, setFavs] = useState<FavoredUser[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
-  const sharedContext = useContext(SharedContext);
+  const [addingFavs, setAddingFavs] = useState<Set<number>>(new Set());
+  const { isClient } = useSharedContext();
+  const favsRef = useRef<FavoredUser[]>([]);
+  const addingFavsRef = useRef<Set<number>>(new Set());
 
-  if (!sharedContext) {
-    // TODO Handle this error properly
-    throw new Error("FavsProvider must be used within a SharedProvider");
-  }
+  useEffect(() => {
+    favsRef.current = favs;
+  }, [favs]);
 
-  const { isClient } = sharedContext;
+  useEffect(() => {
+    addingFavsRef.current = addingFavs;
+  }, [addingFavs]);
 
-  // Load favs from localStorage on mount
   useEffect(() => {
     if (isClient && typeof window !== "undefined" && window.localStorage) {
-      const localFavs = localStorage.getItem("favs") || "[]";
-      setFavs(JSON.parse(localFavs));
-      setIsInitialized(true);
+      try {
+        const localFavs = localStorage.getItem("favs") || "[]";
+        const parsedFavs = JSON.parse(localFavs);
+        if (Array.isArray(parsedFavs)) {
+          setFavs(parsedFavs as FavoredUser[]);
+        } else {
+          setFavs([]);
+        }
+        setIsInitialized(true);
+      } catch (error) {
+        console.error("Error loading favorites from localStorage:", error);
+        setFavs([]);
+        setIsInitialized(true);
+      }
     }
   }, [isClient]);
 
-  // Save favs to localStorage when favs change (but only after initial load)
   useEffect(() => {
     if (isClient && isInitialized) {
-      localStorage.setItem("favs", JSON.stringify(favs));
+      try {
+        localStorage.setItem("favs", JSON.stringify(favs));
+      } catch (error) {
+        console.error("Error saving favorites to localStorage:", error);
+      }
     }
   }, [favs, isClient, isInitialized]);
 
-  const addFav = useCallback((id: number) => {
-    setFavs((currentFavs) => {
-      if (!currentFavs.some((fav) => fav === id)) {
-        return [...currentFavs, id];
-      }
-      return currentFavs;
-    });
+  const addFav = useCallback(async (user: User): Promise<void> => {
+    const isAlreadyFav = favsRef.current.some((fav) => fav.user.id === user.id);
+    if (isAlreadyFav) {
+      return;
+    }
+
+    if (addingFavsRef.current.has(user.id)) {
+      return; // Already being added
+    }
+
+    setAddingFavs((current) => new Set(current).add(user.id));
+
+    try {
+      const completeUser = await fetchUserService(user.id);
+
+      setFavs((currentFavs) => {
+        // DOC Double-check it's not already added (race condition protection)
+        if (!currentFavs.some((fav) => fav.user.id === completeUser.id)) {
+          return [
+            ...currentFavs,
+            { user: completeUser, timestamp: Date.now() },
+          ];
+        }
+        return currentFavs;
+      });
+    } catch (error) {
+      console.error("Error fetching complete user details:", error);
+      throw error;
+    } finally {
+      setAddingFavs((current) => {
+        const next = new Set(current);
+        next.delete(user.id);
+        return next;
+      });
+    }
   }, []);
 
   const removeFav = useCallback((id: number) => {
-    setFavs((currentFavs) => currentFavs.filter((fav) => fav !== id));
+    setFavs((currentFavs) => currentFavs.filter((fav) => fav.user.id !== id));
   }, []);
 
   const checkFav = useCallback(
     (id: number) => {
-      return favs.some((fav) => fav === id);
+      return favs.some((fav) => fav.user.id === id);
     },
     [favs]
+  );
+
+  const updateFav = useCallback((user: User) => {
+    setFavs((currentFavs) =>
+      currentFavs.map((fav) =>
+        fav.user.id === user.id ? { user, timestamp: Date.now() } : fav
+      )
+    );
+  }, []);
+
+  const isAddingFav = useCallback(
+    (id: number) => {
+      return addingFavs.has(id);
+    },
+    [addingFavs]
   );
 
   const contextValue = useMemo(
@@ -81,11 +148,21 @@ export const FavsProvider = ({ children }: FavsProviderProps) => {
       addFav,
       removeFav,
       checkFav,
+      updateFav,
+      isAddingFav,
     }),
-    [favs, addFav, removeFav, checkFav]
+    [favs, addFav, removeFav, checkFav, updateFav, isAddingFav]
   );
 
   return (
     <FavsContext.Provider value={contextValue}>{children}</FavsContext.Provider>
   );
+};
+
+export const useFavsContext = () => {
+  const context = useContext(FavsContext);
+  if (context === undefined) {
+    throw new Error("useFavsContext must be used within a FavsProvider");
+  }
+  return context;
 };

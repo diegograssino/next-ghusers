@@ -20,3 +20,5 @@ export const VALID_FOLLOWERS_VALUES = [
 export const VALID_FILTER_KEYS = VALID_FILTER_PARAMS.map(
   (filter) => filter.param
 );
+
+export const STALE_DATA_THRESHOLD = 24 * 60 * 60 * 1000;

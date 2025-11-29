@@ -1,4 +1,4 @@
-import { PerPageConfig } from "../../../types";
+import { PerPageConfig, Routes } from "../../../types";
 
 // TODO validate these values with real device testing
 export const PER_PAGE_CONFIGS: PerPageConfig = {
@@ -9,4 +9,20 @@ export const PER_PAGE_CONFIGS: PerPageConfig = {
   smarttv: { items: "40", columns: "2" },
   wearable: { items: "8", columns: "1" },
   embedded: { items: "20", columns: "2" },
+};
+
+export const ROUTES: Routes = {
+  HOME: {
+    label: "Home",
+    href: "/",
+    heroText: "Discover GitHub Users",
+  },
+  FAVS: {
+    label: "Favorites",
+    href: "/favs",
+  },
+  USER_DETAIL: (id: number | string) => ({
+    label: id.toString(),
+    href: `/${id}`,
+  }),
 };

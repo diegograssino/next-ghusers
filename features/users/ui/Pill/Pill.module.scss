@@ -2,7 +2,6 @@
 @use "../../../../styles/mixins" as *;
 
 .pill {
-  //   background-color: $color-secondary;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -17,6 +16,7 @@
   border: 2px solid $color-foreground;
   flex-shrink: 0;
   @include hover-on-non-touch(border-color, $color-accent);
+
   padding: 0.125rem;
   cursor: pointer;
   @include property-per-breakpoint(

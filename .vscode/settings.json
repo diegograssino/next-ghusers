@@ -4,5 +4,31 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": "always",
     "source.organizeImports": "always"
-  }
+  },
+  "todo-tree.highlights.customHighlight": {
+    "TODO": {
+      "icon": "check",
+      "type": "text",
+      "foreground": "#000000",
+      "background": "#FFF9C4",
+      "iconColour": "#F9A825"
+    },
+    "FIX": {
+      "icon": "tools",
+      "type": "text",
+      "foreground": "#000000",
+      "background": "#FFCDD2",
+      "iconColour": "#C62828"
+    },
+    "DOC": {
+      "icon": "document",
+      "type": "text",
+      "foreground": "#000000",
+      "background": "#C8E6C9",
+      "iconColour": "#2E7D32"
+    }
+  },
+  "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*\\*)\\s*($TAGS)(.*)",
+  "todo-tree.regex.regexCaseSensitive": false,
+  "todo-tree.general.tags": ["TODO", "FIX", "DOC"]
 }

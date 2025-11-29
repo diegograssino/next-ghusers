@@ -1,7 +1,7 @@
 @use "../../../../styles/abstracts.scss" as *;
 @use "../../../../styles/mixins" as *;
 
-.navbar {
+.header {
   background-color: $color-secondary;
   box-shadow: 0 2px 4px 0 color-mix(in srgb, $color-secondary 5%, transparent);
   position: sticky;
@@ -9,14 +9,14 @@
   z-index: 100;
 }
 
-.navbarContainer {
+.headerNavbarContainer {
   height: $layout-navbar-height;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.navbarBrand {
+.headerNavbarBrand {
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -29,7 +29,7 @@
   );
 }
 
-.navbarIcon {
+.headerNavbarIcon {
   color: $color-primary;
   @include property-per-breakpoint(
     width,

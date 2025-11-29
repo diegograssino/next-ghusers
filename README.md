@@ -13,6 +13,9 @@ A Next.js application for exploring GitHub users with infinite scroll and real-t
 - 🌓 **Theme support** with CSS custom properties
 - ⚡ **Server-side rendering** with Next.js
 - 🧪 **Full test coverage** with Jest and Testing Library
+- 🔒 **Type-safe SCSS** with automatic type generation for CSS Modules
+- 🎯 **Code quality** with Stylelint for SCSS linting and Husky Git hooks
+- 📝 **Structured logging** with Pino for better debugging and monitoring
 
 ## Requirements
 
@@ -77,21 +80,40 @@ The application is deployed at: https://next-ghusers.vercel.app
 ### Development Tools
 
 - **ESLint & Prettier** - Code linting and formatting
+- **Stylelint** - SCSS/CSS linting with standard rules and Prettier integration
+- **typed-scss-modules** - Automatic TypeScript type generation for CSS Modules
+- **Husky** - Git hooks for pre-commit and pre-push checks
 - **Jest** - JavaScript testing framework
 - **Testing Library** - React component testing utilities
 - **Istanbul/NYC** - Code coverage reporting
 
 ### Additional Libraries
 
+- **Pino** - Fast and structured logging library
+- **Pino Pretty** - Pretty printer for Pino logs in development
 - **usehooks-ts** - Collection of useful React hooks for TypeScript (debouncing, media queries)
 - **react-infinite-scroller** - Seamless infinite scrolling implementation
+- **Clsx** - Utility for constructing className strings conditionally
 
 ## Available Scripts
 
+### Development
 - `npm run dev` — Start the development server with Turbopack
-- `npm run build` — Build the app for production
 - `npm run start` — Start the app in production mode
+
+### Building
+- `npm run build` — Build the app for production (includes SCSS type generation)
+
+### Code Quality
 - `npm run lint` — Run ESLint for code linting
+- `npm run lint:scss` — Run Stylelint for SCSS/CSS linting and auto-fix
+- `npm run lint:scss:check` — Run Stylelint for SCSS/CSS linting (check only)
+
+### Type Safety
+- `npm run type-check:scss` — Generate TypeScript types for SCSS Modules (watch mode)
+- `npm run type-check:scss:build` — Generate TypeScript types for SCSS Modules (one-time)
+
+### Testing
 - `npm test` — Run the test suite
 - `npm run test:watch` — Run tests in watch mode
 - `npm run test:coverage` — Generate and display test coverage report
@@ -117,10 +139,46 @@ The application is deployed at: https://next-ghusers.vercel.app
 
 - **Feature-based architecture** - Code organized by business domains for better maintainability
 - **Component composition** - Reusable UI components with consistent APIs and design patterns
-- **Type safety** - Full TypeScript coverage ensuring runtime reliability
+- **Type safety** - Full TypeScript coverage ensuring runtime reliability, including type-safe SCSS Modules
 - **Modern CSS** - Sass with CSS custom properties enabling dynamic theming
 - **Performance optimized** - Server-side rendering, code splitting, and optimized bundle size
 - **Test-driven development** - Comprehensive test coverage with unit and integration tests
+- **Code quality automation** - Git hooks ensure type generation and linting before commits and builds before pushes
+- **Structured logging** - Pino-based logging for better debugging and production monitoring
+
+## Code Quality & Automation
+
+### Git Hooks (Husky)
+
+The project uses Husky to enforce code quality standards:
+
+- **Pre-commit hook**: Automatically runs SCSS type generation and Stylelint checks before each commit
+- **Pre-push hook**: Runs the full build process before pushing to ensure everything compiles correctly
+
+These hooks ensure that:
+- SCSS Module types are always up-to-date
+- Code follows Stylelint rules
+- The project builds successfully before pushing
+
+### Type-Safe SCSS Modules
+
+The project uses `typed-scss-modules` to automatically generate TypeScript types for all CSS Modules. This provides:
+
+- **Type safety** - Catch typos and missing class names at compile time
+- **IntelliSense** - Autocomplete for CSS class names in your IDE
+- **Refactoring safety** - Rename classes with confidence
+
+Types are automatically generated during the build process and can be watched during development.
+
+### Stylelint Configuration
+
+Stylelint is configured with:
+- **Standard SCSS rules** - Enforces best practices for SCSS/CSS
+- **Prettier integration** - Prevents conflicts between Stylelint and Prettier
+- **Custom rules** - Enforces camelCase class naming convention
+- **Smart defaults** - Disabled rules are documented with reasons
+
+The configuration is in `.stylelintrc.js` with inline documentation explaining any disabled rules.
 
 ## License
 

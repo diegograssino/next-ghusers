@@ -1,0 +1,1273 @@
+# Cursor Rules for Next.js GitHub Users Project
+
+## Project Overview
+
+This is a Next.js 15 project using TypeScript, React Query, SCSS Modules, and a feature-based architecture. Follow these patterns consistently.
+
+## File Structure & Organization
+
+### Feature-Based Architecture
+
+- Organize code by features in the `features/` directory
+- Each feature should have its own `ui/`, `lib/`, `contexts/`, `queries/`, `services/`, and `server/` subdirectories as needed
+- Shared code goes in `features/shared/`
+- Use `types/` directory for TypeScript type definitions organized by domain
+
+### Example Folder Structure
+
+```
+project-root/
+├── app/                          # Next.js App Router
+│   ├── [id]/                    # Dynamic routes
+│   │   └── page.tsx
+│   ├── favs/
+│   │   └── page.tsx
+│   ├── layout.tsx
+│   ├── page.tsx
+│   └── providers.tsx
+│
+├── features/                     # Feature-based organization
+│   ├── pages/                   # Page components
+│   │   ├── SearchPage/
+│   │   │   ├── SearchPage.tsx
+│   │   │   └── SearchPage.module.scss
+│   │   └── FavsPage/
+│   │       ├── FavsPage.tsx
+│   │       └── FavsPage.module.scss
+│   │
+│   ├── shared/                  # Shared across features
+│   │   ├── constants/
+│   │   │   └── index.tsx
+│   │   ├── contexts/
+│   │   │   └── SharedContext.tsx
+│   │   ├── hooks/
+│   │   │   └── index.ts
+│   │   ├── lib/
+│   │   │   ├── logger.ts
+│   │   │   └── utils.ts
+│   │   └── ui/                  # Shared UI components
+│   │       ├── Header/
+│   │       │   ├── Header.tsx
+│   │       │   ├── Header.module.scss
+│   │       │   └── Header.spec.tsx
+│   │       ├── Container/
+│   │       │   ├── Container.tsx
+│   │       │   ├── Container.module.scss
+│   │       │   └── Container.spec.tsx
+│   │       └── index.tsx        # Barrel export
+│   │
+│   └── users/                   # User feature domain
+│       ├── contexts/
+│       │   ├── FavsContext.tsx
+│       │   └── FavsContext.spec.tsx
+│       ├── lib/
+│       │   ├── constants.ts
+│       │   └── utils.ts         # Utility functions (may contain fetch helpers used by services)
+│       ├── queries/
+│       │   └── index.tsx        # Queries Layer: React Query hooks
+│       ├── server/
+│       │   └── actions.ts
+│       ├── services/
+│       │   └── index.tsx        # Services Layer: Service wrappers
+│       └── ui/                  # User-specific UI components
+│           ├── Card/
+│           │   ├── Card.tsx
+│           │   ├── Card.module.scss
+│           │   └── Card.spec.tsx
+│           ├── CardGrid/
+│           │   ├── CardGrid.tsx
+│           │   ├── CardGrid.module.scss
+│           │   └── CardGrid.spec.tsx
+│           └── index.tsx        # Barrel export
+│
+├── types/                       # TypeScript type definitions
+│   ├── pages/
+│   │   └── index.tsx
+│   ├── shared/
+│   │   └── index.tsx
+│   ├── ui/
+│   │   └── index.tsx
+│   ├── users/
+│   │   └── index.tsx
+│   └── index.tsx               # Main type exports
+│
+├── styles/                      # Global styles
+│   ├── abstracts/              # SCSS variables and constants (organized in partials)
+│   │   ├── _variables.scss
+│   │   ├── _colors.scss
+│   │   ├── _typography.scss
+│   │   └── ...
+│   ├── mixins/                 # SCSS mixins (organized in partials)
+│   │   ├── _breakpoints.scss
+│   │   ├── _hover.scss
+│   │   └── ...
+│   ├── abstracts.scss          # Main file: imports all abstract partials
+│   ├── mixins.scss             # Main file: imports all mixin partials
+│   ├── globals.scss            # Global styles
+│   └── reset.scss              # CSS reset
+│
+├── __mocks__/                  # Test mocks
+│   └── users.ts
+│
+├── .cursorrules                # Cursor AI rules (this file)
+├── tsconfig.json               # TypeScript config with path aliases
+├── next.config.ts              # Next.js config
+└── package.json
+```
+
+### Component Folder Pattern
+
+Each component should follow this structure:
+
+```
+ComponentName/
+  ├── ComponentName.tsx         # Component file (PascalCase)
+  ├── ComponentName.module.scss # Styles (CSS Modules)
+  └── ComponentName.spec.tsx    # Tests (same name + .spec)
+```
+
+### File Naming
+
+- Components: PascalCase (e.g., `Card.tsx`, `Header.tsx`)
+- Hooks: camelCase starting with `use` (e.g., `useInfiniteUsers.ts`, `useUrl.ts`)
+- Utilities: camelCase (e.g., `utils.ts`, `constants.ts`)
+- Types: camelCase (e.g., `index.tsx`)
+- **Test files: Use `.spec.tsx` extension with the same name as the component** (e.g., `Card.spec.tsx` for `Card.tsx`, `Header.spec.tsx` for `Header.tsx`)
+- Styles: `.module.scss` matching component name (e.g., `Card.module.scss` for `Card.tsx`)
+
+## Path Aliases Configuration
+
+### TypeScript Path Mapping
+
+- Configure path aliases in `tsconfig.json` for short import paths
+- Use `@/*` to map to the project root
+- This allows clean imports without relative path navigation
+
+### tsconfig.json Example
+
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./*"]
+    }
+  }
+}
+```
+
+## Import Organization
+
+### Import Order
+
+1. External libraries (React, Next.js, third-party)
+2. Internal imports using `@/` path alias (features, types, styles)
+3. Relative imports (same directory or nearby)
+4. Type-only imports should use `import type` when appropriate
+
+### Import Examples
+
+```typescript
+// External libraries first
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useCallback, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+
+// Internal imports with @/ alias
+import { useSharedContext } from "@/features/shared/contexts/SharedContext";
+import { User, QueryParams } from "@/types";
+import "@/styles/globals.scss";
+
+// Relative imports last
+import { fetchUsersService } from "../services";
+import styles from "./Card.module.scss";
+```
+
+## Component Patterns
+
+### Component Structure
+
+- **Use default exports for components** - this is the current pattern and works well with Next.js
+- Use named exports for hooks, utilities, types, and skeleton components
+- **IMPORTANT**: Import CSS/SCSS modules and destructure styles OUTSIDE the component (before component definition) - do this only once, not inside the component
+- Use functional components with TypeScript
+
+### Export Patterns
+
+#### Default Exports (Recommended for Components)
+
+- **Use default exports for React components** - one component per file
+- Works well with Next.js conventions (pages, layouts)
+- Cleaner imports: `import Card from "./Card"`
+- Barrel exports can re-export as named: `export { default as Card } from "./Card"`
+
+#### Named Exports (Recommended for Everything Else)
+
+- **Use named exports for hooks, utilities, functions, constants, and types**
+- Better for tree-shaking and code splitting
+- Better IDE support (autocomplete, refactoring)
+- Can export multiple items from one file
+- Easier to find usages across codebase
+
+#### Export Pattern Examples
+
+```typescript
+// ✅ Component with default export
+const Card = ({ user }: CardProps) => {
+  return <article>{/* ... */}</article>;
+};
+export default Card;
+
+// ✅ Named exports for skeletons, hooks, utilities
+export const CardSkeleton = () => {
+  /* ... */
+};
+export const useInfiniteUsers = () => {
+  /* ... */
+};
+export const fetchUsersService = async () => {
+  /* ... */
+};
+export const DEFAULT_QUERY_PARAMS = {
+  /* ... */
+};
+
+// ✅ Barrel export re-exports default as named
+// features/users/ui/index.tsx
+export { default as Card, CardSkeleton } from "./Card/Card";
+```
+
+#### When to Use Each
+
+- **Default exports**: React components (one per file), Next.js pages/layouts
+- **Named exports**: Hooks, utilities, constants, types, multiple exports from one file, skeleton components
+
+### Component Example
+
+```typescript
+import { CardProps } from "@/types";
+import styles from "./Card.module.scss";
+
+// Destructure styles OUTSIDE the component (do this once, not inside)
+const { card, cardContent, cardImage } = styles;
+
+const Card = ({ user }: CardProps) => {
+  return (
+    <article className={card}>
+      <div className={cardContent}>{/* component content */}</div>
+    </article>
+  );
+};
+
+export default Card;
+```
+
+### Component Props
+
+- Define props using interfaces from `types/` directory
+- Use destructuring for props
+- Support polymorphic components with `as` prop pattern when needed
+
+### Polymorphic Components
+
+- Use `as` prop pattern for components that can render as different HTML elements
+- Default to a sensible element (e.g., `div` for containers)
+- Spread remaining props to the rendered element
+- Use TypeScript to ensure type safety
+
+### Polymorphic Component Example
+
+```typescript
+interface ContainerProps {
+  children: React.ReactNode;
+  as?: keyof JSX.IntrinsicElements;
+  [key: string]: unknown;
+}
+
+const Container = ({
+  children,
+  as: Tag = "div",
+  ...otherProps
+}: ContainerProps) => {
+  return (
+    <Tag {...otherProps} className={container}>
+      {children}
+    </Tag>
+  );
+};
+```
+
+### Skeleton Components
+
+- Create skeleton/loading variants for components that display data
+- Export skeleton components from the same file as the main component
+- Use the same structure as the main component but with skeleton styles
+- Name skeleton components with `Skeleton` suffix: `CardSkeleton`, `CardGridSkeleton`
+- Export both main component and skeleton from barrel exports
+
+### Skeleton Component Example
+
+```typescript
+// Card.tsx
+const Card = ({ user }: CardProps) => {
+  return <article className={card}>{/* ... */}</article>;
+};
+
+export const CardSkeleton = () => {
+  return (
+    <article className={clsx(card, cardSkeleton)} data-testid="card-skeleton">
+      {/* Skeleton structure */}
+    </article>
+  );
+};
+
+export default Card;
+```
+
+### Barrel Exports
+
+- Use `index.tsx` files to create barrel exports for UI components
+- Export both default and named exports (including skeletons)
+- This allows clean imports: `import { Card, CardSkeleton } from "@/features/users/ui"`
+- Place barrel exports in `features/[feature]/ui/index.tsx`
+
+### Barrel Export Example
+
+```typescript
+// features/users/ui/index.tsx
+export { default as Card, CardSkeleton } from "./Card/Card";
+export { default as CardGrid, CardGridSkeleton } from "./CardGrid/CardGrid";
+export { default as Filters } from "./Filters/Filters";
+```
+
+## React Hooks Patterns
+
+### Custom Hooks
+
+- Always start with `use` prefix
+- Return objects with descriptive property names
+- Use `useCallback` for functions returned from hooks
+- Use `useMemo` for computed values
+- Document complex logic with comments
+
+### Hook Example
+
+```typescript
+export const useInfiniteUsers = (
+  queryParams: QueryParams = DEFAULT_QUERY_PARAMS,
+  perPage = PER_PAGE_CONFIGS.desktop.items
+) => {
+  const { data, error, fetchNextPage } = useInfiniteQuery({
+    // query configuration
+  });
+
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetching, fetchNextPage]);
+
+  const flattenedUsers = useMemo(() => {
+    return data?.pages.map((page) => page.users).flat() || [];
+  }, [data]);
+
+  return {
+    users: flattenedUsers,
+    isError: error,
+    handleLoadMore,
+    // other return values
+  };
+};
+```
+
+## TypeScript Patterns
+
+### Type Definitions
+
+- Use strict TypeScript mode
+- Define interfaces for component props, context values, and API responses
+- Export types from centralized `types/` directory
+- Use `Readonly<>` for props when appropriate
+- Prefer interfaces over types for object shapes
+
+### Type Example
+
+```typescript
+interface CardProps {
+  user: User;
+  className?: string;
+}
+
+interface FavsContextProps {
+  favs: FavoredUser[];
+  addFav: (user: User) => Promise<void>;
+  removeFav: (id: number) => void;
+}
+```
+
+## Styling Patterns
+
+### SCSS Organization
+
+- **Styles should be organized in folders** within the `styles/` directory
+- Use **Sass partials** (files starting with `_`) for modular organization
+- Use `@use` to import partials into main files
+- Organize styles by concern: variables, mixins, functions, etc.
+- Main files (without `_`) should import and re-export partials
+
+### SCSS Folder Structure
+
+```
+styles/
+├── abstracts/
+│   ├── _variables.scss      # SCSS variables
+│   ├── _colors.scss         # Color definitions
+│   ├── _typography.scss     # Font and text styles
+│   ├── _layout.scss         # Layout variables
+│   └── _animations.scss     # Animation variables
+├── mixins/
+│   ├── _breakpoints.scss    # Media query mixins
+│   ├── _hover.scss          # Hover state mixins
+│   └── _utilities.scss      # Utility mixins
+├── abstracts.scss           # Main file: @use all abstract partials
+├── mixins.scss              # Main file: @use all mixin partials
+├── globals.scss             # Global styles
+└── reset.scss               # CSS reset
+```
+
+### SCSS Partial Pattern
+
+- **Partials** (files starting with `_`): Contain specific style definitions
+- **Main files** (without `_`): Import and re-export partials using `@use`
+- Use `@use` with `as *` to import all members without namespace
+
+### SCSS Partial Example
+
+```scss
+// styles/abstracts/_variables.scss (Partial)
+$border-radius: 0.5rem;
+$spacing-unit: 1rem;
+
+// styles/abstracts/_colors.scss (Partial)
+$color-primary: #3b82f6;
+$color-secondary: #4a4a4a;
+
+// styles/abstracts.scss (Main file - imports all partials)
+@use "abstracts/variables" as *;
+@use "abstracts/colors" as *;
+@use "abstracts/typography" as *;
+@use "abstracts/layout" as *;
+@use "abstracts/animations" as *;
+```
+
+### CSS/SCSS Modules
+
+- **Always use CSS Modules** (`.module.scss` or `.module.css`) for component styles
+- Import abstracts and mixins from `styles/` directory using `@use`
+- **CRITICAL**: Import and destructure styles OUTSIDE the component definition (before the component), not inside
+- This ensures the destructuring happens only once, improving performance
+- Use camelCase for class names
+- Use CSS custom properties and SCSS variables from abstracts
+
+### CSS Class Naming Convention
+
+- **Base class**: Use lowercase component name (e.g., `Card` → `.card`, `CardGrid` → `.cardGrid`)
+- **Child/part classes**: Use lowercase component name + camelCase descriptor
+  - `Card` → `.cardContent`, `.cardImage`, `.cardImageContainer`, `.cardOptions`
+  - `SearchPage` → `.searchPageSearch`, `.searchPageAside`, `.searchPageResults`
+- **Variant classes**: Use lowercase component name + variant name
+  - `Card` → `.cardSkeleton`, `.cardContentSkeleton`, `.cardOptionsSkeleton`
+  - `CardGrid` → `.cardGridSkeleton`
+- **Naming pattern**: `{componentName}{Part/Variant}` in camelCase, all lowercase for base
+
+### CSS Class Naming Examples
+
+```scss
+// Card.module.scss
+.card {
+  /* base component */
+}
+.cardContent {
+  /* content part */
+}
+.cardImage {
+  /* image part */
+}
+.cardImageContainer {
+  /* image container part */
+}
+.cardOptions {
+  /* options part */
+}
+.cardSkeleton {
+  /* skeleton variant */
+}
+.cardContentSkeleton {
+  /* skeleton variant for content */
+}
+.cardOptionsSkeleton {
+  /* skeleton variant for options */
+}
+```
+
+### clsx Usage
+
+- **Use `clsx` for combining multiple classes** - especially for variants and conditional classes
+- Import `clsx` from the `clsx` package: `import clsx from "clsx"`
+- Use `clsx()` to combine base classes with variant classes
+- Useful for skeleton components, conditional styling, and class composition
+
+### clsx Usage Examples
+
+```typescript
+import clsx from "clsx";
+import styles from "./Card.module.scss";
+
+const { card, cardSkeleton, cardContent } = styles;
+
+// ✅ Combining base class with variant
+export const CardSkeleton = () => {
+  return <article className={clsx(card, cardSkeleton)}>{/* ... */}</article>;
+};
+
+// ✅ Conditional classes
+const Card = ({ isActive, user }: CardProps) => {
+  return (
+    <article className={clsx(card, isActive && cardActive)}>
+      {/* ... */}
+    </article>
+  );
+};
+
+// ✅ Multiple classes
+<div className={clsx(card, cardSkeleton, cardContent)}>{/* ... */}</div>;
+```
+
+### SCSS Module Example
+
+```scss
+@use "../../../../styles/abstracts" as *;
+@use "../../../../styles/mixins" as *;
+
+.card {
+  display: flex;
+  border-radius: $border-radius;
+  background-color: $color-accent2;
+  @include hover-on-non-touch(border-color, $color-accent);
+}
+
+.cardContent {
+  padding: 1rem;
+}
+```
+
+### Component Style Usage (Correct Pattern)
+
+```typescript
+import styles from "./Card.module.scss";
+
+// ✅ CORRECT: Destructure OUTSIDE the component (before component definition)
+const { card, cardContent } = styles;
+
+const Card = ({ user }: CardProps) => {
+  return (
+    <article className={card}>
+      <div className={cardContent}>{/* component content */}</div>
+    </article>
+  );
+};
+```
+
+### Dynamic Style Access (When Using Props)
+
+- **When accessing styles dynamically based on props**, use the `getStyleClass` helper from `@/features/shared/lib/utils`
+- This ensures type safety and prevents runtime errors when a prop value doesn't match a class name
+- **Never use type assertions like `as keyof typeof styles`** - use the helper instead
+
+### Dynamic Style Access Example
+
+```typescript
+import { getStyleClass } from "@/features/shared/lib/utils";
+import styles from "./Typography.module.scss";
+
+const { typography, ellipsis } = styles;
+
+const Typography = ({ variant, weight, size }: TypographyProps) => {
+  return (
+    <div
+      className={clsx(
+        typography,
+        getStyleClass(styles, variant), // ✅ Type-safe dynamic access
+        getStyleClass(styles, weight),
+        getStyleClass(styles, size),
+        ellipsis
+      )}
+    >
+      Content
+    </div>
+  );
+};
+```
+
+### ❌ Incorrect Pattern (Don't Do This)
+
+```typescript
+// ❌ WRONG: Don't destructure inside the component
+const Card = ({ user }: CardProps) => {
+  const { card, cardContent } = styles; // ❌ This runs on every render!
+  return <article className={card}>...</article>;
+};
+
+// ❌ WRONG: Don't use type assertions for dynamic style access
+const Typography = ({ variant }: TypographyProps) => {
+  return (
+    <div className={styles[variant as keyof typeof styles]}>
+      {/* ❌ Type assertion is not type-safe */}
+    </div>
+  );
+};
+```
+
+## Context Patterns
+
+### Context Setup
+
+- Use `"use client"` directive for client-side contexts
+- Create context with `createContext` and `undefined` default
+- Provide custom hook for consuming context with error handling
+- Use `useMemo` for context values
+- Use `useCallback` for context methods
+
+### Context Example
+
+```typescript
+"use client";
+import { createContext, useContext, useMemo, useCallback } from "react";
+
+export const FavsContext = createContext<FavsContextProps | undefined>(
+  undefined
+);
+
+export const FavsProvider = ({ children }: FavsProviderProps) => {
+  const [favs, setFavs] = useState<FavoredUser[]>([]);
+
+  const addFav = useCallback(async (user: User) => {
+    // implementation
+  }, []);
+
+  const contextValue = useMemo(() => ({ favs, addFav }), [favs, addFav]);
+
+  return (
+    <FavsContext.Provider value={contextValue}>{children}</FavsContext.Provider>
+  );
+};
+
+export const useFavsContext = () => {
+  const context = useContext(FavsContext);
+  if (context === undefined) {
+    throw new Error("useFavsContext must be used within a FavsProvider");
+  }
+  return context;
+};
+```
+
+## Testing Patterns
+
+### Test Structure
+
+- Use Jest with Testing Library
+- **Test files must use `.spec.tsx` extension and match the component name**
+  - `Card.tsx` → `Card.spec.tsx`
+  - `Header.tsx` → `Header.spec.tsx`
+  - `useInfiniteUsers.ts` → `useInfiniteUsers.spec.ts`
+- Place test files in the same directory as the component/hook being tested
+- **Always use `data-testid` attributes on components for testing** - this is required for all interactive and testable components
+- Import `@testing-library/jest-dom` for matchers
+- Group tests with `describe` blocks
+- Test both main components and skeleton variants
+
+### Test File Naming Examples
+
+```
+Card/
+  ├── Card.tsx
+  ├── Card.module.scss
+  └── Card.spec.tsx        ✅ Same name with .spec extension
+
+Header/
+  ├── Header.tsx
+  ├── Header.module.scss
+  └── Header.spec.tsx      ✅ Same name with .spec extension
+```
+
+### Test Example
+
+```typescript
+import "@testing-library/jest-dom";
+import { render } from "@testing-library/react";
+import Card from "./Card";
+
+describe("Card", () => {
+  test("should render", () => {
+    const { getByTestId } = render(<Card user={mockUser} data-testid="card" />);
+    const card = getByTestId("card");
+    expect(card).toBeInTheDocument();
+  });
+});
+```
+
+## Next.js Patterns
+
+### App Router
+
+- Use Next.js 15 App Router structure
+- Server components by default, use `"use client"` when needed
+- Use `async` for server components that fetch data
+- Export `metadata` from layout and page files
+
+### Page Components vs Next.js Pages
+
+- **Next.js Pages** (`app/` directory): Handle routing, data fetching, and server-side logic
+- **Page Components** (`features/pages/`): Reusable page-level components that contain the UI
+- Next.js pages should be thin wrappers that fetch data and render page components
+- Page components should be client components if they need interactivity
+
+### Page Component Pattern Example
+
+```typescript
+// app/page.tsx (Next.js Page - Server Component)
+import SearchPage from "@/features/pages/SearchPage/SearchPage";
+import { fetchUsersAction } from "@/features/users/server/actions";
+
+const Home = async (pageParams: PageParamsProps) => {
+  const initialUsers = await fetchUsersAction({
+    /* ... */
+  });
+  return <SearchPage initialUsers={initialUsers} />;
+};
+
+export default Home;
+
+// features/pages/SearchPage/SearchPage.tsx (Page Component - Client Component)
+("use client");
+const SearchPage = ({ initialUsers }: SearchPageProps) => {
+  // Interactive UI logic
+  return <div>{/* ... */}</div>;
+};
+```
+
+### Server Actions
+
+- Use server actions for server-side data fetching and mutations
+- Place server actions in `features/[feature]/server/actions.ts`
+- Name server actions with `Action` suffix: `fetchUsersAction`, `fetchUserAction`
+- Server actions should call services
+- Use `async/await` for server actions
+
+### Server Action Example
+
+```typescript
+// features/users/server/actions.ts
+import { fetchUsersService } from "../services";
+
+export async function fetchUsersAction(
+  params: FetchUsersParams
+): Promise<FetchUsersResult> {
+  return fetchUsersService(params);
+}
+```
+
+### Error Handling in Server Components
+
+- Handle errors gracefully in server components
+- Return appropriate error UI when data fetching fails
+- Use conditional rendering to check for data existence
+- Provide user-friendly error messages
+
+### Error Handling Example
+
+```typescript
+const UserPage = async ({ params }: UserPageProps) => {
+  const user = await fetchUserAction(id);
+
+  if (!user) {
+    return (
+      <Typography weight="bold" size="xl" as="h2">
+        An error has occurred while fetching users. Try again later.
+      </Typography>
+    );
+  }
+
+  return <UserDetailPage user={user} />;
+};
+```
+
+### Data Fetching
+
+- Use React Query (`@tanstack/react-query`) for client-side data fetching
+- Use server actions for server-side data fetching
+- Use `useInfiniteQuery` for paginated data
+- Handle loading, error, and success states
+
+### Image Optimization
+
+- Always use Next.js `Image` component for images
+- Use `fill` prop with positioned parent containers
+- Set `priority` for above-the-fold images
+- Provide appropriate `sizes` prop for responsive images
+- Use `placeholder="blur"` with `blurDataURL` for better UX
+- Export blur data constants from feature constants files
+
+### Image Optimization Example
+
+```typescript
+import Image from "next/image";
+import { genericBlurData } from "../../lib/constants";
+
+<div className={cardImageContainer}>
+  <Image
+    src={user.avatar_url}
+    alt={user.login}
+    fill
+    priority
+    sizes="(min-width: 48rem) 9.375rem, 19.4375rem"
+    placeholder="blur"
+    blurDataURL={genericBlurData}
+    className={cardImage}
+  />
+</div>;
+```
+
+### Provider Pattern
+
+- Use Context Providers to wrap feature-specific functionality
+- Place providers in `features/[feature]/contexts/`
+- Export provider components with `Provider` suffix: `FavsProvider`, `FiltersProvider`
+- Use providers in Next.js pages or layout files
+- Keep providers close to where they're used
+
+### Provider Pattern Example
+
+```typescript
+// app/page.tsx
+import { FiltersProvider } from "@/features/users/contexts/FiltersContext";
+
+const Home = async () => {
+  return (
+    <FiltersProvider initialFilters={initialFilters}>
+      <SearchPage />
+    </FiltersProvider>
+  );
+};
+```
+
+## Data Layer Architecture
+
+### Two-Layer Data Architecture
+
+The project uses a two-layer architecture for data fetching:
+
+1. **Services Layer** (`features/[feature]/services/index.tsx`) - Service functions that handle API calls
+2. **Queries Layer** (`features/[feature]/queries/index.tsx`) - React Query hooks
+
+### Services Layer (services/index.tsx)
+
+- Contains service functions that handle API communication
+- Functions are named with `Service` suffix: `fetchUserService`, `fetchUsersService`
+- Handles API calls, error handling, and response transformation
+- Provides default parameters and parameter normalization
+- May use utility functions from `lib/utils.ts` for helper functions, but services are the main abstraction
+- Located in `features/[feature]/services/index.tsx`
+
+### Services Layer Example
+
+```typescript
+// features/users/services/index.tsx
+// Services may use utility functions from lib/utils.ts for API calls
+import { fetchUser, fetchUsers } from "../lib/utils";
+
+export const fetchUserService = async (id: number): Promise<User> => {
+  return fetchUser(id);
+};
+
+export const fetchUsersService = async (
+  params: FetchUsersParams
+): Promise<FetchUsersResult> => {
+  const {
+    perPageParam = PER_PAGE_CONFIGS.desktop.items,
+    pageParam = "1",
+    queryParams = DEFAULT_QUERY_PARAMS,
+  } = params;
+  return fetchUsers({ queryParams, pageParam, perPageParam });
+};
+```
+
+**Note**: Utility functions in `lib/utils.ts` (like `fetchUsers`, `fetchUser`) are implementation details used by services. Services are the main abstraction layer for data fetching.
+
+### Queries Layer (queries/index.tsx)
+
+- Contains React Query hooks that use services
+- Hooks are named with `use` prefix: `useInfiniteUsers`, `useInfiniteFavUsers`
+- Integrates React Query for caching, loading states, and error handling
+- Provides computed values and helper functions
+- Located in `features/[feature]/queries/index.tsx`
+
+### Queries Layer Example
+
+```typescript
+// features/users/queries/index.tsx
+import { fetchUsersService } from "../services";
+
+export const useInfiniteUsers = (
+  queryParams: QueryParams = DEFAULT_QUERY_PARAMS,
+  perPage = PER_PAGE_CONFIGS.desktop.items,
+  initialData?: FetchUsersResult
+) => {
+  const { data, error, fetchNextPage, hasNextPage, isFetching } =
+    useInfiniteQuery({
+      queryKey: ["users", queryParams, perPage],
+      queryFn: ({ pageParam }) =>
+        fetchUsersService({
+          perPageParam: perPage,
+          pageParam,
+          queryParams,
+        }),
+      // ... other React Query options
+    });
+
+  const flattenedUsers = useMemo(() => {
+    return data?.pages.map((page) => page.users).flat() || [];
+  }, [data]);
+
+  return {
+    users: flattenedUsers,
+    isError: error,
+    isLoading: isFetching && flattenedUsers.length === 0,
+    handleLoadMore: () => {
+      /* ... */
+    },
+    // ... other return values
+  };
+};
+```
+
+### Type Definitions
+
+- **Types should be organized by feature in the `types/` directory**
+- Similar to queries and services, types are separated by feature domain
+- Located in `types/[feature]/index.tsx`
+- Export types from feature-specific type files
+
+### Type Organization Example
+
+```
+types/
+├── users/
+│   └── index.tsx          # User-related types (User, FetchUsersResult, etc.)
+├── shared/
+│   └── index.tsx          # Shared types
+├── ui/
+│   └── index.tsx          # UI component types
+└── index.tsx              # Main type exports
+```
+
+### Data Flow
+
+```
+Component
+  ↓
+Queries Layer (useInfiniteUsers)
+  ↓
+Services Layer (fetchUsersService)
+  ↓
+API
+```
+
+### Benefits of This Architecture
+
+- **Separation of Concerns**: Each layer has a single responsibility
+- **Testability**: Each layer can be tested independently
+- **Reusability**: Services can be used outside React Query hooks (e.g., in server actions)
+- **Maintainability**: Changes to API structure only affect the services layer
+- **Type Safety**: Types are organized by feature for better organization
+
+## Code Comments
+
+### Comment Labels - REQUIRED
+
+- **ALL comments MUST use TODO Tree extension labels** - no comments without labels
+- Use `// TODO` for future improvements, refactoring, or enhancements (yellow highlight)
+- Use `// FIX` for bugs that need fixing or known issues (red highlight)
+- Use `// DOC` for documentation notes, explanations, or important context (green highlight)
+- **Never write comments without one of these labels** - this ensures all comments are tracked by the TODO Tree extension
+
+### Comment Examples
+
+```typescript
+// DOC Only use initialData on first load server-side, not when query changes
+initialData: initialData && !isClient ? { pages: [initialData] } : undefined,
+
+// TODO this value should be a config value
+const STALE_DATA_THRESHOLD = 24 * 60 * 60 * 1000;
+
+// FIX Cards are shuffling on hover, more noticeable on safari, seems to be the border
+const cardStyle = { border: "2px solid" };
+
+// DOC This hook manages infinite scrolling with React Query
+export const useInfiniteUsers = () => {
+  // implementation
+};
+```
+
+### ❌ Incorrect Comment Patterns (Don't Do This)
+
+```typescript
+// ❌ WRONG: Comment without label
+// This function fetches users from the API
+const fetchUsers = () => {};
+
+// ❌ WRONG: Regular comment
+// Only use initialData on first load
+initialData: initialData && !isClient ? { pages: [initialData] } : undefined,
+```
+
+### ✅ Correct Comment Patterns
+
+```typescript
+// ✅ CORRECT: Use DOC for documentation
+// DOC This function fetches users from the API
+const fetchUsers = () => {};
+
+// ✅ CORRECT: Use DOC for explanations
+// DOC Only use initialData on first load server-side, not when query changes
+initialData: initialData && !isClient ? { pages: [initialData] } : undefined,
+```
+
+## Naming Conventions
+
+### Variables & Functions
+
+- Use camelCase: `fetchUsersService`, `handleLoadMore`, `isLoading`
+- **Boolean flags/variables must start with `is`, `has`, or `should`**: `isLoading`, `hasNextPage`, `shouldUpdate`, `isError`, `hasNoFavs`
+- **Functions must start with a verb**: `getSomething`, `fetchSomething`, `validateSomething`, `checkSomething`, `handleSomething`
+- Functions that return booleans: `checkFav`, `isAddingFav`, `validateFilterParams`
+
+### Components & Types
+
+- Use PascalCase: `Card`, `Header`, `FavsContext`, `CardProps`
+- Component files match component name: `Card.tsx` exports `Card`
+
+### Constants
+
+- Use UPPER_SNAKE_CASE: `DEFAULT_QUERY_PARAMS`, `STALE_DATA_THRESHOLD`, `PER_PAGE_CONFIGS`
+- **ALL constants MUST be defined in a `constants.ts` file** - never define constants inline in component or utility files
+- Constants should be organized by feature in `features/[feature]/lib/constants.ts` or shared in `features/shared/constants/index.tsx`
+- Export constants from `constants.ts` files and import them where needed
+- This ensures constants are reusable, maintainable, and follow the abstraction principle
+
+### Hooks
+
+- **Must start with `use` prefix**: `useInfiniteUsers`, `useUrl`, `useFavsContext`, `useSharedContext`
+- Return objects with descriptive property names
+- Use camelCase after `use`: `useInfiniteUsers` not `useInfinite_Users`
+
+### Queries (React Query Hooks)
+
+- **Must start with `use` prefix and describe the query**: `useInfiniteUsers`, `useInfiniteFavUsers`
+- Follow the same naming as hooks but be specific about what data they fetch
+- Use camelCase: `useInfiniteUsers` not `useInfinite_Users`
+
+## Error Handling
+
+### Context Errors
+
+- Always check if context is undefined
+- Throw descriptive errors when context is used outside provider
+
+### API Errors
+
+- Handle errors in try-catch blocks
+- Log errors appropriately
+- Provide fallback UI states
+
+## Performance Best Practices
+
+### Memoization
+
+- Use `useMemo` for expensive computations
+- Use `useCallback` for functions passed as props or in dependency arrays
+- Memoize context values
+
+### React Query
+
+- Set appropriate `staleTime` for queries
+- Use `initialData` carefully (only server-side)
+- Handle pagination with `useInfiniteQuery`
+
+## Dependency Management
+
+### Version Ranges
+
+- **Use `^` (caret) for most dependencies** - allows patch and minor updates
+- **Use exact versions (`1.2.3`) for critical dependencies** that need stability
+- **Use `~` (tilde) sparingly** - only allows patch updates, more restrictive
+- **Avoid `*` or `latest`** - can cause unexpected breaking changes
+
+### Version Strategy by Dependency Type
+
+#### Production Dependencies
+
+- **Framework dependencies** (Next.js, React): Use `^` but pin major versions
+  - Example: `"next": "^15.3.3"` or `"react": "^18.0.0"`
+- **UI libraries**: Use `^` for minor updates
+  - Example: `"@tabler/icons-react": "^3.35.0"`
+- **Critical business logic libraries**: Consider exact versions or `~` for stability
+  - Example: `"@tanstack/react-query": "^5.80.6"` (can use exact if needed)
+- **Utility libraries**: Use `^` for flexibility
+  - Example: `"clsx": "^2.1.1"`
+
+#### Development Dependencies
+
+- **Build tools**: Use `^` but be cautious with major updates
+  - Example: `"typescript": "^5"`, `"sass": "^1.93.2"`
+- **Testing libraries**: Use `^` for compatibility updates
+  - Example: `"@testing-library/react": "^16.3.0"`
+- **Linting/Formatting**: Use `^` and keep updated
+  - Example: `"eslint": "^9"`, `"eslint-config-prettier": "^10.1.5"`
+
+### Best Practices
+
+- **Review changelogs before major version updates** - check for breaking changes
+- **Use `npm outdated` or `npm-check-updates`** to check for available updates
+- **Test thoroughly after dependency updates** - especially for major versions
+- **Lock file management**: Commit `package-lock.json` to ensure consistent installs
+- **Regular updates**: Update dependencies regularly to get security patches
+- **Security audits**: Run `npm audit` regularly and fix vulnerabilities
+
+### Version Format Examples
+
+```json
+{
+  "dependencies": {
+    // ✅ GOOD: Caret allows minor and patch updates
+    "next": "^15.3.3",
+    "react": "^18.0.0",
+
+    // ✅ GOOD: Exact version for critical stability
+    "critical-library": "1.2.3",
+
+    // ✅ GOOD: Tilde for patch-only updates (more conservative)
+    "stable-library": "~1.2.3",
+
+    // ❌ AVOID: Too permissive, can break
+    "risky-library": "*",
+    "risky-library-2": "latest"
+  }
+}
+```
+
+### Update Strategy
+
+1. **Patch updates** (`1.2.3` → `1.2.4`): Safe to update automatically
+2. **Minor updates** (`1.2.3` → `1.3.0`): Review changelog, test, then update
+3. **Major updates** (`1.2.3` → `2.0.0`):
+   - Read migration guide
+   - Test in a separate branch
+   - Update one major dependency at a time
+   - Run full test suite
+
+### Tools for Dependency Management
+
+- **`npm outdated`**: Check which packages are outdated
+- **`npm audit`**: Check for security vulnerabilities
+- **`npm-check-updates`** (ncu): Interactive tool to update package.json
+- **Dependabot/Renovate**: Automated dependency update PRs (GitHub)
+
+## Code Quality
+
+### Formatting
+
+- Use Prettier (configured via ESLint)
+- Format on save enabled
+- Organize imports on save
+
+### Linting
+
+- Follow ESLint rules (Next.js + TypeScript + Prettier)
+- Fix all linting errors before committing
+- Use `source.fixAll` on save
+
+### Type Safety
+
+- Avoid `any` types
+- Use proper TypeScript types for all props, state, and functions
+- Leverage TypeScript's strict mode features
+
+### Abstraction Over Hardcoding
+
+- **Never use hardcoded values** - always prefer abstractions, constants, or configuration
+- **Extract ALL constants to `constants.ts` files** - never define constants inline
+- Extract magic numbers, strings, and repeated values to constants files
+- Use configuration objects or constants files for reusable values
+- Create helper functions or utilities for repeated logic patterns
+- Prefer configuration-driven approaches over hardcoded conditionals
+- Constants should be organized by feature: `features/[feature]/lib/constants.ts` for feature-specific constants, `features/shared/constants/index.tsx` for shared constants
+
+### ❌ Incorrect: Hardcoded Values
+
+```typescript
+// ❌ WRONG: Hardcoded values
+const users = await fetchUsers(10, "asc"); // What is 10? What is "asc"?
+if (user.followers > 1000) {
+  // What is 1000?
+  // ...
+}
+
+// ❌ WRONG: Hardcoded strings
+const apiUrl = "https://api.github.com/users";
+const errorMessage = "Something went wrong";
+
+// ❌ WRONG: Constants defined inline
+const Card = () => {
+  const MAX_ITEMS = 10; // ❌ Should be in constants.ts
+  const DEFAULT_SORT = "asc"; // ❌ Should be in constants.ts
+  // ...
+};
+```
+
+### ✅ Correct: Using Abstractions
+
+```typescript
+// ✅ CORRECT: Use constants from constants.ts files
+import {
+  PER_PAGE_CONFIGS,
+  SORT_ORDERS,
+  FOLLOWER_THRESHOLDS,
+} from "@/features/shared/constants";
+import { MAX_ITEMS, DEFAULT_SORT } from "@/features/users/lib/constants";
+
+const users = await fetchUsers(
+  PER_PAGE_CONFIGS.desktop.items,
+  SORT_ORDERS.ascending
+);
+
+if (user.followers > FOLLOWER_THRESHOLDS.popular) {
+  // ...
+}
+
+// ✅ CORRECT: Constants defined in constants.ts file
+// features/users/lib/constants.ts
+export const MAX_ITEMS = 10;
+export const DEFAULT_SORT = "asc";
+
+// ✅ CORRECT: Use configuration objects
+const API_ENDPOINTS = {
+  users: "/api/users",
+  userDetail: (id: number) => `/api/users/${id}`,
+} as const;
+
+const ERROR_MESSAGES = {
+  generic: "Something went wrong",
+  network: "Network error occurred",
+} as const;
+```

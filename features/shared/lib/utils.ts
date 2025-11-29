@@ -63,3 +63,10 @@ export function formatNumber(num: number): string {
 export function getUniqueId() {
   return v4();
 }
+
+export function getStyleClass<T extends Record<string, string>>(
+  styles: T,
+  key: string | undefined
+): string | undefined {
+  return key && key in styles ? styles[key as keyof T] : undefined;
+}

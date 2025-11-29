@@ -1,6 +1,6 @@
 "use client";
 import { useIsFetching } from "@tanstack/react-query";
-import { createContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 interface SharedProviderProps {
   children: React.ReactNode;
@@ -8,17 +8,24 @@ interface SharedProviderProps {
 
 interface SharedContextProps {
   isClient: boolean;
-  isLoading: boolean;
+  isLoadingUsers: boolean;
 }
 
-export const SharedContext = createContext<SharedContextProps>({
-  isClient: false,
-  isLoading: false,
-});
+export const SharedContext = createContext<SharedContextProps | undefined>(
+  undefined
+);
 
 export const SharedProvider = ({ children }: SharedProviderProps) => {
   const [isClient, setIsClient] = useState(false);
-  const isLoading = useIsFetching() > 0;
+  const isLoadingUsers =
+    useIsFetching({
+      queryKey: ["users"],
+      exact: false,
+      predicate: (query) => {
+        // DOC Only consider it loading if the query is in pending state (no data yet)
+        return query.state.status === "pending";
+      },
+    }) > 0;
 
   useEffect(() => {
     setIsClient(true);
@@ -27,9 +34,9 @@ export const SharedProvider = ({ children }: SharedProviderProps) => {
   const contextValue = useMemo(
     () => ({
       isClient,
-      isLoading,
+      isLoadingUsers,
     }),
-    [isClient, isLoading]
+    [isClient, isLoadingUsers]
   );
 
   return (
@@ -37,4 +44,12 @@ export const SharedProvider = ({ children }: SharedProviderProps) => {
       {children}
     </SharedContext.Provider>
   );
+};
+
+export const useSharedContext = () => {
+  const context = useContext(SharedContext);
+  if (context === undefined) {
+    throw new Error("useSharedContext must be used within a SharedProvider");
+  }
+  return context;
 };

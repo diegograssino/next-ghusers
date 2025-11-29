@@ -1,7 +1,7 @@
 import { pageMessages } from "@/features/shared/ui/PageMessage/PageMessage.constants";
 import Link from "next/link";
 import { ElementType, HTMLAttributes, JSX } from "react";
-import { PerPageConfig } from "../shared";
+import { PerPageConfig, Route } from "../shared";
 
 export type ColorVariants =
   | "default"
@@ -17,7 +17,8 @@ export type ColorVariants =
 export type WeightVariants = "thin" | "normal" | "bold";
 
 export type Sizes = "xs" | "sm" | "md" | "lg" | "xl";
-export interface ContainerProps extends HTMLAttributes<HTMLOrSVGElement> {
+export interface ContainerProps
+  extends Omit<HTMLAttributes<HTMLOrSVGElement>, "color"> {
   as?: ElementType;
 }
 
@@ -30,7 +31,8 @@ type TypographyElements =
   | "h4"
   | "h5"
   | "h6";
-export interface TypographyProps extends HTMLAttributes<HTMLOrSVGElement> {
+export interface TypographyProps
+  extends Omit<HTMLAttributes<HTMLOrSVGElement>, "color"> {
   as?: TypographyElements;
   size?: Sizes;
   weight?: WeightVariants;
@@ -38,7 +40,8 @@ export interface TypographyProps extends HTMLAttributes<HTMLOrSVGElement> {
   variant?: ColorVariants;
 }
 
-export interface AnchorProps extends React.ComponentProps<typeof Link> {
+export interface AnchorProps
+  extends Omit<React.ComponentProps<typeof Link>, "color"> {
   variant?: ColorVariants;
   size?: Sizes;
   weight?: WeightVariants;
@@ -64,7 +67,8 @@ export interface PageMessageProps {
   message: keyof typeof pageMessages;
 }
 
-export interface CardGridProps extends HTMLAttributes<HTMLDivElement> {
+export interface CardGridProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, "color"> {
   children: React.ReactNode;
   perPageConfig?: PerPageConfig[keyof PerPageConfig];
 }
@@ -80,4 +84,13 @@ export interface PillProps {
 
 export interface FiltersInfoProps {
   totalCount?: number;
+}
+
+export interface BreadcrumbsProps {
+  variant?: ColorVariants;
+  size?: Sizes;
+}
+
+export interface HeroProps {
+  route: Route;
 }

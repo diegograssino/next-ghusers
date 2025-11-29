@@ -28,7 +28,9 @@ $color-warning: var(--color-warning) !default;
 
 // Layout
 $layout-navbar-height: 2.75rem !default;
+$layout-breadcrumbs-height: 1.5rem !default;
 $layout-footer-height: 5rem !default;
+$layout-row-gap: 1.5rem !default;
 
 // Typography
 // CSS vars are defined by Next.js Google Fonts integration
@@ -63,7 +65,6 @@ $input-padding-3xl: 0.75rem !default;
 $animation-pulse-duration: 2s !default;
 $animation-pulse-timing: infinite !default;
 $animation-pulse: pulse $animation-pulse-duration $animation-pulse-timing !default;
-
 $animation-spin-duration: 1s !default;
 $animation-spin-timing: linear infinite !default;
 $animation-spin: spin $animation-spin-duration $animation-spin-timing !default;
