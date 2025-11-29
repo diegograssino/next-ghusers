@@ -13,17 +13,17 @@ import {
   VALID_FOLLOWERS_VALUES,
 } from "./constants";
 
-export function getNonLoginFilters(
+export const getNonLoginFilters = (
   filters: Record<string, string | undefined>
-) {
+) => {
   return Object.entries(filters)
     .filter(([key]) => key !== "login")
     .filter(([, value]) => value && value.trim() !== "");
-}
+};
 
-export function validateFilterParams(
+export const validateFilterParams = (
   params: Partial<QueryParams>
-): ValidFilterParams {
+): ValidFilterParams => {
   const validParams: ValidFilterParams = {};
 
   Object.keys(params).forEach((key) => {
@@ -33,19 +33,21 @@ export function validateFilterParams(
   });
 
   return validParams;
-}
+};
 
-export function getFilterByLabel(label: string) {
+export const getFilterByLabel = (label: string) => {
   return VALID_FILTER_PARAMS.find((filter) => filter.label === label);
-}
+};
 
-export function validateFollowersValue(value: string): boolean {
+export const validateFollowersValue = (value: string): boolean => {
   return VALID_FOLLOWERS_VALUES.includes(
     value as (typeof VALID_FOLLOWERS_VALUES)[number]
   );
-}
+};
 
-export function addFilterParamLabel(params: Params): FilterParams | undefined {
+export const addFilterParamLabel = (
+  params: Params
+): FilterParams | undefined => {
   const filterConfig = VALID_FILTER_PARAMS.find(
     (filter) => filter.param === params.param
   );
@@ -66,9 +68,9 @@ export function addFilterParamLabel(params: Params): FilterParams | undefined {
   }
 
   return undefined;
-}
+};
 
-export function handleFetchError(error: unknown, context: string): never {
+export const handleFetchError = (error: unknown, context: string): never => {
   if (error instanceof Error) {
     log.error("Server error occurred", {
       context,
@@ -80,9 +82,9 @@ export function handleFetchError(error: unknown, context: string): never {
     log.error("Server error occurred", { context, error });
   }
   throw new Error("Server error occurred");
-}
+};
 
-export function parseNext(linkHeader: string): string | null {
+export const parseNext = (linkHeader: string): string | null => {
   if (!linkHeader) return null;
   const links = linkHeader.split(",");
 
@@ -97,16 +99,16 @@ export function parseNext(linkHeader: string): string | null {
   }
 
   return null;
-}
+};
 
-export function extractSince(url: string): string | null {
+export const extractSince = (url: string): string | null => {
   try {
     const parsedUrl = new URL(url);
     return parsedUrl.searchParams.get("since");
   } catch {
     return null;
   }
-}
+};
 
 export const getFetchOptions = (): RequestInit => {
   const isServer = typeof window === "undefined";
@@ -138,13 +140,13 @@ export const getFetchOptions = (): RequestInit => {
   };
 };
 
-export function getFetchUsersUrl(
+export const getFetchUsersUrl = (
   queryParams: QueryParams,
   isSearch: boolean,
   pageParam: string,
   perPageParam: string,
   page: string | number
-): string {
+): string => {
   if (isSearch) {
     const queryParts = [];
 
@@ -161,13 +163,13 @@ export function getFetchUsersUrl(
   } else {
     return `https://api.github.com/users?since=${pageParam}&per_page=${perPageParam}`;
   }
-}
+};
 
-export async function fetchUsers({
+export const fetchUsers = async ({
   queryParams = DEFAULT_QUERY_PARAMS,
   pageParam = "1",
   perPageParam = PER_PAGE_CONFIGS.desktop.items,
-}: FetchUsersParams) {
+}: FetchUsersParams) => {
   const fetchOptions = getFetchOptions();
   const isSearch = !!(
     (queryParams && "login" in queryParams && queryParams.login) ||
@@ -214,9 +216,9 @@ export async function fetchUsers({
   } catch (error) {
     return handleFetchError(error, "fetchUsers");
   }
-}
+};
 
-export async function fetchUser(id: number) {
+export const fetchUser = async (id: number) => {
   const fetchOptions = getFetchOptions();
 
   try {
@@ -268,9 +270,9 @@ export async function fetchUser(id: number) {
     }
     return handleFetchError(error, "fetchUser");
   }
-}
+};
 
-export async function fetchUserRepos(id: number) {
+export const fetchUserRepos = async (id: number) => {
   const fetchOptions = getFetchOptions();
 
   try {
@@ -331,7 +333,7 @@ export async function fetchUserRepos(id: number) {
     }
     return handleFetchError(error, "fetchUserRepos");
   }
-}
+};
 
 export const formatFilterLabel = (
   filterKey: "login" | "followers",

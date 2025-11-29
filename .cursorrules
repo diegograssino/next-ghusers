@@ -268,6 +268,79 @@ export default Card;
 - Use destructuring for props
 - Support polymorphic components with `as` prop pattern when needed
 
+### Reusable Components with Variants, Sizes, and Weights
+
+- **Create reusable components with configurable props** for variants, sizes, weights, and other styling options
+- Use TypeScript union types for variant values (e.g., `Sizes`, `WeightVariants`, `ColorVariants`)
+- Define variant types in `types/ui/index.tsx` for shared variants, or in feature-specific type files
+- Use `getStyleClass` helper for type-safe dynamic style access based on props
+- Provide sensible defaults for all variant props
+- Combine base class with variant classes using `clsx`
+- Support polymorphic rendering with `as` prop when needed
+
+### Reusable Component Pattern
+
+```typescript
+// types/ui/index.tsx
+export type Sizes = "xs" | "sm" | "md" | "lg" | "xl";
+export type WeightVariants = "thin" | "normal" | "bold";
+export type ColorVariants = "default" | "primary" | "secondary" | "accent";
+
+export interface TypographyProps
+  extends Omit<HTMLAttributes<HTMLOrSVGElement>, "color"> {
+  as?: TypographyElements;
+  size?: Sizes;
+  weight?: WeightVariants;
+  variant?: ColorVariants;
+  truncate?: boolean;
+}
+```
+
+```typescript
+// Typography.tsx
+import { getStyleClass } from "@/features/shared/lib/utils";
+import { TypographyProps } from "@/types";
+import clsx from "clsx";
+import styles from "./Typography.module.scss";
+
+const { typography, ellipsis } = styles;
+
+const Typography = ({
+  children,
+  as: Tag = "p",
+  weight = "normal",
+  size = "md",
+  truncate = false,
+  variant = "default",
+  ...otherProps
+}: TypographyProps) => {
+  return (
+    <Tag
+      {...otherProps}
+      className={clsx(
+        typography,
+        getStyleClass(styles, variant),
+        getStyleClass(styles, weight),
+        getStyleClass(styles, size),
+        truncate && ellipsis,
+        otherProps.className
+      )}
+    >
+      {children}
+    </Tag>
+  );
+};
+```
+
+### Variant Type Guidelines
+
+- **Shared variants** (used across multiple components): Define in `types/ui/index.tsx`
+  - Examples: `Sizes`, `WeightVariants`, `ColorVariants`
+- **Component-specific variants**: Define in the component's props interface
+- **Use descriptive names**: `ColorVariants` not `Colors`, `WeightVariants` not `Weights`
+- **Use union types**: `type Sizes = "xs" | "sm" | "md" | "lg" | "xl"`
+- **Provide defaults**: Always provide sensible default values for variant props
+
 ### Polymorphic Components
 
 - Use `as` prop pattern for components that can render as different HTML elements
@@ -389,6 +462,82 @@ export const useInfiniteUsers = (
 - Export types from centralized `types/` directory
 - Use `Readonly<>` for props when appropriate
 - Prefer interfaces over types for object shapes
+
+### Type Naming Conventions
+
+- **Component Props**: Always name as `ComponentNameProps` (PascalCase + `Props` suffix)
+  - Examples: `CardProps`, `TypographyProps`, `ContainerProps`, `UserDetailProps`
+  - This makes it clear the type is for component props and matches the component name
+- **Entity Types**: Use singular names for entity interfaces/types, use arrays for collections
+  - Entity: `User`, `Product`, `Repo` (singular)
+  - Collections: `User[]`, `Product[]`, `Repo[]` (array of singular)
+  - This follows TypeScript and general programming conventions
+- **Context Props**: Name as `ContextNameProps` (e.g., `FavsContextProps`)
+- **Service/Query Types**: Use descriptive names with suffixes like `Result`, `Params`, `Response`
+  - Examples: `FetchUsersResult`, `FetchUsersParams`, `QueryParams`
+
+### Type Naming Examples
+
+```typescript
+// ✅ Component Props - ComponentNameProps
+interface CardProps {
+  user: User;
+  className?: string;
+}
+
+interface TypographyProps {
+  size?: Sizes;
+  weight?: WeightVariants;
+  variant?: ColorVariants;
+}
+
+// ✅ Entity Types - Singular for entity, array for collections
+interface User {
+  id: number;
+  login: string;
+  // ...
+}
+
+interface Product {
+  id: number;
+  name: string;
+  // ...
+}
+
+// Usage in props/interfaces
+interface CardProps {
+  user: User;        // ✅ Singular entity
+}
+
+interface CardGridProps {
+  users: User[];     // ✅ Array of entities
+}
+
+interface UserDetailProps {
+  user: User;        // ✅ Singular entity
+  repos: Repo[];     // ✅ Array of entities
+}
+
+// ✅ Context Props - ContextNameProps
+interface FavsContextProps {
+  favs: FavoredUser[];
+  addFav: (user: User) => Promise<void>;
+  removeFav: (id: number) => void;
+}
+
+// ✅ Service/Query Types - Descriptive with suffixes
+interface FetchUsersResult {
+  users: User[];
+  nextSince: string | null;
+  totalCount: number | null;
+}
+
+interface FetchUsersParams {
+  perPageParam?: string;
+  pageParam?: string;
+  queryParams?: QueryParams;
+}
+```
 
 ### Type Example
 
@@ -634,9 +783,18 @@ const Typography = ({ variant }: TypographyProps) => {
 
 - Use `"use client"` directive for client-side contexts
 - Create context with `createContext` and `undefined` default
-- Provide custom hook for consuming context with error handling
+- **ALWAYS provide a custom hook for consuming context** - never use `useContext(ContextName)` directly
+- Custom hook must be named `use{ContextName}Context` (e.g., `FavsContext` → `useFavsContext`)
+- Custom hook must include error handling to check if context is undefined
 - Use `useMemo` for context values
 - Use `useCallback` for context methods
+
+### Context Hook Naming Convention
+
+- **Context name**: `{Feature}Context` (e.g., `FavsContext`, `FiltersContext`, `SharedContext`)
+- **Custom hook name**: `use{Feature}Context` (e.g., `useFavsContext`, `useFiltersContext`, `useSharedContext`)
+- **Never use `useContext(ContextName)` directly** - always use the custom hook export
+- This ensures type safety and provides helpful error messages when context is used outside provider
 
 ### Context Example
 
@@ -662,12 +820,38 @@ export const FavsProvider = ({ children }: FavsProviderProps) => {
   );
 };
 
+// ✅ CORRECT: Export custom hook with use{ContextName}Context naming
 export const useFavsContext = () => {
   const context = useContext(FavsContext);
   if (context === undefined) {
     throw new Error("useFavsContext must be used within a FavsProvider");
   }
   return context;
+};
+```
+
+### ❌ Incorrect Context Usage (Don't Do This)
+
+```typescript
+// ❌ WRONG: Don't use useContext directly
+import { useContext } from "react";
+import { FavsContext } from "./FavsContext";
+
+const MyComponent = () => {
+  const { favs } = useContext(FavsContext); // ❌ Use useFavsContext instead
+  // ...
+};
+```
+
+### ✅ Correct Context Usage
+
+```typescript
+// ✅ CORRECT: Use the custom hook export
+import { useFavsContext } from "./FavsContext";
+
+const MyComponent = () => {
+  const { favs } = useFavsContext(); // ✅ Type-safe with error handling
+  // ...
 };
 ```
 
@@ -770,11 +954,12 @@ const SearchPage = ({ initialUsers }: SearchPageProps) => {
 // features/users/server/actions.ts
 import { fetchUsersService } from "../services";
 
-export async function fetchUsersAction(
+// ✅ CORRECT: Arrow function
+export const fetchUsersAction = async (
   params: FetchUsersParams
-): Promise<FetchUsersResult> {
+): Promise<FetchUsersResult> => {
   return fetchUsersService(params);
-}
+};
 ```
 
 ### Error Handling in Server Components
@@ -1051,6 +1236,42 @@ initialData: initialData && !isClient ? { pages: [initialData] } : undefined,
 - **Boolean flags/variables must start with `is`, `has`, or `should`**: `isLoading`, `hasNextPage`, `shouldUpdate`, `isError`, `hasNoFavs`
 - **Functions must start with a verb**: `getSomething`, `fetchSomething`, `validateSomething`, `checkSomething`, `handleSomething`
 - Functions that return booleans: `checkFav`, `isAddingFav`, `validateFilterParams`
+- **Always prefer arrow functions over function declarations**: Use `const functionName = () => {}` instead of `function functionName() {}`
+- Arrow functions provide consistent syntax, better `this` binding, and work well with TypeScript
+- **No exceptions**: This applies to all functions including server actions, utilities, hooks, and components
+
+### Function Declaration Examples
+
+```typescript
+// ✅ CORRECT: Use arrow functions
+export const fetchUsersService = async (params: FetchUsersParams) => {
+  return fetchUsers(params);
+};
+
+const handleClick = () => {
+  // implementation
+};
+
+const checkFav = (id: number): boolean => {
+  return favs.some((fav) => fav.user.id === id);
+};
+
+// ✅ CORRECT: Arrow function for server actions
+export const fetchUsersAction = async (
+  params: FetchUsersParams
+): Promise<FetchUsersResult> => {
+  return fetchUsersService(params);
+};
+
+// ❌ AVOID: Function declarations (always use arrow functions)
+function fetchUsersService(params: FetchUsersParams) {
+  return fetchUsers(params);
+}
+
+export function handleClick() {
+  // implementation
+}
+```
 
 ### Components & Types
 
