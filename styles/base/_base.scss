@@ -1,0 +1,31 @@
+@use "../abstracts" as *;
+
+:root {
+  --color-foreground: #{$base-color-secondary};
+  --color-background: #{$base-color-primary};
+  --color-primary: #{$base-color-primary};
+  --color-secondary: #{$base-color-secondary};
+  --color-accent: #{$base-color-accent};
+  --color-accent2: #{$base-color-accent2};
+  --color-success: #{$base-color-success};
+  --color-error: #{$base-color-error};
+  --color-warning: #{$base-color-warning};
+
+  @media (prefers-color-scheme: dark) {
+    --color-foreground: #{$base-color-primary-dark};
+    --color-background: #{$base-color-secondary-dark};
+    --color-primary: #{$base-color-primary-dark};
+    --color-secondary: #{$base-color-secondary-dark};
+    --color-accent: #{$base-color-accent-dark};
+    --color-accent2: #{$base-color-accent2-dark};
+    --color-success: #{$base-color-success-dark};
+    --color-error: #{$base-color-error-dark};
+    --color-warning: #{$base-color-warning-dark};
+  }
+}
+
+body {
+  color: $color-foreground;
+  background-color: $color-background;
+  font-family: $font-primary;
+}

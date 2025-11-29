@@ -1,0 +1,24 @@
+// DOC Breakpoints
+$screen-xs: 480px !default;
+$screen-sm: 640px !default;
+$screen-md: 768px !default;
+$screen-lg: 1024px !default;
+$screen-xl: 1280px !default;
+$screen-2xl: 1440px !default;
+$screen-3xl: 1920px !default;
+
+// DOC Border Radius
+$border-radius: 0.75rem !default;
+
+// DOC Spacing - Input Padding
+$input-padding-base: 0.5rem !default;
+$input-padding-sm: 0.55rem !default;
+$input-padding-md: 0.6rem !default;
+$input-padding-lg: 0.65rem !default;
+$input-padding-xl: 0.7rem !default;
+$input-padding-2xl: 0.72rem !default;
+$input-padding-3xl: 0.75rem !default;
+
+// DOC Transitions
+$transition-fast: all 0.2s ease-in-out !default;
+$transition-transform: transform 0.2s ease-in-out !default;

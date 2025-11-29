@@ -1,0 +1,30 @@
+$animation-pulse-duration: 2s !default;
+$animation-pulse-timing: infinite !default;
+$animation-pulse: pulse $animation-pulse-duration $animation-pulse-timing !default;
+$animation-spin-duration: 1s !default;
+$animation-spin-timing: linear infinite !default;
+$animation-spin: spin $animation-spin-duration $animation-spin-timing !default;
+
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 0.25;
+  }
+
+  100% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: translateY(-50%) rotate(0deg);
+  }
+
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}

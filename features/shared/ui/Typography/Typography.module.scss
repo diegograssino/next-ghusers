@@ -1,6 +1,3 @@
-@use "../../../../styles/abstracts.scss" as *;
-@use "../../../../styles/mixins" as *;
-
 .typography {
   &:is(h1, h2, h3, h4, h5, h6) {
     font-family: $font-secondary;

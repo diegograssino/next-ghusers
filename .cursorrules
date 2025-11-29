@@ -558,37 +558,50 @@ interface FavsContextProps {
 
 ### SCSS Organization
 
-- **Styles should be organized in folders** within the `styles/` directory
+- **Styles are organized in folders** within the `styles/` directory
 - Use **Sass partials** (files starting with `_`) for modular organization
-- Use `@use` to import partials into main files
-- Organize styles by concern: variables, mixins, functions, etc.
-- Main files (without `_`) should import and re-export partials
+- Use `@forward` in `_index.scss` files to expose partials
+- Use `@use` to import directories in main files (globals.scss, base files, layout files)
+- **Component modules do NOT need imports** - abstracts are automatically available via `prependData`
+- Organize styles by concern: abstracts (variables, mixins, functions), base (reset, base styles), layouts (page-specific layouts)
+- Two main files: `globals.scss` (for layout) and `main.scss` (for prependData)
 
 ### SCSS Folder Structure
 
 ```
 styles/
-├── abstracts/
-│   ├── _variables.scss      # SCSS variables
+├── abstracts/               # Variables, mixins, functions (no CSS output)
+│   ├── _variables.scss      # Breakpoints, spacing, transitions
 │   ├── _colors.scss         # Color definitions
 │   ├── _typography.scss     # Font and text styles
 │   ├── _layout.scss         # Layout variables
-│   └── _animations.scss     # Animation variables
-├── mixins/
-│   ├── _breakpoints.scss    # Media query mixins
-│   ├── _hover.scss          # Hover state mixins
-│   └── _utilities.scss      # Utility mixins
-├── abstracts.scss           # Main file: @use all abstract partials
-├── mixins.scss              # Main file: @use all mixin partials
-├── globals.scss             # Global styles
-└── reset.scss               # CSS reset
+│   ├── _mixins.scss         # Mixins (breakpoints, hover, etc.)
+│   ├── _animations.scss     # Animation variables and keyframes
+│   └── _index.scss          # Forwards all abstract partials
+├── base/                    # Reset, normalize, base element styles
+│   ├── _reset.scss          # CSS reset
+│   ├── _base.scss           # Base element styles (body, :root, etc.)
+│   └── _index.scss          # Forwards all base partials
+├── layouts/                 # Page/section-specific layout styles
+│   ├── _global-layout.scss  # Global layout styles
+│   └── _index.scss          # Forwards all layout partials
+├── globals.scss             # Global styles for layout: imports layouts and base
+└── main.scss                # Core SCSS (abstracts): forwards abstracts/_index.scss
 ```
 
 ### SCSS Partial Pattern
 
 - **Partials** (files starting with `_`): Contain specific style definitions
-- **Main files** (without `_`): Import and re-export partials using `@use`
-- Use `@use` with `as *` to import all members without namespace
+- **Index files** (`_index.scss`): Use `@forward` to expose all partials in a directory
+- **Main files** (without `_`): Import directories using `@use` or `@forward`
+- **Component modules**: No imports needed - abstracts are automatically available via `prependData` in `next.config.ts`
+
+### File Organization
+
+- **`globals.scss`** - Imported in `app/layout.tsx`, contains global styles (layouts and base)
+- **`main.scss`** - **Single contact point** for `prependData` in `next.config.ts`, forwards abstracts (variables, mixins, functions)
+- **`prependData` in `next.config.ts`** - Automatically prepends `main` to all SCSS files (including component modules)
+- **Important**: `main.scss` is the ONLY file that `prependData` references. If you add new folders (beyond abstracts), add them to `main.scss` - it's the single entry point for all core SCSS shared to modules
 
 ### SCSS Partial Example
 
@@ -601,22 +614,34 @@ $spacing-unit: 1rem;
 $color-primary: #3b82f6;
 $color-secondary: #4a4a4a;
 
-// styles/abstracts.scss (Main file - imports all partials)
-@use "abstracts/variables" as *;
-@use "abstracts/colors" as *;
-@use "abstracts/typography" as *;
-@use "abstracts/layout" as *;
-@use "abstracts/animations" as *;
+// styles/abstracts/_index.scss (Index file - forwards all partials)
+@forward "./variables.scss";
+@forward "./colors.scss";
+@forward "./typography.scss";
+@forward "./layout.scss";
+@forward "./mixins.scss";
+@forward "./animations.scss";
+
+// styles/main.scss (Single contact point for prependData - forwards abstracts)
+@forward "./abstracts/index.scss";
+// DOC If you add new folders (e.g., functions, utilities), add them here:
+// @forward "./new-folder/index.scss";
+
+// styles/globals.scss (Global styles for layout - imported in app/layout.tsx)
+@use "layouts";
+@use "base";
 ```
 
 ### CSS/SCSS Modules
 
-- **Always use CSS Modules** (`.module.scss` or `.module.css`) for component styles
-- Import abstracts and mixins from `styles/` directory using `@use`
+- **This project uses CSS Modules** - all component styles are co-located with components as `.module.scss` files
+- Components are self-contained and don't need global styling
+- **Abstracts (variables, mixins, functions) are automatically available** via `prependData` in `next.config.ts` - no imports needed in component modules
 - **CRITICAL**: Import and destructure styles OUTSIDE the component definition (before the component), not inside
 - This ensures the destructuring happens only once, improving performance
 - Use camelCase for class names
 - Use CSS custom properties and SCSS variables from abstracts
+- Mixins are part of abstracts, so they're automatically available in all component modules
 
 ### CSS Class Naming Convention
 
@@ -695,8 +720,8 @@ const Card = ({ isActive, user }: CardProps) => {
 ### SCSS Module Example
 
 ```scss
-@use "../../../../styles/abstracts" as *;
-@use "../../../../styles/mixins" as *;
+// Component.module.scss
+// No imports needed - abstracts (variables, mixins, functions) are automatically available via prependData
 
 .card {
   display: flex;
@@ -709,6 +734,11 @@ const Card = ({ isActive, user }: CardProps) => {
   padding: 1rem;
 }
 ```
+
+**Important:**
+- **Never add imports to component modules** - abstracts are automatically prepended via `prependData` in `next.config.ts`
+- `prependData` uses `main.scss` as the single contact point, which forwards abstracts
+- All variables, mixins, and functions from abstracts are available in every component module without explicit imports
 
 ### Component Style Usage (Correct Pattern)
 
@@ -726,6 +756,8 @@ const Card = ({ user }: CardProps) => {
   );
 };
 ```
+
+**Note:** Component `.module.scss` files should NOT have any `@use` or `@import` statements - abstracts are automatically available via `prependData` in `next.config.ts`.
 
 ### Dynamic Style Access (When Using Props)
 
@@ -775,6 +807,17 @@ const Typography = ({ variant }: TypographyProps) => {
     </div>
   );
 };
+```
+
+```scss
+// ❌ WRONG: Don't add imports to component modules
+// Component.module.scss
+@use "../../../../styles/abstracts" as *; // ❌ Not needed - automatically available via prependData
+@use "../../../../styles/mixins" as *; // ❌ Not needed - mixins are part of abstracts
+
+.card {
+  // styles
+}
 ```
 
 ## Context Patterns
