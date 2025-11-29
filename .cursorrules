@@ -578,6 +578,37 @@ const Card = ({ user }: CardProps) => {
 };
 ```
 
+### Dynamic Style Access (When Using Props)
+
+- **When accessing styles dynamically based on props**, use the `getStyleClass` helper from `@/features/shared/lib/utils`
+- This ensures type safety and prevents runtime errors when a prop value doesn't match a class name
+- **Never use type assertions like `as keyof typeof styles`** - use the helper instead
+
+### Dynamic Style Access Example
+
+```typescript
+import { getStyleClass } from "@/features/shared/lib/utils";
+import styles from "./Typography.module.scss";
+
+const { typography, ellipsis } = styles;
+
+const Typography = ({ variant, weight, size }: TypographyProps) => {
+  return (
+    <div
+      className={clsx(
+        typography,
+        getStyleClass(styles, variant), // ✅ Type-safe dynamic access
+        getStyleClass(styles, weight),
+        getStyleClass(styles, size),
+        ellipsis
+      )}
+    >
+      Content
+    </div>
+  );
+};
+```
+
 ### ❌ Incorrect Pattern (Don't Do This)
 
 ```typescript
@@ -585,6 +616,15 @@ const Card = ({ user }: CardProps) => {
 const Card = ({ user }: CardProps) => {
   const { card, cardContent } = styles; // ❌ This runs on every render!
   return <article className={card}>...</article>;
+};
+
+// ❌ WRONG: Don't use type assertions for dynamic style access
+const Typography = ({ variant }: TypographyProps) => {
+  return (
+    <div className={styles[variant as keyof typeof styles]}>
+      {/* ❌ Type assertion is not type-safe */}
+    </div>
+  );
 };
 ```
 

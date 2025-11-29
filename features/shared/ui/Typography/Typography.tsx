@@ -1,4 +1,5 @@
 import { TypographyProps } from "@/types";
+import { getStyleClass } from "@/features/shared/lib/utils";
 import clsx from "clsx";
 import styles from "./Typography.module.scss";
 
@@ -18,9 +19,9 @@ const Typography = ({
       {...otherProps}
       className={clsx(
         typography,
-        variant && styles[variant as keyof typeof styles],
-        weight && styles[weight as keyof typeof styles],
-        size && styles[size as keyof typeof styles],
+        getStyleClass(styles, variant),
+        getStyleClass(styles, weight),
+        getStyleClass(styles, size),
         truncate && ellipsis,
         otherProps.className
       )}

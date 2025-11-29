@@ -63,3 +63,12 @@ export function formatNumber(num: number): string {
 export function getUniqueId() {
   return v4();
 }
+
+// DOC Type-safe helper to get a style class from SCSS modules if it exists
+// Use this when dynamically accessing style classes based on props
+export function getStyleClass<T extends Record<string, string>>(
+  styles: T,
+  key: string | undefined
+): string | undefined {
+  return key && key in styles ? styles[key as keyof T] : undefined;
+}

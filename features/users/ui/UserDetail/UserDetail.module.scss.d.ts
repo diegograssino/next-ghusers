@@ -1,5 +1,6 @@
 export type Styles = {
   'detail': string;
+  'detailBio': string;
   'detailHeader': string;
   'detailInfo': string;
   'detailInfoSection': string;

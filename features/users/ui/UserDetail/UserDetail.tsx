@@ -12,7 +12,6 @@ const {
   detailHeader,
   detailInfo,
   detailStats,
-  detailBio,
   detailRepos,
   detailReposList,
   detailReposItem,
@@ -54,11 +53,9 @@ const UserDetail = ({ user, repos }: UserDetailProps) => {
               Public Repos: {user.public_repos}
             </Typography>
           </div>
-          <div className={detailBio}>
-            <Typography as="p" size="md">
-              Bio: {user.bio || "No bio available"}
-            </Typography>
-          </div>
+          <Typography as="p" size="md">
+            Bio: {user.bio || "No bio available"}
+          </Typography>
         </div>
       </div>
       <div className={detailRepos}>
