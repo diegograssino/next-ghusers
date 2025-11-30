@@ -1,5 +1,3 @@
-// GitHub API response types (external API structure)
-
 export interface GitHubUser {
   login: string;
   id: number;

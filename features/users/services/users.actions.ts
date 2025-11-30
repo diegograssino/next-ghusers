@@ -1,7 +1,7 @@
 "use server";
 // TODO Verify error handling and logging
 
-import { FetchUsersParams, FetchUsersResult, Repo } from "@/types/users";
+import { FetchUsersParams, FetchUsersResult, Repo } from "@/types";
 import { PER_PAGE_CONFIGS } from "@shared/constants";
 import {
   toFetchUsersResultAdapter,

@@ -28,7 +28,7 @@
       "@users/constants": ["./features/users/lib/constants"],
       "@users/ui": ["./features/users/ui"],
       "@shared/constants": ["./features/shared/constants"],
-      "@shared/hooks": ["./features/shared/hooks"],
+      "@shared/hooks": ["./features/shared/hooks/hooks"],
       "@shared/ui": ["./features/shared/ui"],
       "@shared/contexts": ["./features/shared/contexts/SharedContext"]
     }

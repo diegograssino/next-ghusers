@@ -1,7 +1,11 @@
 import { log } from "@/features/shared/lib/logger";
-import { QueryParams } from "@/types";
-import { FetchUsersParams } from "@/types/users";
-import { GitHubRepo, GitHubUser, GitHubUsersResponse } from "@/types/users/api";
+import {
+  FetchUsersParams,
+  GitHubRepo,
+  GitHubUser,
+  GitHubUsersResponse,
+  QueryParams,
+} from "@/types";
 import { FETCH_TIMEOUT_MS, PER_PAGE_CONFIGS } from "@shared/constants";
 import {
   DEFAULT_QUERY_PARAMS,

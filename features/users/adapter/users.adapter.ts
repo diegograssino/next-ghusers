@@ -1,5 +1,11 @@
-import { FetchUsersResult, Repo, User } from "@/types/users";
-import { GitHubRepo, GitHubUser, GitHubUsersResponse } from "@/types/users/api";
+import {
+  FetchUsersResult,
+  GitHubRepo,
+  GitHubUser,
+  GitHubUsersResponse,
+  Repo,
+  User,
+} from "@/types";
 
 export const toUserAdapter = (apiUser: GitHubUser): User => {
   return {
