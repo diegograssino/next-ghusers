@@ -1,5 +1,5 @@
-import { Breadcrumbs, Container, Footer, Header } from "@/features/shared/ui";
 import "@/styles/globals.scss";
+import { Breadcrumbs, Container, Footer, Header } from "@shared/ui";
 import clsx from "clsx";
 import type { Metadata } from "next";
 import { Mona_Sans, Noto_Sans } from "next/font/google";

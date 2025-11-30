@@ -1,20 +1,20 @@
 "use client";
-import { ROUTES } from "@/features/shared/constants";
-import { useSharedContext } from "@/features/shared/contexts/SharedContext";
-import { useFiltersToUrl } from "@/features/shared/hooks";
 import { getUniqueId } from "@/features/shared/lib/utils";
-import { Hero, PageMessage } from "@/features/shared/ui";
-import { useFiltersContext } from "@/features/users/contexts/FiltersContext";
-import { INTERSECTION_OBSERVER_THRESHOLD } from "@/features/users/lib/constants";
-import useInfiniteUsers from "@/features/users/queries";
+import { SearchPageProps } from "@/types";
+import { ROUTES } from "@shared/constants";
+import { useSharedContext } from "@shared/contexts";
+import { useFiltersToUrl } from "@shared/hooks";
+import { Hero, PageMessage } from "@shared/ui";
+import { INTERSECTION_OBSERVER_THRESHOLD } from "@users/constants";
+import { useFiltersContext } from "@users/contexts";
+import useInfiniteUsers from "@users/services";
 import {
   Card,
   CardGrid,
   CardGridSkeleton,
   Filters,
   SearchInput,
-} from "@/features/users/ui";
-import { SearchPageProps } from "@/types";
+} from "@users/ui";
 import InfiniteScroll from "react-infinite-scroller";
 import styles from "./SearchPage.module.scss";
 

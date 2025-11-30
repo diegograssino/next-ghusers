@@ -1,4 +1,4 @@
-export * from "./pages/index";
-export * from "./shared/index";
-export * from "./ui/index";
+export * from "./pages/pages";
+export * from "./shared/shared";
+export * from "./ui/ui";
 export * from "./users/index";

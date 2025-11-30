@@ -1,7 +1,7 @@
 "use client";
-import { ROUTES } from "@/features/shared/constants";
-import { useFavsContext } from "@/features/users/contexts/FavsContext";
+import { ROUTES } from "@shared/constants";
 import { IconStarFilled } from "@tabler/icons-react";
+import { useFavsContext } from "@users/contexts";
 import Anchor from "../Anchor/Anchor";
 import styles from "./FavsAnchor.module.scss";
 

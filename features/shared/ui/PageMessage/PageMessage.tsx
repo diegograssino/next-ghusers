@@ -1,4 +1,4 @@
-import { PageMessageProps } from "@/types/ui";
+import { PageMessageProps } from "@/types";
 import Typography from "../Typography/Typography";
 import { pageMessages } from "./PageMessage.constants";
 import styles from "./PageMessage.module.scss";

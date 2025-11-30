@@ -1,7 +1,7 @@
 "use client";
-import { useSharedContext } from "@/features/shared/contexts/SharedContext";
-import { useFiltersContext } from "@/features/users/contexts/FiltersContext";
+import { useSharedContext } from "@shared/contexts";
 import { IconRotate, IconSearch } from "@tabler/icons-react";
+import { useFiltersContext } from "@users/contexts";
 import clsx from "clsx";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";

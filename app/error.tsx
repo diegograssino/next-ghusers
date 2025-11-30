@@ -1,6 +1,6 @@
 "use client";
 
-import { PageMessage } from "@/features/shared/ui";
+import { PageMessage } from "@shared/ui";
 
 const Error = () => {
   return <PageMessage message="error" />;

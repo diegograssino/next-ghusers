@@ -1,4 +1,4 @@
-import { HeroProps } from "@/types/ui";
+import { HeroProps } from "@/types";
 import Typography from "../Typography/Typography";
 import styles from "./Hero.module.scss";
 

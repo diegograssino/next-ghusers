@@ -1,7 +1,7 @@
 "use client";
 
-import { ROUTES } from "@/features/shared/constants";
 import { BreadcrumbsProps, Route } from "@/types";
+import { ROUTES } from "@shared/constants";
 import { usePathname } from "next/navigation";
 import { Fragment } from "react";
 import { getUniqueId } from "../../lib/utils";

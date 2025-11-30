@@ -1,4 +1,4 @@
-import { PageMessage } from "@/features/shared/ui";
+import { PageMessage } from "@shared/ui";
 
 const NotFound = () => {
   return <PageMessage message="notFound" />;

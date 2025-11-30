@@ -1,7 +1,7 @@
 import { getUniqueId } from "@/features/shared/lib/utils";
-import { Typography } from "@/features/shared/ui";
-import { useFiltersContext } from "@/features/users/contexts/FiltersContext";
-import { VALID_FOLLOWERS_VALUES } from "@/features/users/lib/constants";
+import { Typography } from "@shared/ui";
+import { VALID_FOLLOWERS_VALUES } from "@users/constants";
+import { useFiltersContext } from "@users/contexts";
 import { formatFilterLabel } from "../../lib/utils";
 import styles from "./FiltersInputs.module.scss";
 

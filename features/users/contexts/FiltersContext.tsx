@@ -1,7 +1,7 @@
 "use client";
-import { DEBOUNCE_DELAY_MS } from "@/features/shared/constants";
 import { Params, QueryParams } from "@/types";
 import { ValidFilterLabels } from "@/types/users";
+import { DEBOUNCE_DELAY_MS } from "@shared/constants";
 import {
   createContext,
   useCallback,

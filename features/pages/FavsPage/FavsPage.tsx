@@ -1,12 +1,11 @@
 "use client";
-import { useFiltersToUrl } from "@/features/shared/hooks";
 import { getUniqueId } from "@/features/shared/lib/utils";
-import { PageMessage } from "@/features/shared/ui";
-import { useFavsContext } from "@/features/users/contexts/FavsContext";
-import { useFiltersContext } from "@/features/users/contexts/FiltersContext";
-import { useInfiniteFavUsers } from "@/features/users/queries";
-import { Card, CardGrid, Filters, SearchInput } from "@/features/users/ui";
 import { FavsPageProps } from "@/types";
+import { useFiltersToUrl } from "@shared/hooks";
+import { PageMessage } from "@shared/ui";
+import { useFavsContext, useFiltersContext } from "@users/contexts";
+import { useInfiniteFavUsers } from "@users/services";
+import { Card, CardGrid, Filters, SearchInput } from "@users/ui";
 import styles from "./FavsPage.module.scss";
 
 const { favsPage, favsPageAside, favsPageResults, favsPageSearch } = styles;

@@ -1,7 +1,7 @@
 import { pageMessages } from "@/features/shared/ui/PageMessage/PageMessage.constants";
 import Link from "next/link";
 import { ElementType, HTMLAttributes, JSX } from "react";
-import { PerPageConfig, Route } from "../shared";
+import { Route } from "../shared/shared";
 
 export type ColorVariants =
   | "default"
@@ -65,25 +65,6 @@ export type Icons = {
 
 export interface PageMessageProps {
   message: keyof typeof pageMessages;
-}
-
-export interface CardGridProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "color"> {
-  children: React.ReactNode;
-  perPageConfig?: PerPageConfig[keyof PerPageConfig];
-}
-
-export interface CardGridSkeletonProps {
-  perPageConfig?: PerPageConfig[keyof PerPageConfig];
-}
-
-export interface PillProps {
-  label: string;
-  onRemove?: () => void;
-}
-
-export interface FiltersInfoProps {
-  totalCount?: number;
 }
 
 export interface BreadcrumbsProps {

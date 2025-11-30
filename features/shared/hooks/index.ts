@@ -1,5 +1,5 @@
-import { VALID_FILTER_KEYS } from "@/features/users/lib/constants";
 import { QueryParams } from "@/types";
+import { VALID_FILTER_KEYS } from "@users/constants";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
 
