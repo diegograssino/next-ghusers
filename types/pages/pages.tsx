@@ -10,6 +10,6 @@ export interface SearchPageProps {
   pageConfig: PageConfig;
 }
 
-export interface FavsPageProps {
+export interface FavoritesPageProps {
   pageConfig: PageConfig;
 }

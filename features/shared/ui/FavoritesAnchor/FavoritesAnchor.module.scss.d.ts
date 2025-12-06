@@ -1,8 +1,6 @@
 export type Styles = {
-  'favsPage': string;
-  'favsPageAside': string;
-  'favsPageResults': string;
-  'favsPageSearch': string;
+  'favoritesAnchor': string;
+  'favoritesAnchorIcon': string;
   'pulse': string;
   'spin': string;
 };

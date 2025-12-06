@@ -6,7 +6,7 @@ import { useSharedContext } from "@shared/contexts";
 import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
 import { toFetchUsersResultAdapter, toUserAdapter } from "@users/adapter";
 import { usersRepository } from "@users/repository";
-import { useCallback, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import {
   DEFAULT_QUERY_PARAMS,
   FIRST_PAGE_PARAM,
@@ -60,26 +60,21 @@ export const useInfiniteUsers = (
           }
         : undefined,
   });
-  const handleLoadMore = useCallback(() => {
+  // DOC No need to memoize: handleLoadMore is passed to InfiniteScroll (third-party component, not memoized)
+  const handleLoadMore = () => {
     if (hasNextPage && !isFetching) {
       fetchNextPage();
     }
-  }, [hasNextPage, isFetching, fetchNextPage]);
+  };
+
   const flattenedUsers = useMemo(() => {
     return data?.pages.map((page) => page.users).flat() || [];
   }, [data]);
-  const isNoResults = useMemo(() => {
-    return flattenedUsers.length === 0 && !isFetching;
-  }, [flattenedUsers, isFetching]);
-  const isLoading = useMemo(() => {
-    return isFetching && flattenedUsers.length === 0;
-  }, [isFetching, flattenedUsers]);
-  const isMore = useMemo(() => {
-    return hasNextPage && !isFetching;
-  }, [hasNextPage, isFetching]);
-  const totalCount = useMemo(() => {
-    return data?.pages[0]?.totalCount || undefined;
-  }, [data]);
+
+  const isNoResults = flattenedUsers.length === 0 && !isFetching;
+  const isLoading = isFetching && flattenedUsers.length === 0;
+  const isMore = hasNextPage && !isFetching;
+  const totalCount = data?.pages[0]?.totalCount || undefined;
 
   return {
     users: flattenedUsers,
@@ -102,17 +97,19 @@ interface FavoredUser {
   timestamp: number;
 }
 
-export const useInfiniteFavUsers = (
-  favs: FavoredUser[],
+export const useInfiniteFavoriteUsers = (
+  favorites: FavoredUser[],
   queryParams: QueryParams = DEFAULT_QUERY_PARAMS,
-  updateFav?: (user: User) => void
+  updateFavorite?: (user: User) => void
 ) => {
-  const hasNoFavs = favs.length === 0;
+  const hasNoFavorites = favorites.length === 0;
 
   const staleUsers = useMemo(() => {
     const now = Date.now();
-    return favs.filter((fav) => now - fav.timestamp > STALE_DATA_THRESHOLD);
-  }, [favs]);
+    return favorites.filter(
+      (fav) => now - fav.timestamp > STALE_DATA_THRESHOLD
+    );
+  }, [favorites]);
 
   const refreshQueries = useQueries({
     queries: staleUsers.map((fav) => ({
@@ -122,30 +119,25 @@ export const useInfiniteFavUsers = (
         if (!rawUser) return null;
         return toUserAdapter(rawUser);
       },
-      enabled: staleUsers.length > 0 && !!updateFav,
+      enabled: staleUsers.length > 0 && !!updateFavorite,
     })),
   });
 
   useEffect(() => {
-    if (updateFav) {
+    if (updateFavorite) {
       refreshQueries.forEach((query) => {
         if (query.data && !query.isLoading && !query.isError) {
-          updateFav(query.data);
+          updateFavorite(query.data);
         }
       });
     }
-  }, [refreshQueries, updateFav]);
+  }, [refreshQueries, updateFavorite]);
 
-  const isLoading = useMemo(() => {
-    return refreshQueries.some((q) => q.isLoading);
-  }, [refreshQueries]);
-
-  const isError = useMemo(() => {
-    return refreshQueries.some((q) => q.isError);
-  }, [refreshQueries]);
+  const isLoading = refreshQueries.some((q) => q.isLoading);
+  const isError = refreshQueries.some((q) => q.isError);
 
   const filteredUsers = useMemo(() => {
-    const loadedUsers = favs.map((fav) => fav.user);
+    const loadedUsers = favorites.map((fav) => fav.user);
 
     if (!queryParams.login && !queryParams.followers) {
       return loadedUsers;
@@ -171,15 +163,11 @@ export const useInfiniteFavUsers = (
 
       return true;
     });
-  }, [favs, queryParams.login, queryParams.followers]);
+  }, [favorites, queryParams.login, queryParams.followers]);
 
-  const isNoResults = useMemo(() => {
-    return filteredUsers.length === 0 && !isLoading && !hasNoFavs;
-  }, [filteredUsers, isLoading, hasNoFavs]);
-
-  const totalCount = useMemo(() => {
-    return filteredUsers.length;
-  }, [filteredUsers]);
+  const isNoResults =
+    filteredUsers.length === 0 && !isLoading && !hasNoFavorites;
+  const totalCount = filteredUsers.length;
 
   return {
     users: filteredUsers,
@@ -187,7 +175,7 @@ export const useInfiniteFavUsers = (
     isLoading,
     isNoResults,
     totalCount,
-    hasNoFavs,
+    hasNoFavorites,
   };
 };
 

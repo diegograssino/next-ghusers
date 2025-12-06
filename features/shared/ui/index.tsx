@@ -1,7 +1,7 @@
 export { default as Anchor } from "./Anchor/Anchor";
 export { default as Breadcrumbs } from "./Breadcrumbs/Breadcrumbs";
 export { default as Container } from "./Container/Container";
-export { default as FavsAnchor } from "./FavsAnchor/FavsAnchor";
+export { default as FavoritesAnchor } from "./FavoritesAnchor/FavoritesAnchor";
 export { default as Footer } from "./Footer/Footer";
 export { default as Header } from "./Header/Header";
 export { default as Hero } from "./Hero/Hero";

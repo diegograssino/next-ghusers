@@ -1,6 +1,6 @@
 @use "../../../styles/main" as *;
 
-.favsPage {
+.favoritesPage {
   display: grid;
   grid-template: "search" auto "filters" auto "results" 1fr / 1fr;
   gap: 0 2rem;
@@ -27,7 +27,7 @@
   }
 }
 
-.favsPageSearch {
+.favoritesPageSearch {
   grid-area: search;
   position: sticky;
   top: calc($layout-navbar-height - 1px);
@@ -45,7 +45,7 @@
   }
 }
 
-.favsPageAside {
+.favoritesPageAside {
   grid-area: filters;
   position: sticky;
   top: $layout-navbar-height;
@@ -62,7 +62,8 @@
   );
 }
 
-.favsPageResults {
+.favoritesPageResults {
   grid-area: results;
   padding: 2rem 0 1rem;
 }
+

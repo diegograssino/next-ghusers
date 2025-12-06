@@ -1,6 +1,6 @@
 @use "../../../../styles/main" as *;
 
-.favsWidgetIcon {
+.favoritesWidgetIcon {
   width: 1.5rem;
   height: 1.5rem;
   stroke-width: 0.125rem;
@@ -8,11 +8,12 @@
   // TODO Make dimensions responsive
 }
 
-.favsWidgetEmptyStar {
+.favoritesWidgetEmptyStar {
   stroke: $color-warning;
 }
 
-.favsWidgetFilledStar {
+.favoritesWidgetFilledStar {
   stroke: $color-warning;
   fill: $color-warning;
 }
+

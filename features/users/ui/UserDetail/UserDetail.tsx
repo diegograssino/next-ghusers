@@ -3,7 +3,7 @@ import { UserDetailProps } from "@/types";
 import { Anchor, Typography } from "@shared/ui";
 import { IconLink } from "@tabler/icons-react";
 import Image from "next/image";
-import FavsWidget from "../FavsWidget/FavsWidget";
+import FavoritesWidget from "../FavoritesWidget/FavoritesWidget";
 import styles from "./UserDetail.module.scss";
 
 const {
@@ -35,7 +35,7 @@ const UserDetail = ({ user, repos }: UserDetailProps) => {
             height={300}
           />
           <div>
-            <FavsWidget id={user.id} user={user} />
+            <FavoritesWidget id={user.id} user={user} />
           </div>
         </header>
         <div className={detailInfo}>

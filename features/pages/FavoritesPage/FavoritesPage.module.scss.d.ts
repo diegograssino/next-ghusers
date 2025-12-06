@@ -1,7 +1,8 @@
 export type Styles = {
-  'favsWidgetEmptyStar': string;
-  'favsWidgetFilledStar': string;
-  'favsWidgetIcon': string;
+  'favoritesPage': string;
+  'favoritesPageAside': string;
+  'favoritesPageResults': string;
+  'favoritesPageSearch': string;
   'pulse': string;
   'spin': string;
 };

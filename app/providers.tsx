@@ -2,7 +2,7 @@
 import { SharedProvider } from "@shared/contexts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { FavsProvider } from "@users/contexts";
+import { FavoritesProvider } from "@users/contexts";
 import React from "react";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
@@ -11,7 +11,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <SharedProvider>
-        <FavsProvider>{children}</FavsProvider>
+        <FavoritesProvider>{children}</FavoritesProvider>
       </SharedProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
