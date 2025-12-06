@@ -2557,7 +2557,7 @@ npm run lint:scss:check
 **Pre-commit** (`.husky/pre-commit`):
 - `npm run type-check:scss:build` - Generate SCSS module types
 - `npm run lint:scss:check` - Check SCSS code quality
-- `npx eslint app features --ext .ts,.tsx --max-warnings 0` - **Accessibility checks** - Enforces accessibility standards using `eslint-plugin-jsx-a11y`, blocks commits with accessibility warnings to prevent inaccessible code from being committed
+- `npm run lint` - **ESLint checks** - Runs Next.js ESLint (includes accessibility checks via `eslint-plugin-jsx-a11y`), blocks commits with linting or accessibility warnings to prevent code quality issues and inaccessible code from being committed
 
 **Pre-push** (`.husky/pre-push`):
 - `npm run build` - Full production build (includes type checking and Next.js build)
@@ -2576,7 +2576,7 @@ npm run lint:scss:check
 - **Plugin**: `eslint-plugin-jsx-a11y` - Provides static analysis for accessibility issues
 - **Configuration**: Enabled in `eslint.config.mjs` with recommended rules
 - **Exception**: `jsx-a11y/no-autofocus` is disabled - `autoFocus` is needed for search input UX where users expect immediate focus for quick typing
-- **Pre-commit enforcement**: ESLint runs on `app` and `features` directories with zero warnings allowed
+- **Pre-commit enforcement**: ESLint runs via `npm run lint` (Next.js ESLint) which checks all relevant files including `app`, `features`, root-level config files (middleware.ts, next.config.ts, etc.), and other TypeScript/JavaScript files, with zero warnings allowed
 
 ### Interactive Elements
 
