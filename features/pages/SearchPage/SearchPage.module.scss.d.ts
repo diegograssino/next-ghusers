@@ -2,6 +2,7 @@ export type Styles = {
   'pulse': string;
   'searchPage': string;
   'searchPageAside': string;
+  'searchPageHeroContent': string;
   'searchPageInfo': string;
   'searchPageResults': string;
   'searchPageSearch': string;

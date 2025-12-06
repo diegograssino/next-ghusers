@@ -1,10 +1,18 @@
-import { PER_PAGE_CONFIGS } from "@/features/shared/constants";
-import { useSharedContext } from "@/features/shared/contexts/SharedContext";
+"use client";
+
 import { FetchUsersResult, QueryParams, User } from "@/types";
+import { PER_PAGE_CONFIGS, STALE_TIME_ONE_MINUTE_MS } from "@shared/constants";
+import { useSharedContext } from "@shared/contexts";
 import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
+import { toFetchUsersResultAdapter, toUserAdapter } from "@users/adapter";
+import { usersRepository } from "@users/repository";
 import { useCallback, useEffect, useMemo } from "react";
-import { DEFAULT_QUERY_PARAMS, STALE_DATA_THRESHOLD } from "../lib/constants";
-import { fetchUserService, fetchUsersService } from "../services";
+import {
+  DEFAULT_QUERY_PARAMS,
+  FIRST_PAGE_PARAM,
+  INITIAL_PAGE_PARAM,
+  STALE_DATA_THRESHOLD,
+} from "../lib/constants";
 
 export const useInfiniteUsers = (
   queryParams: QueryParams = DEFAULT_QUERY_PARAMS,
@@ -22,17 +30,25 @@ export const useInfiniteUsers = (
     status,
   } = useInfiniteQuery({
     queryKey: ["users", queryParams, perPage],
-    queryFn: ({
-      pageParam = queryParams.login || queryParams.followers ? "1" : "0",
-    }) =>
-      fetchUsersService({
+    queryFn: async ({
+      pageParam = queryParams.login || queryParams.followers
+        ? FIRST_PAGE_PARAM
+        : INITIAL_PAGE_PARAM,
+    }) => {
+      const rawResponse = await usersRepository.getUsers({
         perPageParam: perPage,
         pageParam,
         queryParams,
-      }),
-    initialPageParam: queryParams.login || queryParams.followers ? "1" : "0",
+      });
+
+      return toFetchUsersResultAdapter(rawResponse);
+    },
+    initialPageParam:
+      queryParams.login || queryParams.followers
+        ? FIRST_PAGE_PARAM
+        : INITIAL_PAGE_PARAM,
     getNextPageParam: (lastPage) => lastPage.nextSince,
-    staleTime: 1000 * 60,
+    staleTime: STALE_TIME_ONE_MINUTE_MS,
     // DOC Only use initialData on first load server-side, not when query changes
     initialData:
       initialData && !isClient
@@ -101,7 +117,11 @@ export const useInfiniteFavUsers = (
   const refreshQueries = useQueries({
     queries: staleUsers.map((fav) => ({
       queryKey: ["user", fav.user.id, "refresh"],
-      queryFn: () => fetchUserService(fav.user.id),
+      queryFn: async () => {
+        const rawUser = await usersRepository.getUser(fav.user.id);
+        if (!rawUser) return null;
+        return toUserAdapter(rawUser);
+      },
       enabled: staleUsers.length > 0 && !!updateFav,
     })),
   });
@@ -169,6 +189,12 @@ export const useInfiniteFavUsers = (
     totalCount,
     hasNoFavs,
   };
+};
+
+export const fetchUserService = async (id: number): Promise<User | null> => {
+  const rawUser = await usersRepository.getUser(id);
+  if (!rawUser) return null;
+  return toUserAdapter(rawUser);
 };
 
 export default useInfiniteUsers;

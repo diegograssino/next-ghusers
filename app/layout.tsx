@@ -1,10 +1,11 @@
-import { Breadcrumbs, Container, Footer, Header } from "@/features/shared/ui";
 import "@/styles/globals.scss";
+import { LayoutClient } from "@shared/ui";
 import clsx from "clsx";
 import type { Metadata } from "next";
 import { Mona_Sans, Noto_Sans } from "next/font/google";
 import Providers from "./providers";
 
+// TODO Move font configuration to a separate file
 const primaryFont = Noto_Sans({
   variable: "--font-primary",
   subsets: ["latin"],
@@ -17,6 +18,7 @@ const secondaryFont = Mona_Sans({
   weight: ["400", "700"],
 });
 
+// TODO Improve Metadata
 export const metadata: Metadata = {
   title: "Github Users by diegograssino",
   description:
@@ -26,11 +28,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <Providers>
       <html
@@ -38,14 +40,11 @@ export default function RootLayout({
         className={clsx(primaryFont.variable, secondaryFont.variable)}
       >
         <body>
-          <div className="globalLayout">
-            <Header />
-            <Breadcrumbs />
-            <Container as="main">{children}</Container>
-            <Footer />
-          </div>
+          <LayoutClient>{children}</LayoutClient>
         </body>
       </html>
     </Providers>
   );
-}
+};
+
+export default RootLayout;

@@ -1,12 +1,12 @@
-import { useSharedContext } from "@/features/shared/contexts/SharedContext";
 import { formatNumber } from "@/features/shared/lib/utils";
-import { Typography } from "@/features/shared/ui";
-import { useFiltersContext } from "@/features/users/contexts/FiltersContext";
 import {
   formatFilterLabel,
   getNonLoginFilters,
 } from "@/features/users/lib/utils";
-import { FiltersInfoProps } from "@/types/ui";
+import { FiltersInfoProps } from "@/types";
+import { useSharedContext } from "@shared/contexts";
+import { Typography } from "@shared/ui";
+import { useFiltersContext } from "@users/contexts";
 
 import { IconX } from "@tabler/icons-react";
 import Pill from "../Pill/Pill";

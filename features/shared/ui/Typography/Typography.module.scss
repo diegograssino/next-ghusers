@@ -1,5 +1,4 @@
-@use "../../../../styles/abstracts.scss" as *;
-@use "../../../../styles/mixins" as *;
+@use "../../../../styles/main" as *;
 
 .typography {
   &:is(h1, h2, h3, h4, h5, h6) {
@@ -123,4 +122,25 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   line-height: 1.4;
+}
+
+// DOC Variant-specific shadows for better contrast, the shadow adapts to each variant for better visibility over background images, not necessarily tied to color palettes.
+.shadow {
+  text-shadow: 0 0.125rem 0.25rem rgba($base-color-black, 0.5),
+    0 0.0625rem 0.125rem rgba($base-color-black, 0.3),
+    0 0 0.5rem rgba($base-color-black, 0.2);
+}
+
+.secondary.shadow {
+  text-shadow: 0 0.125rem 0.25rem rgba($base-color-white, 0.3),
+    0 0.0625rem 0.125rem rgba($base-color-white, 0.2),
+    0 0 0.5rem rgba($base-color-black, 0.4);
+}
+
+.inverse.shadow,
+.primary.shadow,
+.accent2.shadow {
+  text-shadow: 0 0.125rem 0.25rem rgba($base-color-black, 0.7),
+    0 0.0625rem 0.125rem rgba($base-color-black, 0.5),
+    0 0 0.5rem rgba($base-color-black, 0.3);
 }

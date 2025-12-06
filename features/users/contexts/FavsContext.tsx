@@ -1,5 +1,6 @@
 "use client";
 import { User } from "@/types";
+import { fetchUserService } from "@users/services";
 import {
   createContext,
   useCallback,
@@ -10,7 +11,6 @@ import {
   useState,
 } from "react";
 import { useSharedContext } from "../../shared/contexts/SharedContext";
-import { fetchUserService } from "../services";
 
 interface FavsProviderProps {
   children: React.ReactNode;
@@ -18,7 +18,8 @@ interface FavsProviderProps {
 
 interface FavoredUser {
   user: User;
-  timestamp: number; // Unix timestamp in milliseconds
+  // DOC Unix timestamp in milliseconds
+  timestamp: number;
 }
 
 interface FavsContextProps {
@@ -86,13 +87,17 @@ export const FavsProvider = ({ children }: FavsProviderProps) => {
     }
 
     if (addingFavsRef.current.has(user.id)) {
-      return; // Already being added
+      // DOC Already being added
+      return;
     }
 
     setAddingFavs((current) => new Set(current).add(user.id));
 
     try {
       const completeUser = await fetchUserService(user.id);
+      if (!completeUser) {
+        throw new Error("User not found");
+      }
 
       setFavs((currentFavs) => {
         // DOC Double-check it's not already added (race condition protection)

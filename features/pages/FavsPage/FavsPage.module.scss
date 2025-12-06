@@ -1,5 +1,4 @@
-@use "../../../styles/abstracts" as *;
-@use "../../../styles/mixins" as *;
+@use "../../../styles/main" as *;
 
 .favsPage {
   display: grid;
@@ -67,4 +66,3 @@
   grid-area: results;
   padding: 2rem 0 1rem;
 }
-

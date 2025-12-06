@@ -1,5 +1,6 @@
-import { VALID_FILTER_KEYS } from "@/features/users/lib/constants";
 import { QueryParams } from "@/types";
+import { useSharedContext } from "@shared/contexts";
+import { VALID_FILTER_KEYS } from "@users/constants";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
 
@@ -7,9 +8,10 @@ export const useUrl = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { navbarHeight, breadcrumbsHeight } = useSharedContext();
 
   const updateUrlFromFilters = useCallback(
-    (filters: QueryParams) => {
+    (filters: QueryParams, scrollTargetId?: string) => {
       const params = new URLSearchParams(searchParams);
       let hasChanges = false;
 
@@ -31,10 +33,28 @@ export const useUrl = () => {
       if (hasChanges) {
         const queryString = params.toString();
         const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
-        router.replace(newUrl, { scroll: true });
+
+        router.replace(newUrl, { scroll: !scrollTargetId });
+
+        if (scrollTargetId) {
+          setTimeout(() => {
+            const targetElement = document.getElementById(scrollTargetId);
+            if (targetElement) {
+              const offset = navbarHeight + breadcrumbsHeight;
+              const elementPosition = targetElement.getBoundingClientRect().top;
+              const offsetPosition =
+                elementPosition + window.pageYOffset - offset;
+
+              window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth",
+              });
+            }
+          }, 0);
+        }
       }
     },
-    [router, pathname, searchParams]
+    [router, pathname, searchParams, navbarHeight, breadcrumbsHeight]
   );
 
   const getFiltersFromUrl = useCallback(() => {
@@ -53,10 +73,13 @@ export const useUrl = () => {
   };
 };
 
-export const useFiltersToUrl = (filters: QueryParams) => {
+export const useFiltersToUrl = (
+  filters: QueryParams,
+  scrollTargetId?: string
+) => {
   const { updateUrlFromFilters } = useUrl();
 
   useEffect(() => {
-    updateUrlFromFilters(filters);
-  }, [filters, updateUrlFromFilters]);
+    updateUrlFromFilters(filters, scrollTargetId);
+  }, [filters, scrollTargetId, updateUrlFromFilters]);
 };

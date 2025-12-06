@@ -1,5 +1,5 @@
 @use "sass:map";
-@use "abstracts" as *;
+@use "./variables.scss" as *;
 
 @mixin property-per-breakpoint($property, $values) {
   #{$property}: map.get($values, base);

@@ -9,7 +9,7 @@ This is a Next.js 15 project using TypeScript, React Query, SCSS Modules, and a 
 ### Feature-Based Architecture
 
 - Organize code by features in the `features/` directory
-- Each feature should have its own `ui/`, `lib/`, `contexts/`, `queries/`, `services/`, and `server/` subdirectories as needed
+- Each feature should have its own `ui/`, `lib/`, `contexts/`, `repository/`, `adapter/`, and `services/` subdirectories as needed
 - Shared code goes in `features/shared/`
 - Use `types/` directory for TypeScript type definitions organized by domain
 
@@ -37,11 +37,11 @@ project-root/
 │   │
 │   ├── shared/                  # Shared across features
 │   │   ├── constants/
-│   │   │   └── index.tsx
+│   │   │   └── constants.tsx    # Single file folder → match folder name
 │   │   ├── contexts/
 │   │   │   └── SharedContext.tsx
 │   │   ├── hooks/
-│   │   │   └── index.ts
+│   │   │   └── hooks.ts         # Single file folder → match folder name
 │   │   ├── lib/
 │   │   │   ├── logger.ts
 │   │   │   └── utils.ts
@@ -62,13 +62,14 @@ project-root/
 │       │   └── FavsContext.spec.tsx
 │       ├── lib/
 │       │   ├── constants.ts
-│       │   └── utils.ts         # Utility functions (may contain fetch helpers used by services)
-│       ├── queries/
-│       │   └── index.tsx        # Queries Layer: React Query hooks
-│       ├── server/
-│       │   └── actions.ts
+│       │   └── utils.ts         # Utility functions (helper functions for repository/adapter)
+│       ├── repository/
+│       │   └── users.repository.ts  # Repository Pattern: Data Access Layer
+│       ├── adapter/
+│       │   └── users.adapter.ts     # Adapter Pattern: Data Transformation Layer
 │       ├── services/
-│       │   └── index.tsx        # Services Layer: Service wrappers
+│       │   ├── users.service.ts     # Service Pattern: Business Logic Layer (React Query hooks - client)
+│       │   └── users.actions.ts     # Service Pattern: Business Logic Layer (Server actions - server)
 │       └── ui/                  # User-specific UI components
 │           ├── Card/
 │           │   ├── Card.tsx
@@ -82,14 +83,14 @@ project-root/
 │
 ├── types/                       # TypeScript type definitions
 │   ├── pages/
-│   │   └── index.tsx
+│   │   └── pages.tsx            # Single file folder → match folder name
 │   ├── shared/
-│   │   └── index.tsx
+│   │   └── shared.tsx           # Single file folder → match folder name
 │   ├── ui/
-│   │   └── index.tsx
+│   │   └── ui.tsx               # Single file folder → match folder name
 │   ├── users/
-│   │   └── index.tsx
-│   └── index.tsx               # Main type exports
+│   │   └── users.tsx            # Single file folder → match folder name
+│   └── index.tsx               # Main type exports (root types folder)
 │
 ├── styles/                      # Global styles
 │   ├── abstracts/              # SCSS variables and constants (organized in partials)
@@ -134,6 +135,37 @@ ComponentName/
 - Types: camelCase (e.g., `index.tsx`)
 - **Test files: Use `.spec.tsx` extension with the same name as the component** (e.g., `Card.spec.tsx` for `Card.tsx`, `Header.spec.tsx` for `Header.tsx`)
 - Styles: `.module.scss` matching component name (e.g., `Card.module.scss` for `Card.tsx`)
+- **Repository files: `[feature].repository.ts`** (e.g., `users.repository.ts`)
+- **Adapter files: `[feature].adapter.ts`** (e.g., `users.adapter.ts`)
+- **Service files: `[feature].service.ts`** (e.g., `users.service.ts`) - Client-side React Query hooks
+- **Actions files: `[feature].actions.ts`** (e.g., `users.actions.ts`) - Server-side actions
+
+### Single File Folders: Match Folder Name
+
+- **If a folder contains only one file, match the folder name**
+- Use the folder name as the file name: `constants/` → `constants.ts`, `types/` → `types.ts`
+- **Exceptions** (these folders have their own naming conventions):
+  - `app/` folder - Next.js App Router has its own conventions (pages, layouts, etc.)
+  - `styles/` folder - Has its own SCSS organization rules
+  - `repository/` folder - Uses `[feature].repository.ts` (e.g., `users.repository.ts`)
+  - `adapter/` folder - Uses `[feature].adapter.ts` (e.g., `users.adapter.ts`)
+  - `services/` folder - Uses `[feature].service.ts` and `[feature].actions.ts`
+- Examples:
+  - `features/shared/constants/constants.ts` (matches folder name)
+  - `types/users/users.ts` (matches folder name)
+  - `features/users/lib/constants.ts` (matches folder name if it's the only file)
+
+### Barrel Exports: Use `index.ts` for Short Alias Imports
+
+- **`index.ts` (or `index.tsx`) files are ONLY for barrel exports** - re-exporting multiple files for cleaner imports
+- Barrel exports allow short alias imports: `import { Card } from "@/features/users/ui"` instead of `import { Card } from "@/features/users/ui/Card/Card"`
+- **Do NOT use `index.ts` for single-file folders** - use the folder name instead
+- Common barrel export locations:
+  - `features/[feature]/ui/index.tsx` - Re-exports all UI components
+  - `types/index.tsx` - Re-exports all type definitions (root types folder)
+- Examples:
+  - `features/users/ui/index.tsx` - Barrel export: `export { default as Card } from "./Card/Card";`
+  - `types/index.tsx` - Barrel export: `export * from "./users/users";`
 
 ## Path Aliases Configuration
 
@@ -141,6 +173,7 @@ ComponentName/
 
 - Configure path aliases in `tsconfig.json` for short import paths
 - Use `@/*` to map to the project root
+- Use feature-specific aliases for cleaner imports
 - This allows clean imports without relative path navigation
 
 ### tsconfig.json Example
@@ -149,11 +182,17 @@ ComponentName/
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@users/repository": ["./features/users/repository/users.repository"],
+      "@users/adapter": ["./features/users/adapter/users.adapter"],
+      "@users/services": ["./features/users/services/users.service"],
+      "@users/actions": ["./features/users/services/users.actions"]
     }
   }
 }
 ```
+
+**Note**: Add similar aliases for other features as needed (e.g., `@posts/repository`, `@posts/adapter`, etc.)
 
 ## Import Organization
 
@@ -178,9 +217,36 @@ import { useSharedContext } from "@/features/shared/contexts/SharedContext";
 import { User, QueryParams } from "@/types";
 import "@/styles/globals.scss";
 
-// Relative imports last
-import { fetchUsersService } from "../services";
+// Feature-specific layer imports (using short aliases)
+import { usersRepository } from "@users/repository";
+import { toUserAdapter, toUsersAdapter } from "@users/adapter";
+import { useInfiniteUsers } from "@users/services";
+import { fetchUsersAction } from "@users/actions";
+
+// Relative imports last (for same directory or nearby files)
 import styles from "./Card.module.scss";
+```
+
+### Import Strategy for Data Layer
+
+**Use short aliases for data layer imports**:
+
+```typescript
+// ✅ PREFERRED: Short aliases for data layer
+import { usersRepository } from "@users/repository";
+import { toUserAdapter } from "@users/adapter";
+import { useInfiniteUsers } from "@users/services";
+import { fetchUsersAction } from "@users/actions";
+
+// ⚠️ ACCEPTABLE: Full path (if alias not configured)
+import { usersRepository } from "@/features/users/repository/users.repository";
+import { toUserAdapter } from "@/features/users/adapter/users.adapter";
+import { useInfiniteUsers } from "@/features/users/services/users.service";
+import { fetchUsersAction } from "@/features/users/services/users.actions";
+
+// ❌ AVOID: Relative paths for data layer (harder to maintain)
+import { usersRepository } from "../../repository/users.repository";
+import { toUserAdapter } from "../../adapter/users.adapter";
 ```
 
 ## Component Patterns
@@ -268,6 +334,79 @@ export default Card;
 - Use destructuring for props
 - Support polymorphic components with `as` prop pattern when needed
 
+### Reusable Components with Variants, Sizes, and Weights
+
+- **Create reusable components with configurable props** for variants, sizes, weights, and other styling options
+- Use TypeScript union types for variant values (e.g., `Sizes`, `WeightVariants`, `ColorVariants`)
+- Define variant types in `types/ui/ui.tsx` for shared variants, or in feature-specific type files
+- Use `getStyleClass` helper for type-safe dynamic style access based on props
+- Provide sensible defaults for all variant props
+- Combine base class with variant classes using `clsx`
+- Support polymorphic rendering with `as` prop when needed
+
+### Reusable Component Pattern
+
+```typescript
+// types/ui/ui.tsx
+export type Sizes = "xs" | "sm" | "md" | "lg" | "xl";
+export type WeightVariants = "thin" | "normal" | "bold";
+export type ColorVariants = "default" | "primary" | "secondary" | "accent";
+
+export interface TypographyProps
+  extends Omit<HTMLAttributes<HTMLOrSVGElement>, "color"> {
+  as?: TypographyElements;
+  size?: Sizes;
+  weight?: WeightVariants;
+  variant?: ColorVariants;
+  truncate?: boolean;
+}
+```
+
+```typescript
+// Typography.tsx
+import { getStyleClass } from "@/features/shared/lib/utils";
+import { TypographyProps } from "@/types";
+import clsx from "clsx";
+import styles from "./Typography.module.scss";
+
+const { typography, ellipsis } = styles;
+
+const Typography = ({
+  children,
+  as: Tag = "p",
+  weight = "normal",
+  size = "md",
+  truncate = false,
+  variant = "default",
+  ...otherProps
+}: TypographyProps) => {
+  return (
+    <Tag
+      {...otherProps}
+      className={clsx(
+        typography,
+        getStyleClass(styles, variant),
+        getStyleClass(styles, weight),
+        getStyleClass(styles, size),
+        truncate && ellipsis,
+        otherProps.className
+      )}
+    >
+      {children}
+    </Tag>
+  );
+};
+```
+
+### Variant Type Guidelines
+
+- **Shared variants** (used across multiple components): Define in `types/ui/ui.tsx`
+  - Examples: `Sizes`, `WeightVariants`, `ColorVariants`
+- **Component-specific variants**: Define in the component's props interface
+- **Use descriptive names**: `ColorVariants` not `Colors`, `WeightVariants` not `Weights`
+- **Use union types**: `type Sizes = "xs" | "sm" | "md" | "lg" | "xl"`
+- **Provide defaults**: Always provide sensible default values for variant props
+
 ### Polymorphic Components
 
 - Use `as` prop pattern for components that can render as different HTML elements
@@ -326,10 +465,11 @@ export default Card;
 
 ### Barrel Exports
 
-- Use `index.tsx` files to create barrel exports for UI components
+- **Use `index.tsx` files ONLY for barrel exports** - re-exporting multiple files for cleaner imports
 - Export both default and named exports (including skeletons)
-- This allows clean imports: `import { Card, CardSkeleton } from "@/features/users/ui"`
+- This allows clean imports: `import { Card, CardSkeleton } from "@/features/users/ui"` instead of `import Card from "@/features/users/ui/Card/Card"`
 - Place barrel exports in `features/[feature]/ui/index.tsx`
+- **Purpose**: Short alias imports, not for single-file folders
 
 ### Barrel Export Example
 
@@ -390,6 +530,82 @@ export const useInfiniteUsers = (
 - Use `Readonly<>` for props when appropriate
 - Prefer interfaces over types for object shapes
 
+### Type Naming Conventions
+
+- **Component Props**: Always name as `ComponentNameProps` (PascalCase + `Props` suffix)
+  - Examples: `CardProps`, `TypographyProps`, `ContainerProps`, `UserDetailProps`
+  - This makes it clear the type is for component props and matches the component name
+- **Entity Types**: Use singular names for entity interfaces/types, use arrays for collections
+  - Entity: `User`, `Product`, `Repo` (singular)
+  - Collections: `User[]`, `Product[]`, `Repo[]` (array of singular)
+  - This follows TypeScript and general programming conventions
+- **Context Props**: Name as `ContextNameProps` (e.g., `FavsContextProps`)
+- **Service/Query Types**: Use descriptive names with suffixes like `Result`, `Params`, `Response`
+  - Examples: `FetchUsersResult`, `FetchUsersParams`, `QueryParams`
+
+### Type Naming Examples
+
+```typescript
+// ✅ Component Props - ComponentNameProps
+interface CardProps {
+  user: User;
+  className?: string;
+}
+
+interface TypographyProps {
+  size?: Sizes;
+  weight?: WeightVariants;
+  variant?: ColorVariants;
+}
+
+// ✅ Entity Types - Singular for entity, array for collections
+interface User {
+  id: number;
+  login: string;
+  // ...
+}
+
+interface Product {
+  id: number;
+  name: string;
+  // ...
+}
+
+// Usage in props/interfaces
+interface CardProps {
+  user: User;        // ✅ Singular entity
+}
+
+interface CardGridProps {
+  users: User[];     // ✅ Array of entities
+}
+
+interface UserDetailProps {
+  user: User;        // ✅ Singular entity
+  repos: Repo[];     // ✅ Array of entities
+}
+
+// ✅ Context Props - ContextNameProps
+interface FavsContextProps {
+  favs: FavoredUser[];
+  addFav: (user: User) => Promise<void>;
+  removeFav: (id: number) => void;
+}
+
+// ✅ Service/Query Types - Descriptive with suffixes
+interface FetchUsersResult {
+  users: User[];
+  nextSince: string | null;
+  totalCount: number | null;
+}
+
+interface FetchUsersParams {
+  perPageParam?: string;
+  pageParam?: string;
+  queryParams?: QueryParams;
+}
+```
+
 ### Type Example
 
 ```typescript
@@ -409,37 +625,50 @@ interface FavsContextProps {
 
 ### SCSS Organization
 
-- **Styles should be organized in folders** within the `styles/` directory
+- **Styles are organized in folders** within the `styles/` directory
 - Use **Sass partials** (files starting with `_`) for modular organization
-- Use `@use` to import partials into main files
-- Organize styles by concern: variables, mixins, functions, etc.
-- Main files (without `_`) should import and re-export partials
+- Use `@forward` in `_index.scss` files to expose partials
+- Use `@use` to import directories in main files (globals.scss, base files, layout files)
+- **Component modules do NOT need imports** - abstracts are automatically available via `prependData`
+- Organize styles by concern: abstracts (variables, mixins, functions), base (reset, base styles), layouts (page-specific layouts)
+- Two main files: `globals.scss` (for layout) and `main.scss` (for prependData)
 
 ### SCSS Folder Structure
 
 ```
 styles/
-├── abstracts/
-│   ├── _variables.scss      # SCSS variables
+├── abstracts/               # Variables, mixins, functions (no CSS output)
+│   ├── _variables.scss      # Breakpoints, spacing, transitions
 │   ├── _colors.scss         # Color definitions
 │   ├── _typography.scss     # Font and text styles
 │   ├── _layout.scss         # Layout variables
-│   └── _animations.scss     # Animation variables
-├── mixins/
-│   ├── _breakpoints.scss    # Media query mixins
-│   ├── _hover.scss          # Hover state mixins
-│   └── _utilities.scss      # Utility mixins
-├── abstracts.scss           # Main file: @use all abstract partials
-├── mixins.scss              # Main file: @use all mixin partials
-├── globals.scss             # Global styles
-└── reset.scss               # CSS reset
+│   ├── _mixins.scss         # Mixins (breakpoints, hover, etc.)
+│   ├── _animations.scss     # Animation variables and keyframes
+│   └── _index.scss          # Forwards all abstract partials
+├── base/                    # Reset, normalize, base element styles
+│   ├── _reset.scss          # CSS reset
+│   ├── _base.scss           # Base element styles (body, :root, etc.)
+│   └── _index.scss          # Forwards all base partials
+├── layouts/                 # Page/section-specific layout styles
+│   ├── _global-layout.scss  # Global layout styles
+│   └── _index.scss          # Forwards all layout partials
+├── globals.scss             # Global styles for layout: imports layouts and base
+└── main.scss                # Core SCSS (abstracts): forwards abstracts/_index.scss
 ```
 
 ### SCSS Partial Pattern
 
 - **Partials** (files starting with `_`): Contain specific style definitions
-- **Main files** (without `_`): Import and re-export partials using `@use`
-- Use `@use` with `as *` to import all members without namespace
+- **Index files** (`_index.scss`): Use `@forward` to expose all partials in a directory
+- **Main files** (without `_`): Import directories using `@use` or `@forward`
+- **Component modules**: No imports needed - abstracts are automatically available via `prependData` in `next.config.ts`
+
+### File Organization
+
+- **`globals.scss`** - Imported in `app/layout.tsx`, contains global styles (layouts and base)
+- **`main.scss`** - **Single contact point** that forwards abstracts (variables, mixins, functions)
+- **Component modules** - Import `main.scss` using `@use "../../../../styles/main" as *;` (adjust path as needed)
+- **Important**: `main.scss` is the single contact point. If you add new folders (beyond abstracts), add them to `main.scss` - it forwards all core SCSS that modules need
 
 ### SCSS Partial Example
 
@@ -452,22 +681,44 @@ $spacing-unit: 1rem;
 $color-primary: #3b82f6;
 $color-secondary: #4a4a4a;
 
-// styles/abstracts.scss (Main file - imports all partials)
-@use "abstracts/variables" as *;
-@use "abstracts/colors" as *;
-@use "abstracts/typography" as *;
-@use "abstracts/layout" as *;
-@use "abstracts/animations" as *;
+// styles/abstracts/_index.scss (Index file - forwards all partials)
+@forward "./variables.scss";
+@forward "./colors.scss";
+@forward "./typography.scss";
+@forward "./layout.scss";
+@forward "./mixins.scss";
+@forward "./animations.scss";
+
+// styles/main.scss (Single contact point for prependData - forwards abstracts)
+@forward "./abstracts/index.scss";
+// DOC If you add new folders (e.g., functions, utilities), add them here:
+// @forward "./new-folder/index.scss";
+
+// styles/globals.scss (Global styles for layout - imported in app/layout.tsx)
+@use "layouts";
+@use "base";
 ```
 
 ### CSS/SCSS Modules
 
-- **Always use CSS Modules** (`.module.scss` or `.module.css`) for component styles
-- Import abstracts and mixins from `styles/` directory using `@use`
+- **This project uses CSS Modules** - all component styles are co-located with components as `.module.scss` files
+- Components are self-contained and don't need global styling
+- **Import `main.scss` in component modules** using `@use "../../../../styles/main" as *;` (adjust relative path as needed)
+- `main.scss` forwards all abstracts (variables, mixins, functions), so importing it gives access to everything
 - **CRITICAL**: Import and destructure styles OUTSIDE the component definition (before the component), not inside
 - This ensures the destructuring happens only once, improving performance
 - Use camelCase for class names
-- Use CSS custom properties and SCSS variables from abstracts
+- **Use `$color-*` variables (CSS custom properties) in component SCSS modules** - NOT `$base-color-*`
+  - `$color-accent`, `$color-background`, `$color-foreground`, etc. - These support dynamic theming (light/dark mode)
+  - `$base-color-*` variables are ONLY used in `styles/base/_base.scss` to define the CSS custom properties
+  - Example: `background-color: $color-accent;` ✅ NOT `background-color: $base-color-accent;` ❌
+- **Use short hex color format when possible** - Use 3-character hex codes instead of 6-character when the color allows it
+  - `#000` ✅ NOT `#000000` ❌
+  - `#fff` ✅ NOT `#ffffff` ❌
+  - `#3b82f6` ✅ (cannot be shortened, different digits)
+  - This follows the `color-hex-length` linting rule and keeps code concise
+- Use SCSS variables from abstracts (spacing, typography, etc.)
+- Mixins are part of abstracts, so importing `main.scss` gives access to all mixins
 
 ### CSS Class Naming Convention
 
@@ -546,8 +797,8 @@ const Card = ({ isActive, user }: CardProps) => {
 ### SCSS Module Example
 
 ```scss
-@use "../../../../styles/abstracts" as *;
-@use "../../../../styles/mixins" as *;
+// Component.module.scss
+@use "../../../../styles/main" as *;
 
 .card {
   display: flex;
@@ -560,6 +811,11 @@ const Card = ({ isActive, user }: CardProps) => {
   padding: 1rem;
 }
 ```
+
+**Important:**
+- **Always import `main.scss` in component modules** - it's the single contact point for all abstracts
+- Adjust the relative path based on your component's location (e.g., `../../../styles/main` for pages, `../../../../styles/main` for features)
+- `main.scss` forwards all abstracts, so importing it gives access to all variables, mixins, and functions
 
 ### Component Style Usage (Correct Pattern)
 
@@ -577,6 +833,8 @@ const Card = ({ user }: CardProps) => {
   );
 };
 ```
+
+**Note:** Component `.module.scss` files should import `main.scss` at the top: `@use "../../../../styles/main" as *;` (adjust path as needed).
 
 ### Dynamic Style Access (When Using Props)
 
@@ -628,15 +886,38 @@ const Typography = ({ variant }: TypographyProps) => {
 };
 ```
 
+```scss
+// ❌ WRONG: Don't import abstracts or mixins directly
+// Component.module.scss
+@use "../../../../styles/abstracts" as *; // ❌ Import main.scss instead
+@use "../../../../styles/mixins" as *; // ❌ Mixins are part of abstracts, import main.scss
+
+// ✅ CORRECT: Import main.scss (single contact point)
+@use "../../../../styles/main" as *;
+
+.card {
+  // styles
+}
+```
+
 ## Context Patterns
 
 ### Context Setup
 
 - Use `"use client"` directive for client-side contexts
 - Create context with `createContext` and `undefined` default
-- Provide custom hook for consuming context with error handling
+- **ALWAYS provide a custom hook for consuming context** - never use `useContext(ContextName)` directly
+- Custom hook must be named `use{ContextName}Context` (e.g., `FavsContext` → `useFavsContext`)
+- Custom hook must include error handling to check if context is undefined
 - Use `useMemo` for context values
 - Use `useCallback` for context methods
+
+### Context Hook Naming Convention
+
+- **Context name**: `{Feature}Context` (e.g., `FavsContext`, `FiltersContext`, `SharedContext`)
+- **Custom hook name**: `use{Feature}Context` (e.g., `useFavsContext`, `useFiltersContext`, `useSharedContext`)
+- **Never use `useContext(ContextName)` directly** - always use the custom hook export
+- This ensures type safety and provides helpful error messages when context is used outside provider
 
 ### Context Example
 
@@ -662,12 +943,38 @@ export const FavsProvider = ({ children }: FavsProviderProps) => {
   );
 };
 
+// ✅ CORRECT: Export custom hook with use{ContextName}Context naming
 export const useFavsContext = () => {
   const context = useContext(FavsContext);
   if (context === undefined) {
     throw new Error("useFavsContext must be used within a FavsProvider");
   }
   return context;
+};
+```
+
+### ❌ Incorrect Context Usage (Don't Do This)
+
+```typescript
+// ❌ WRONG: Don't use useContext directly
+import { useContext } from "react";
+import { FavsContext } from "./FavsContext";
+
+const MyComponent = () => {
+  const { favs } = useContext(FavsContext); // ❌ Use useFavsContext instead
+  // ...
+};
+```
+
+### ✅ Correct Context Usage
+
+```typescript
+// ✅ CORRECT: Use the custom hook export
+import { useFavsContext } from "./FavsContext";
+
+const MyComponent = () => {
+  const { favs } = useFavsContext(); // ✅ Type-safe with error handling
+  // ...
 };
 ```
 
@@ -731,13 +1038,16 @@ describe("Card", () => {
 - **Page Components** (`features/pages/`): Reusable page-level components that contain the UI
 - Next.js pages should be thin wrappers that fetch data and render page components
 - Page components should be client components if they need interactivity
+- **DO NOT add `<main>` tags in page components** - The main HTML tag is already provided by the layout client component, adding it in page components will create nested main tags which is invalid HTML
+- **DO NOT add `<header>` or `<footer>` tags in page components or other places** - Header and Footer components are already provided by the layout client component, adding them elsewhere will create duplicate header/footer tags which is invalid HTML and causes SEO issues
+- **Page-specific components should be added inside page components** - Components like hero sections, carousels, promo banners, or other page-specific features should be added within their respective page components. This keeps page singularities and unique features within their respective page components, not in the global layout
 
 ### Page Component Pattern Example
 
 ```typescript
 // app/page.tsx (Next.js Page - Server Component)
 import SearchPage from "@/features/pages/SearchPage/SearchPage";
-import { fetchUsersAction } from "@/features/users/server/actions";
+import { fetchUsersAction } from "@users/actions";
 
 const Home = async (pageParams: PageParamsProps) => {
   const initialUsers = await fetchUsersAction({
@@ -759,22 +1069,32 @@ const SearchPage = ({ initialUsers }: SearchPageProps) => {
 ### Server Actions
 
 - Use server actions for server-side data fetching and mutations
-- Place server actions in `features/[feature]/server/actions.ts`
+- Place server actions in `features/[feature]/services/[feature].actions.ts`
 - Name server actions with `Action` suffix: `fetchUsersAction`, `fetchUserAction`
-- Server actions should call services
+- Server actions should use Repository + Adapter (same as client services, but without React Query)
 - Use `async/await` for server actions
+- Include `"use server"` directive at the top of the file
 
-### Server Action Example
+### Server Actions Example
 
 ```typescript
-// features/users/server/actions.ts
-import { fetchUsersService } from "../services";
+// features/users/services/users.actions.ts
+"use server";
 
-export async function fetchUsersAction(
+import { usersRepository } from "../repository/users.repository";
+import { toFetchUsersResultAdapter } from "../adapter/users.adapter";
+import { FetchUsersParams, FetchUsersResult } from "@/types/users";
+
+// ✅ CORRECT: Arrow function
+export const fetchUsersAction = async (
   params: FetchUsersParams
-): Promise<FetchUsersResult> {
-  return fetchUsersService(params);
-}
+): Promise<FetchUsersResult> => {
+  // 1. Repository: Get raw data from API
+  const rawResponse = await usersRepository.getUsers(params);
+
+  // 2. Adapter: Transform to domain model
+  return toFetchUsersResultAdapter(rawResponse);
+};
 ```
 
 ### Error Handling in Server Components
@@ -863,60 +1183,158 @@ const Home = async () => {
 
 ## Data Layer Architecture
 
-### Two-Layer Data Architecture
+### Clean Architecture: Three-Layer Data Architecture
 
-The project uses a two-layer architecture for data fetching:
+The project uses **Clean Architecture** with a three-layer pattern-based architecture:
 
-1. **Services Layer** (`features/[feature]/services/index.tsx`) - Service functions that handle API calls
-2. **Queries Layer** (`features/[feature]/queries/index.tsx`) - React Query hooks
+1. **Repository Layer** (`features/[feature]/repository/[feature].repository.ts`) - Repository Pattern: Data Access
+2. **Adapter Layer** (`features/[feature]/adapter/[feature].adapter.ts`) - Adapter Pattern: Data Transformation
+3. **Service Layer** (`features/[feature]/services/`) - Service Pattern: Business Logic
+   - `[feature].service.ts` - Client-side React Query hooks
+   - `[feature].actions.ts` - Server-side actions
 
-### Services Layer (services/index.tsx)
+This architecture follows **Clean Architecture** principles (Robert C. Martin) and ensures:
+- **Dependency Rule**: Dependencies point inward (Service → Adapter → Repository → API)
+- **Independence**: Business logic independent of frameworks, databases, and external agencies
+- **Testability**: Each layer can be tested independently
+- **Maintainability**: Clear separation of concerns
 
-- Contains service functions that handle API communication
-- Functions are named with `Service` suffix: `fetchUserService`, `fetchUsersService`
-- Handles API calls, error handling, and response transformation
-- Provides default parameters and parameter normalization
-- May use utility functions from `lib/utils.ts` for helper functions, but services are the main abstraction
-- Located in `features/[feature]/services/index.tsx`
+### Repository Layer (repository/[feature].repository.ts)
 
-### Services Layer Example
+**Pattern**: Repository Pattern (DDD, Clean Architecture)
+
+**Purpose**: Data Access Layer - Abstracts data access from external sources
+
+**Responsibilities**:
+- Makes raw API calls to external systems (e.g., GitHub API)
+- Handles network errors, timeouts, retries
+- Returns raw API response types
+- Provides a consistent interface for data access
+- Hides API implementation details from business logic
+
+**File Naming**: `[feature].repository.ts` (e.g., `users.repository.ts`)
+
+**Location**: `features/[feature]/repository/[feature].repository.ts`
+
+**Repository Layer Example**:
 
 ```typescript
-// features/users/services/index.tsx
-// Services may use utility functions from lib/utils.ts for API calls
-import { fetchUser, fetchUsers } from "../lib/utils";
+// features/users/repository/users.repository.ts
+import { FetchUsersParams } from "@/types/users";
+import { GitHubUsersResponse, GitHubUser } from "@/types/users/api";
+import { fetchUsers, fetchUser } from "../lib/utils"; // Relative import for same feature
 
-export const fetchUserService = async (id: number): Promise<User> => {
-  return fetchUser(id);
-};
+export const usersRepository = {
+  getUsers: async (params: FetchUsersParams): Promise<GitHubUsersResponse> => {
+    // Raw API call - returns GitHub API response format
+    return fetchUsers(params);
+  },
 
-export const fetchUsersService = async (
-  params: FetchUsersParams
-): Promise<FetchUsersResult> => {
-  const {
-    perPageParam = PER_PAGE_CONFIGS.desktop.items,
-    pageParam = "1",
-    queryParams = DEFAULT_QUERY_PARAMS,
-  } = params;
-  return fetchUsers({ queryParams, pageParam, perPageParam });
+  getUser: async (id: number): Promise<GitHubUser | null> => {
+    // Raw API call - returns GitHub API response format
+    return fetchUser(id);
+  },
 };
 ```
 
-**Note**: Utility functions in `lib/utils.ts` (like `fetchUsers`, `fetchUser`) are implementation details used by services. Services are the main abstraction layer for data fetching.
+**Note**: Repository uses utility functions from `lib/utils.ts` for actual API calls. Repository is the abstraction layer that hides API implementation details.
 
-### Queries Layer (queries/index.tsx)
+### Adapter Layer (adapter/[feature].adapter.ts)
 
-- Contains React Query hooks that use services
-- Hooks are named with `use` prefix: `useInfiniteUsers`, `useInfiniteFavUsers`
-- Integrates React Query for caching, loading states, and error handling
-- Provides computed values and helper functions
-- Located in `features/[feature]/queries/index.tsx`
+**Pattern**: Adapter Pattern (GoF, Hexagonal Architecture, Clean Architecture)
 
-### Queries Layer Example
+**Purpose**: Data Transformation Layer - Transforms external API models to internal domain models
+
+**Responsibilities**:
+- Transforms external API responses → internal domain models
+- Converts API field names (e.g., `snake_case` → `camelCase`)
+- Removes unused fields from API responses
+- Provides clean, app-specific domain models
+- Acts as Anti-Corruption Layer (prevents external API structure from corrupting domain models)
+
+**File Naming**: `[feature].adapter.ts` (e.g., `users.adapter.ts`)
+
+**Location**: `features/[feature]/adapter/[feature].adapter.ts`
+
+**Adapter Rules - REQUIRED**:
+
+1. **Only adapt values that are used in the app** - Do NOT adapt all API fields, only the ones actually used in components, services, or contexts
+   - Check which fields are accessed in components, services, and contexts
+   - Only include fields that are actively used
+   - This keeps domain models lean and focused
+
+2. **Convert snake_case to camelCase** - The service layer should receive camelCase property names, not snake_case
+   - API responses use `snake_case` (e.g., `avatar_url`, `public_repos`, `html_url`)
+   - Domain models use `camelCase` (e.g., `avatarUrl`, `publicRepos`, `htmlUrl`)
+   - Adapters transform: `apiUser.avatar_url` → `avatarUrl`
+   - This ensures consistent JavaScript/TypeScript naming conventions throughout the app
+
+**Adapter Layer Example**:
 
 ```typescript
-// features/users/queries/index.tsx
-import { fetchUsersService } from "../services";
+// features/users/adapter/users.adapter.ts
+import { GitHubUser, GitHubUsersResponse } from "@/types/users/api";
+import { User, FetchUsersResult } from "@/types/users"; // Types use @/ alias
+
+export const toUserAdapter = (apiUser: GitHubUser): User => {
+  return {
+    id: apiUser.id,
+    login: apiUser.login,
+    avatarUrl: apiUser.avatar_url, // ✅ snake_case → camelCase
+    followers: apiUser.followers,
+    following: apiUser.following,
+    publicRepos: apiUser.public_repos, // ✅ snake_case → camelCase
+    bio: apiUser.bio,
+    // ✅ Only fields we actually use in our app (checked in components/services)
+  };
+};
+
+export const toUsersAdapter = (apiUsers: GitHubUser[]): User[] => {
+  return apiUsers.map(toUserAdapter);
+};
+
+export const toFetchUsersResultAdapter = (
+  apiResponse: GitHubUsersResponse
+): FetchUsersResult => {
+  return {
+    users: toUsersAdapter(apiResponse.users),
+    nextSince: apiResponse.nextSince,
+    totalCount: apiResponse.totalCount,
+  };
+};
+```
+
+### Service Layer (services/[feature].service.ts)
+
+**Pattern**: Service Pattern (Enterprise Application Architecture, Clean Architecture)
+
+**Purpose**: Business Logic Layer - Contains application-specific business rules and React Query integration
+
+**Responsibilities**:
+- Implements use cases (application-specific business rules)
+- Orchestrates Repository and Adapter
+- Integrates React Query for caching, loading states, and error handling
+- Provides computed values and helper functions
+- Contains business logic (filtering, sorting, pagination, stale data checks)
+- Returns UI-ready data
+
+**File Naming**: `[feature].service.ts` (e.g., `users.service.ts`) for client-side React Query hooks
+
+**Location**: `features/[feature]/services/[feature].service.ts`
+
+**Service Layer Example**:
+
+```typescript
+// features/users/services/users.service.ts
+import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
+import { useCallback, useMemo } from "react";
+import { QueryParams, User } from "@/types/users";
+import { usersRepository } from "@users/repository";
+import {
+  toFetchUsersResultAdapter,
+  toUserAdapter,
+} from "@users/adapter";
+import { DEFAULT_QUERY_PARAMS } from "../lib/constants";
 
 export const useInfiniteUsers = (
   queryParams: QueryParams = DEFAULT_QUERY_PARAMS,
@@ -926,49 +1344,42 @@ export const useInfiniteUsers = (
   const { data, error, fetchNextPage, hasNextPage, isFetching } =
     useInfiniteQuery({
       queryKey: ["users", queryParams, perPage],
-      queryFn: ({ pageParam }) =>
-        fetchUsersService({
+      queryFn: async ({ pageParam }) => {
+        // 1. Repository: Get raw data from API
+        const rawResponse = await usersRepository.getUsers({
           perPageParam: perPage,
           pageParam,
           queryParams,
-        }),
+        });
+
+        // 2. Adapter: Transform API response → Domain model
+        return toFetchUsersResultAdapter(rawResponse);
+      },
       // ... other React Query options
     });
 
+  // Business logic: Flatten paginated data
   const flattenedUsers = useMemo(() => {
     return data?.pages.map((page) => page.users).flat() || [];
   }, [data]);
 
+  // Business logic: Computed values
+  const isLoading = useMemo(() => {
+    return isFetching && flattenedUsers.length === 0;
+  }, [isFetching, flattenedUsers]);
+
   return {
     users: flattenedUsers,
     isError: error,
-    isLoading: isFetching && flattenedUsers.length === 0,
-    handleLoadMore: () => {
-      /* ... */
-    },
-    // ... other return values
+    isLoading,
+    hasNextPage,
+    handleLoadMore: useCallback(() => {
+      if (hasNextPage && !isFetching) {
+        fetchNextPage();
+      }
+    }, [hasNextPage, isFetching, fetchNextPage]),
   };
 };
-```
-
-### Type Definitions
-
-- **Types should be organized by feature in the `types/` directory**
-- Similar to queries and services, types are separated by feature domain
-- Located in `types/[feature]/index.tsx`
-- Export types from feature-specific type files
-
-### Type Organization Example
-
-```
-types/
-├── users/
-│   └── index.tsx          # User-related types (User, FetchUsersResult, etc.)
-├── shared/
-│   └── index.tsx          # Shared types
-├── ui/
-│   └── index.tsx          # UI component types
-└── index.tsx              # Main type exports
 ```
 
 ### Data Flow
@@ -976,30 +1387,87 @@ types/
 ```
 Component
   ↓
-Queries Layer (useInfiniteUsers)
-  ↓
-Services Layer (fetchUsersService)
-  ↓
-API
+Service Layer (users.service.ts)
+  ↓ uses
+Adapter Layer (users.adapter.ts)
+  ↓ uses
+Repository Layer (users.repository.ts)
+  ↓ uses
+External API (GitHub API)
 ```
 
 ### Benefits of This Architecture
 
-- **Separation of Concerns**: Each layer has a single responsibility
-- **Testability**: Each layer can be tested independently
-- **Reusability**: Services can be used outside React Query hooks (e.g., in server actions)
-- **Maintainability**: Changes to API structure only affect the services layer
-- **Type Safety**: Types are organized by feature for better organization
+- **Clean Architecture Compliance**: Follows Robert C. Martin's Clean Architecture principles
+- **Separation of Concerns**: Each layer has a single, clear responsibility
+- **Testability**: Each layer can be tested independently (mock Repository, test Adapter transformations, test Service business logic)
+- **Maintainability**: Changes to API structure only affect Repository/Adapter, business logic remains stable
+- **Flexibility**: Easy to swap data sources (change Repository), change APIs (change Adapter), modify business rules (change Service)
+- **Type Safety**: Adapter provides type transformation, domain models are clean and focused
+- **Scalability**: Can add new repositories, adapters, or services easily
+
+### Type Definitions
+
+- **Types should be organized by feature in the `types/` directory**
+- Similar to queries and services, types are separated by feature domain
+- Located in `types/[feature]/[feature].tsx` (match folder name)
+- Export types from feature-specific type files
+
+### Type Organization Example
+
+```
+types/
+├── users/
+│   └── users.tsx          # User-related types (User, FetchUsersResult, etc.)
+├── shared/
+│   └── shared.tsx         # Shared types
+├── ui/
+│   └── ui.tsx             # UI component types
+└── index.tsx              # Main type exports (root types folder)
+```
+
+### Server Actions (users.actions.ts)
+
+Server actions are part of the Service layer but run on the server. They use the same three-layer architecture:
+
+**File Naming**: `[feature].actions.ts` (e.g., `users.actions.ts`)
+
+**Location**: `features/[feature]/services/[feature].actions.ts`
+
+**Server Actions Example**:
+
+```typescript
+// features/users/services/users.actions.ts
+"use server";
+
+import { usersRepository } from "../repository/users.repository";
+import { toFetchUsersResultAdapter } from "../adapter/users.adapter";
+import { FetchUsersParams, FetchUsersResult } from "@/types/users";
+
+export const fetchUsersAction = async (
+  params: FetchUsersParams
+): Promise<FetchUsersResult> => {
+  // 1. Repository: Get raw data from API
+  const rawResponse = await usersRepository.getUsers(params);
+
+  // 2. Adapter: Transform to domain model
+  return toFetchUsersResultAdapter(rawResponse);
+};
+```
+
+**Note**: Server actions use Repository + Adapter directly (no React Query, as that's client-side only). Both `users.service.ts` (client) and `users.actions.ts` (server) are part of the Service layer and orchestrate Repository + Adapter.
 
 ## Code Comments
 
-### Comment Labels - REQUIRED
+### Comment Labels - REQUIRED - NO EXCEPTIONS
 
-- **ALL comments MUST use TODO Tree extension labels** - no comments without labels
-- Use `// TODO` for future improvements, refactoring, or enhancements (yellow highlight)
-- Use `// FIX` for bugs that need fixing or known issues (red highlight)
-- Use `// DOC` for documentation notes, explanations, or important context (green highlight)
+- **ALL comments MUST use TODO Tree extension labels** - **NO COMMENTS WITHOUT LABELS, THIS IS MANDATORY, NOT OPTIONAL**
+- **CRITICAL**: Comments without labels are **FORBIDDEN**. Only use comments with labels:
+  - `// TODO` for future improvements, refactoring, or enhancements (yellow highlight)
+  - `// FIX` for bugs that need fixing or known issues (red highlight)
+  - `// DOC` for documentation notes, explanations, or important context - **ONLY for hacky things or exceptions that need explanation**
 - **Never write comments without one of these labels** - this ensures all comments are tracked by the TODO Tree extension
+- **If a comment is not TODO, FIX, or necessary DOC for hacky things/exceptions, DO NOT WRITE IT** - code should be self-documenting
 
 ### Comment Examples
 
@@ -1049,8 +1517,48 @@ initialData: initialData && !isClient ? { pages: [initialData] } : undefined,
 
 - Use camelCase: `fetchUsersService`, `handleLoadMore`, `isLoading`
 - **Boolean flags/variables must start with `is`, `has`, or `should`**: `isLoading`, `hasNextPage`, `shouldUpdate`, `isError`, `hasNoFavs`
+- **When converting constants to boolean flags, always use camelCase** - even if the constant is UPPER_SNAKE_CASE
+  - Constants: `GITHUB_TOKEN`, `NEXT_PUBLIC_GITHUB_TOKEN`
+  - Boolean flags: `hasGithubToken`, `hasNextPublicGithubToken` ✅ (NOT `hasGITHUB_TOKEN`, `hasNEXT_PUBLIC_GITHUB_TOKEN` ❌)
+  - This ensures consistent camelCase naming for all variables, regardless of the source constant's naming convention
 - **Functions must start with a verb**: `getSomething`, `fetchSomething`, `validateSomething`, `checkSomething`, `handleSomething`
 - Functions that return booleans: `checkFav`, `isAddingFav`, `validateFilterParams`
+- **Always prefer arrow functions over function declarations**: Use `const functionName = () => {}` instead of `function functionName() {}`
+- Arrow functions provide consistent syntax, better `this` binding, and work well with TypeScript
+- **No exceptions**: This applies to all functions including server actions, utilities, hooks, and components
+
+### Function Declaration Examples
+
+```typescript
+// ✅ CORRECT: Use arrow functions
+export const fetchUsersService = async (params: FetchUsersParams) => {
+  return fetchUsers(params);
+};
+
+const handleClick = () => {
+  // implementation
+};
+
+const checkFav = (id: number): boolean => {
+  return favs.some((fav) => fav.user.id === id);
+};
+
+// ✅ CORRECT: Arrow function for server actions
+export const fetchUsersAction = async (
+  params: FetchUsersParams
+): Promise<FetchUsersResult> => {
+  return fetchUsersService(params);
+};
+
+// ❌ AVOID: Function declarations (always use arrow functions)
+function fetchUsersService(params: FetchUsersParams) {
+  return fetchUsers(params);
+}
+
+export function handleClick() {
+  // implementation
+}
+```
 
 ### Components & Types
 
@@ -1061,7 +1569,7 @@ initialData: initialData && !isClient ? { pages: [initialData] } : undefined,
 
 - Use UPPER_SNAKE_CASE: `DEFAULT_QUERY_PARAMS`, `STALE_DATA_THRESHOLD`, `PER_PAGE_CONFIGS`
 - **ALL constants MUST be defined in a `constants.ts` file** - never define constants inline in component or utility files
-- Constants should be organized by feature in `features/[feature]/lib/constants.ts` or shared in `features/shared/constants/index.tsx`
+- Constants should be organized by feature in `features/[feature]/lib/constants.ts` or shared in `features/shared/constants/constants.tsx`
 - Export constants from `constants.ts` files and import them where needed
 - This ensures constants are reusable, maintainable, and follow the abstraction principle
 
@@ -1071,11 +1579,105 @@ initialData: initialData && !isClient ? { pages: [initialData] } : undefined,
 - Return objects with descriptive property names
 - Use camelCase after `use`: `useInfiniteUsers` not `useInfinite_Users`
 
-### Queries (React Query Hooks)
+### Services (React Query Hooks)
 
-- **Must start with `use` prefix and describe the query**: `useInfiniteUsers`, `useInfiniteFavUsers`
+- **Service layer contains React Query hooks that start with `use` prefix**: `useInfiniteUsers`, `useInfiniteFavUsers`
 - Follow the same naming as hooks but be specific about what data they fetch
 - Use camelCase: `useInfiniteUsers` not `useInfinite_Users`
+- Service files are named `[feature].service.ts` (e.g., `users.service.ts`)
+
+### Data Layer Naming Conventions
+
+**Repository Layer**:
+- **Do NOT use "fetch" prefix** - Repository methods should use action verbs like `get`, `find`, `retrieve`
+- Examples: `getUsers()`, `getUser()`, `findUserById()` (NOT `fetchUsers()`, `fetchUser()`)
+- Repository is an abstraction, not a fetch function
+
+**Adapter Layer**:
+- **Use "to" prefix** for transformation functions: `toUserAdapter()`, `toUsersAdapter()`, `toFetchUsersResultAdapter()`
+- Pattern: `to{TargetType}Adapter()` - transforms source → target
+- Examples: `toUserAdapter()`, `toRepoAdapter()`, `toUsersAdapter()`
+
+**Service Layer (Hooks)**:
+- **Use "use" prefix** (React convention): `useInfiniteUsers()`, `useInfiniteFavUsers()`
+- Follow React hook naming conventions
+- Examples: `useInfiniteUsers()`, `useUser()`, `useUsers()`
+
+**Service Layer (Actions)**:
+- **Use "fetch" prefix + "Action" suffix**: `fetchUsersAction()`, `fetchUserAction()`
+- Explicit naming for server actions
+- Examples: `fetchUsersAction()`, `fetchUserAction()`, `fetchUserReposAction()`
+
+### Data Layer Naming Examples
+
+```typescript
+// ✅ Repository Layer - No "fetch" prefix
+export const usersRepository = {
+  getUsers: async (params: FetchUsersParams) => { /* ... */ },
+  getUser: async (id: number) => { /* ... */ },
+  // ❌ NOT: fetchUsers, fetchUser
+};
+
+// ✅ Adapter Layer - "to" prefix
+export const toUserAdapter = (apiUser: GitHubUser): User => { /* ... */ };
+export const toUsersAdapter = (apiUsers: GitHubUser[]): User[] => { /* ... */ };
+export const toFetchUsersResultAdapter = (response: GitHubUsersResponse): FetchUsersResult => { /* ... */ };
+
+// ✅ Service Layer (Hooks) - "use" prefix
+export const useInfiniteUsers = () => { /* ... */ };
+export const useUser = (id: number) => { /* ... */ };
+
+// ✅ Service Layer (Actions) - "fetch" prefix + "Action" suffix
+export const fetchUsersAction = async (params: FetchUsersParams) => { /* ... */ };
+export const fetchUserAction = async (id: number) => { /* ... */ };
+```
+
+### Data Layer Naming Conventions
+
+**Repository Layer**:
+- **Do NOT use "fetch" prefix** - Repository methods should use action verbs like `get`, `find`, `retrieve`
+- Examples: `getUsers()`, `getUser()`, `findUserById()` (NOT `fetchUsers()`, `fetchUser()`)
+- Repository is an abstraction, not a fetch function
+
+**Adapter Layer**:
+- **Use "to" prefix** for transformation functions: `toUserAdapter()`, `toUsersAdapter()`, `toFetchUsersResultAdapter()`
+- Pattern: `to{TargetType}Adapter()` - transforms source → target
+- Examples: `toUserAdapter()`, `toRepoAdapter()`, `toUsersAdapter()`
+
+**Service Layer (Hooks)**:
+- **Use "use" prefix** (React convention): `useInfiniteUsers()`, `useInfiniteFavUsers()`
+- Follow React hook naming conventions
+- Examples: `useInfiniteUsers()`, `useUser()`, `useUsers()`
+
+**Service Layer (Actions)**:
+- **Use "fetch" prefix + "Action" suffix**: `fetchUsersAction()`, `fetchUserAction()`
+- Explicit naming for server actions
+- Examples: `fetchUsersAction()`, `fetchUserAction()`, `fetchUserReposAction()`
+
+### Data Layer Naming Examples
+
+```typescript
+// ✅ Repository Layer - No "fetch" prefix
+export const usersRepository = {
+  getUsers: async (params: FetchUsersParams) => { /* ... */ },
+  getUser: async (id: number) => { /* ... */ },
+  // ❌ NOT: fetchUsers, fetchUser
+};
+
+// ✅ Adapter Layer - "to" prefix
+export const toUserAdapter = (apiUser: GitHubUser): User => { /* ... */ };
+export const toUsersAdapter = (apiUsers: GitHubUser[]): User[] => { /* ... */ };
+export const toFetchUsersResultAdapter = (response: GitHubUsersResponse): FetchUsersResult => { /* ... */ };
+
+// ✅ Service Layer (Hooks) - "use" prefix
+export const useInfiniteUsers = () => { /* ... */ };
+export const useUser = (id: number) => { /* ... */ };
+
+// ✅ Service Layer (Actions) - "fetch" prefix + "Action" suffix
+export const fetchUsersAction = async (params: FetchUsersParams) => { /* ... */ };
+export const fetchUserAction = async (id: number) => { /* ... */ };
+``` for client-side
+- Actions files are named `[feature].actions.ts` (e.g., `users.actions.ts`) for server-side
 
 ## Error Handling
 
@@ -1103,6 +1705,22 @@ initialData: initialData && !isClient ? { pages: [initialData] } : undefined,
 - Set appropriate `staleTime` for queries
 - Use `initialData` carefully (only server-side)
 - Handle pagination with `useInfiniteQuery`
+
+### Element Size Tracking (ResizeObserver Pattern)
+
+- **Always use `ResizeObserver` for tracking element size changes** - Never use `window.addEventListener('resize')` for element size tracking
+- **Discarded approaches** (do not use):
+  - `window.addEventListener('resize')` - Fires many times per second during resize, causing excessive re-renders and performance issues
+  - Throttled window resize - Still fires frequently, requires manual throttling logic, less efficient than ResizeObserver
+  - Debounced window resize - Delays updates, poor UX, still requires manual debouncing, less efficient
+- **Benefits of ResizeObserver**:
+  - Browser-optimized: Only fires when elements actually resize (not on every frame)
+  - More efficient: Native browser API with built-in performance optimizations
+  - Precise: Observes actual element size changes, not window events
+  - No manual throttling/debouncing needed: Browser handles optimization automatically
+  - Better performance: Reduces unnecessary state updates and re-renders
+- **Use cases**: Tracking element heights, widths, viewport changes, dynamic layout measurements
+- **Pattern**: Create ResizeObserver instances in `useEffect`, observe elements, clean up in return function
 
 ## Dependency Management
 
@@ -1183,6 +1801,75 @@ initialData: initialData && !isClient ? { pages: [initialData] } : undefined,
 - **`npm-check-updates`** (ncu): Interactive tool to update package.json
 - **Dependabot/Renovate**: Automated dependency update PRs (GitHub)
 
+## IDE Configuration
+
+### VS Code Settings
+
+- **All IDE and extension settings should be in `.vscode/` folder** - This ensures consistent development environment across the team
+- **Extension recommendations** should be in `.vscode/extensions.json` - Team members will be prompted to install recommended extensions
+- **Workspace settings** should be in `.vscode/settings.json` - Editor settings, format on save, code actions, and extension-specific configurations
+- **Commit `.vscode/` folder to version control** - This ensures all team members have the same development setup
+
+### VS Code Configuration Examples
+
+#### `.vscode/extensions.json`
+
+```json
+{
+  "recommendations": [
+    "Gruntfuggly.todo-tree",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint"
+  ]
+}
+```
+
+#### `.vscode/settings.json`
+
+```json
+{
+  "editor.formatOnSave": true,
+  "files.autoSave": "onFocusChange",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.organizeImports": "always"
+  },
+  "todo-tree.highlights.customHighlight": {
+    "TODO": {
+      "icon": "checklist",
+      "type": "text",
+      "foreground": "#000000",
+      "background": "#FFF9C4",
+      "iconColour": "#F9A825"
+    },
+    "FIX": {
+      "icon": "alert",
+      "type": "text",
+      "foreground": "#000000",
+      "background": "#FFCDD2",
+      "iconColour": "#C62828"
+    },
+    "DOC": {
+      "icon": "book",
+      "type": "text",
+      "foreground": "#000000",
+      "background": "#C8E6C9",
+      "iconColour": "#2E7D32"
+    }
+  },
+  "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*\\*)\\s*($TAGS)(.*)",
+  "todo-tree.regex.regexCaseSensitive": false,
+  "todo-tree.general.tags": ["TODO", "FIX", "DOC"]
+}
+```
+
+### Extension Configuration Guidelines
+
+- **List all required extensions** in `extensions.json` - Any extension needed for development, linting, formatting, or task management should be listed
+- **Configure extension settings** in `settings.json` - Extension-specific settings that affect code quality or development workflow should be configured
+- **Use workspace settings** for project-specific configurations - User-specific preferences should remain in user settings, but project requirements should be in workspace settings
+- **Document extension purposes** - If an extension has a specific purpose (e.g., TODO Tree for task management), document it in comments or project README
+
 ## Code Quality
 
 ### Formatting
@@ -1211,7 +1898,7 @@ initialData: initialData && !isClient ? { pages: [initialData] } : undefined,
 - Use configuration objects or constants files for reusable values
 - Create helper functions or utilities for repeated logic patterns
 - Prefer configuration-driven approaches over hardcoded conditionals
-- Constants should be organized by feature: `features/[feature]/lib/constants.ts` for feature-specific constants, `features/shared/constants/index.tsx` for shared constants
+- Constants should be organized by feature: `features/[feature]/lib/constants.ts` for feature-specific constants, `features/shared/constants/constants.tsx` for shared constants
 
 ### ❌ Incorrect: Hardcoded Values
 
@@ -1271,3 +1958,67 @@ const ERROR_MESSAGES = {
   network: "Network error occurred",
 } as const;
 ```
+
+## Git Hooks & Quality Gates
+
+### Husky Configuration
+
+- **Use Husky for Git hooks** - Ensures code quality checks run automatically before commits and pushes
+- **Hooks are configured in `.husky/` directory** - Commit this directory to version control
+- **Husky setup**: The `prepare` script in `package.json` automatically sets up husky on `npm install`
+
+### Pre-commit Hooks
+
+- **Purpose**: Run fast checks before code is committed to catch issues early
+- **Configuration**: `.husky/pre-commit` file
+- **Checks performed**:
+  - SCSS type generation (`npm run type-check:scss:build`) - Ensures SCSS module types are up-to-date
+  - SCSS linting (`npm run lint:scss:check`) - Validates SCSS code quality and style
+- **Performance**: These checks should be fast (< 10 seconds) to not slow down development workflow
+- **Failure behavior**: Commit is blocked if any check fails
+
+### Pre-push Hooks
+
+- **Purpose**: Run comprehensive checks before code is pushed to remote repository
+- **Configuration**: `.husky/pre-push` file
+- **Checks performed**:
+  - Full build (`npm run build`) - Includes:
+    - SCSS type generation
+    - Next.js build (TypeScript compilation, type checking, production build)
+- **Performance**: These checks can take longer (30+ seconds) as they run less frequently
+- **Failure behavior**: Push is blocked if build fails
+
+### Hook Configuration Best Practices
+
+- **Keep pre-commit hooks fast** - Only include quick checks (linting, type generation, formatting)
+- **Use pre-push for comprehensive checks** - Full builds, tests, and expensive operations
+- **Document all hooks** - List what each hook does and why it's needed
+- **Make hooks idempotent** - Running a hook multiple times should produce the same result
+- **Provide clear error messages** - When hooks fail, show actionable error messages
+
+### Adding New Hooks
+
+- **Add hook files in `.husky/` directory** - Use descriptive names (e.g., `pre-commit`, `pre-push`)
+- **Hook files should be executable** - Use `chmod +x .husky/hook-name`
+- **Use npm scripts** - Reference npm scripts from `package.json` rather than inline commands
+- **Test hooks locally** - Verify hooks work correctly before committing
+- **Update documentation** - Document new hooks in project README or `.cursorrules`
+
+### Hook File Example
+
+```bash
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npm run type-check:scss:build
+npm run lint:scss:check
+```
+
+### Current Hook Configuration
+
+**Pre-commit** (`.husky/pre-commit`):
+- `npm run type-check:scss:build` - Generate SCSS module types
+- `npm run lint:scss:check` - Check SCSS code quality
+
+**Pre-push** (`.husky/pre-push`):
+- `npm run build` - Full production build (includes type checking and Next.js build)

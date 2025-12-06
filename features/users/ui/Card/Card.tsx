@@ -1,5 +1,5 @@
-import { Typography } from "@/features/shared/ui";
 import { CardProps } from "@/types";
+import { Typography } from "@shared/ui";
 import { clsx } from "clsx";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,7 +25,7 @@ const Card = ({ user }: CardProps) => {
       <article className={card}>
         <div className={cardImageContainer}>
           <Image
-            src={user.avatar_url}
+            src={user.avatarUrl}
             alt={user.login}
             fill
             priority

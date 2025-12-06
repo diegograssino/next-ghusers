@@ -1,41 +1,55 @@
 "use client";
-import { ROUTES } from "@/features/shared/constants";
-import { useSharedContext } from "@/features/shared/contexts/SharedContext";
-import { useFiltersToUrl } from "@/features/shared/hooks";
 import { getUniqueId } from "@/features/shared/lib/utils";
-import { Hero, PageMessage } from "@/features/shared/ui";
-import { useFiltersContext } from "@/features/users/contexts/FiltersContext";
-import useInfiniteUsers from "@/features/users/queries";
+import heroImage from "@/public/assets/hero.png";
+import { SearchPageProps } from "@/types";
+import { useSharedContext } from "@shared/contexts";
+import { useFiltersToUrl } from "@shared/hooks";
+import { Hero, PageMessage, Typography } from "@shared/ui";
+import { useFiltersContext } from "@users/contexts";
+import useInfiniteUsers from "@users/services";
 import {
   Card,
   CardGrid,
   CardGridSkeleton,
   Filters,
   SearchInput,
-} from "@/features/users/ui";
-import { SearchPageProps } from "@/types";
+} from "@users/ui";
 import InfiniteScroll from "react-infinite-scroller";
 import styles from "./SearchPage.module.scss";
 
-const { searchPage, searchPageAside, searchPageResults, searchPageSearch } =
-  styles;
+const {
+  searchPage,
+  searchPageAside,
+  searchPageResults,
+  searchPageSearch,
+  searchPageHeroContent,
+} = styles;
 
 const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
   // TODO fix page always shows scrollbar, when is not present it make the ui shuffley
-  // TODO Add Hero section, then the scroll true on the router push in the hook should go to the search section, not to top of the page
   // TODO On infinite scroll loading state, we should show a skeleton, seems that is not being present now
   const { perPageConfig } = pageConfig;
   const { filters } = useFiltersContext();
-  const { isLoadingUsers } = useSharedContext();
-  useFiltersToUrl(filters);
+  const { isLoadingUsers, viewportHeight } = useSharedContext();
+  useFiltersToUrl(filters, "search-section");
   const { users, isError, isNoResults, isMore, totalCount, handleLoadMore } =
     useInfiniteUsers(filters, perPageConfig.items, initialUsers);
 
   return (
     <>
-      <Hero route={ROUTES.HOME} />
+      <Hero alt="Discover GitHub Users" backgroundImage={heroImage}>
+        <div className={searchPageHeroContent}>
+          <Typography weight="bold" size="xl" as="h2" variant="primary" shadow>
+            Discover GitHub Users
+          </Typography>
+        </div>
+        {/* TODO Add a button to go to the dashboard */}
+        {/* <Button>Go to dashboard</Button> */}
+      </Hero>
+      <div id="search-section" />
       <div className={searchPage}>
         <div className={searchPageSearch}>
+          {/* TODO Search input should be in the header and open a pallete style modal*/}
           <SearchInput />
         </div>
         <aside className={searchPageAside}>
@@ -49,7 +63,7 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
           ) : isNoResults ? (
             <PageMessage message="noResults" />
           ) : (
-            // TODO Check if we can move to a self developed version as is a key dependency that could break everything if it fails
+            // TODO Check if we can move to a self developed version as is a key dependency that could break everything if it fails, in the meantime we should wrap it on a component to an easy replacement
             <InfiniteScroll
               pageStart={0}
               loadMore={handleLoadMore}
@@ -60,9 +74,7 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
                   key={getUniqueId()}
                 />
               }
-              // TODO Check if we can detect the page height without killing the ssr to adjust the value as high as possible
-              // TODO Check the best value for the threshold, 1000 seems to be a good value, but we should test it with different screen sizes, we can control the value via a config device value
-              threshold={1000}
+              threshold={viewportHeight}
             >
               <CardGrid perPageConfig={perPageConfig}>
                 {users.map((user) => (

@@ -1,8 +1,8 @@
 "use client";
 
-import { PageMessage } from "@/features/shared/ui";
+import { PageMessage } from "@shared/ui";
 
-export default function GlobalError() {
+const GlobalError = () => {
   return (
     <html>
       <body>
@@ -10,4 +10,6 @@ export default function GlobalError() {
       </body>
     </html>
   );
-}
+};
+
+export default GlobalError;

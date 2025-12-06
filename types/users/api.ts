@@ -1,24 +1,4 @@
-import { QueryParams } from "../shared";
-
-export type ValidFilterKeys = "login" | "followers";
-
-export type ValidFilterLabels = "login" | "followers";
-
-export type ValidFilterParams = Partial<Pick<QueryParams, ValidFilterKeys>>;
-
-export interface FetchUsersResult {
-  users: User[];
-  nextSince: string | null;
-  totalCount: number | null;
-}
-
-export interface FetchUsersParams {
-  perPageParam?: string;
-  pageParam?: string;
-  queryParams?: QueryParams;
-}
-
-export interface User {
+export interface GitHubUser {
   login: string;
   id: number;
   node_id: string;
@@ -44,13 +24,57 @@ export interface User {
   bio: null | string;
 }
 
-export interface Repo {
+export interface GitHubUsersResponse {
+  users: GitHubUser[];
+  nextSince: string | null;
+  totalCount: number | null;
+}
+
+export interface GitHubRepoOwner {
+  login: string;
+  id: number;
+  node_id: string;
+  avatar_url: string;
+  gravatar_id: string;
+  url: string;
+  html_url: string;
+  followers_url: string;
+  following_url: string;
+  gists_url: string;
+  starred_url: string;
+  subscriptions_url: string;
+  organizations_url: string;
+  repos_url: string;
+  events_url: string;
+  received_events_url: string;
+  type: string;
+  user_view_type: string;
+  site_admin: boolean;
+}
+
+export interface GitHubRepoLicense {
+  key: string;
+  name: string;
+  spdx_id: string;
+  url: string | null;
+  node_id: string;
+}
+
+export interface GitHubRepoPermissions {
+  admin: boolean;
+  maintain: boolean;
+  push: boolean;
+  triage: boolean;
+  pull: boolean;
+}
+
+export interface GitHubRepo {
   id: number;
   node_id: string;
   name: string;
   full_name: string;
   private: boolean;
-  owner: Owner;
+  owner: GitHubRepoOwner;
   html_url: string;
   description: null | string;
   fork: boolean;
@@ -114,7 +138,7 @@ export interface Repo {
   archived: boolean;
   disabled: boolean;
   open_issues_count: number;
-  license: License | License2 | null;
+  license: GitHubRepoLicense | null;
   allow_forking: boolean;
   is_template: boolean;
   web_commit_signoff_required: boolean;
@@ -123,76 +147,5 @@ export interface Repo {
   open_issues: number;
   watchers: number;
   default_branch: string;
-  permissions: Permissions;
-}
-
-interface Permissions {
-  admin: boolean;
-  maintain: boolean;
-  push: boolean;
-  triage: boolean;
-  pull: boolean;
-}
-
-interface License2 {
-  key: string;
-  name: string;
-  spdx_id: string;
-  url: string;
-  node_id: string;
-}
-
-interface License {
-  key: string;
-  name: string;
-  spdx_id: string;
-  url: null;
-  node_id: string;
-}
-
-interface Owner {
-  login: string;
-  id: number;
-  node_id: string;
-  avatar_url: string;
-  gravatar_id: string;
-  url: string;
-  html_url: string;
-  followers_url: string;
-  following_url: string;
-  gists_url: string;
-  starred_url: string;
-  subscriptions_url: string;
-  organizations_url: string;
-  repos_url: string;
-  events_url: string;
-  received_events_url: string;
-  type: string;
-  user_view_type: string;
-  site_admin: boolean;
-}
-
-export interface CardProps {
-  user: User;
-}
-
-export interface CardWidgetProps {
-  id: number;
-}
-
-export interface UserDetailProps {
-  user: User;
-  repos: Repo[];
-}
-
-export interface SortButtonProps {
-  sortOrder: boolean;
-  onSort: () => void;
-}
-
-interface Params {
-  [key: string]: string;
-}
-export interface UserPageProps {
-  params?: Promise<Params>;
+  permissions: GitHubRepoPermissions;
 }

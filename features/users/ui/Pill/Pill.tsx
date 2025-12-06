@@ -1,5 +1,5 @@
-import { Typography } from "@/features/shared/ui";
 import { PillProps } from "@/types";
+import { Typography } from "@shared/ui";
 import { IconX } from "@tabler/icons-react";
 import styles from "./Pill.module.scss";
 

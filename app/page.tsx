@@ -1,8 +1,9 @@
 import SearchPage from "@/features/pages/SearchPage/SearchPage";
 import { getPageConfig } from "@/features/shared/lib/utils";
-import { FiltersProvider } from "@/features/users/contexts/FiltersContext";
-import { fetchUsersAction } from "@/features/users/server/actions";
 import { PageParamsProps } from "@/types";
+import { fetchUsersAction } from "@users/actions";
+import { INITIAL_PAGE_PARAM } from "@users/constants";
+import { FiltersProvider } from "@users/contexts";
 
 const Home = async (pageParams: PageParamsProps) => {
   // TODO GLOBAL implement react aria for accessibility
@@ -10,7 +11,7 @@ const Home = async (pageParams: PageParamsProps) => {
 
   const initialUsers = await fetchUsersAction({
     perPageParam: pageConfig.perPageConfig.items,
-    pageParam: "0",
+    pageParam: INITIAL_PAGE_PARAM,
     queryParams: pageConfig.initialFilters,
   });
 

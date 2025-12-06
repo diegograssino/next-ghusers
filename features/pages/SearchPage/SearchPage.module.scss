@@ -1,5 +1,4 @@
-@use "../../../styles/abstracts" as *;
-@use "../../../styles/mixins" as *;
+@use "../../../styles/main" as *;
 
 .searchPage {
   display: grid;
@@ -33,7 +32,7 @@
   position: sticky;
 
   // TODO this 1px could be tricky, refactor it to use a better approach
-  top: calc($layout-navbar-height + $layout-breadcrumbs-height - 1px);
+  top: calc($layout-navbar-height + $layout-breadcrumbs-height - 32px);
   z-index: 10;
   background: linear-gradient(
     to bottom,
@@ -44,7 +43,11 @@
   padding: 1rem 0 0;
 
   @media (max-width: #{$screen-sm - 1px}) {
-    top: calc($layout-navbar-height + $layout-breadcrumbs-height);
+    margin-bottom: layout-hero-margin-bottom;
+    top: calc(
+      $layout-navbar-height + $layout-breadcrumbs-height -
+        $layout-hero-margin-bottom
+    );
   }
 }
 
@@ -80,4 +83,11 @@
       md: block,
     )
   );
+}
+
+.searchPageHeroContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }

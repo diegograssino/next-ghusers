@@ -1,7 +1,7 @@
 import { pageMessages } from "@/features/shared/ui/PageMessage/PageMessage.constants";
+import { StaticImageData } from "next/image";
 import Link from "next/link";
-import { ElementType, HTMLAttributes, JSX } from "react";
-import { PerPageConfig, Route } from "../shared";
+import { ElementType, HTMLAttributes, JSX, ReactNode } from "react";
 
 export type ColorVariants =
   | "default"
@@ -37,6 +37,7 @@ export interface TypographyProps
   size?: Sizes;
   weight?: WeightVariants;
   truncate?: boolean;
+  shadow?: boolean;
   variant?: ColorVariants;
 }
 
@@ -67,30 +68,13 @@ export interface PageMessageProps {
   message: keyof typeof pageMessages;
 }
 
-export interface CardGridProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "color"> {
-  children: React.ReactNode;
-  perPageConfig?: PerPageConfig[keyof PerPageConfig];
-}
-
-export interface CardGridSkeletonProps {
-  perPageConfig?: PerPageConfig[keyof PerPageConfig];
-}
-
-export interface PillProps {
-  label: string;
-  onRemove?: () => void;
-}
-
-export interface FiltersInfoProps {
-  totalCount?: number;
-}
-
 export interface BreadcrumbsProps {
   variant?: ColorVariants;
   size?: Sizes;
 }
 
-export interface HeroProps {
-  route: Route;
+export interface HeroProps extends Omit<HTMLAttributes<HTMLElement>, "color"> {
+  backgroundImage?: string | StaticImageData;
+  alt: string;
+  children?: ReactNode;
 }

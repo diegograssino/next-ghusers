@@ -1,4 +1,4 @@
-@use "../../../../styles/abstracts" as *;
+@use "../../../../styles/main" as *;
 
 .detail {
   display: flex;
@@ -79,7 +79,7 @@
 }
 
 .detailReposItemIcon {
-  //   TODO Make dimensions responsive
+  // TODO Make dimensions responsive
   width: 1.5rem;
   height: 1.5rem;
   stroke-width: 0.125rem;

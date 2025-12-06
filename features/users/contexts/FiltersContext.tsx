@@ -1,6 +1,6 @@
 "use client";
-import { Params, QueryParams } from "@/types";
-import { ValidFilterLabels } from "@/types/users";
+import { Params, QueryParams, ValidFilterLabels } from "@/types";
+import { DEBOUNCE_DELAY_MS } from "@shared/constants";
 import {
   createContext,
   useCallback,
@@ -44,7 +44,7 @@ export const FiltersProvider = ({
     Record<ValidFilterLabels, string | undefined>
   >(convertedInitialFilters);
 
-  const [debouncedFilters] = useDebounceValue(filters, 1000);
+  const [debouncedFilters] = useDebounceValue(filters, DEBOUNCE_DELAY_MS);
 
   const updateFilters = useCallback((params: Params) => {
     const filterConfig = addFilterParamLabel(params);

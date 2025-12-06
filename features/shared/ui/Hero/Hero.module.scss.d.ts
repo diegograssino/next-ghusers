@@ -1,5 +1,6 @@
 export type Styles = {
   'hero': string;
+  'heroBackgroundImage': string;
   'pulse': string;
   'spin': string;
 };

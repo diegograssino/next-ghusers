@@ -7,9 +7,9 @@ import {
 import { PER_PAGE_CONFIGS } from "../constants";
 import { log } from "./logger";
 
-export async function getPageConfig(
+export const getPageConfig = async (
   pageParams: PageParamsProps
-): Promise<PageConfig> {
+): Promise<PageConfig> => {
   const searchParams = await pageParams.searchParams;
 
   const getStringParam = (
@@ -54,19 +54,19 @@ export async function getPageConfig(
   });
 
   return { perPageConfig, initialFilters };
-}
+};
 
-export function formatNumber(num: number): string {
+export const formatNumber = (num: number): string => {
   return num.toLocaleString();
-}
+};
 
-export function getUniqueId() {
+export const getUniqueId = () => {
   return v4();
-}
+};
 
-export function getStyleClass<T extends Record<string, string>>(
+export const getStyleClass = <T extends Record<string, string>>(
   styles: T,
   key: string | undefined
-): string | undefined {
+): string | undefined => {
   return key && key in styles ? styles[key as keyof T] : undefined;
-}
+};

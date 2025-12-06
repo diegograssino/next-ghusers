@@ -1,0 +1,16 @@
+@use "../../../../styles/main" as *;
+
+.layoutClient {
+  display: grid;
+  grid-template-rows: $layout-navbar-height $layout-breadcrumbs-height 1fr $layout-footer-height;
+  min-height: 100dvh;
+
+  > * {
+    width: 100%;
+  }
+
+  // DOC This is a hack to add spacing between every sections but not navbar and breadcrumbs, no breadcrumbs will break this fix
+  > *:nth-child(n + 3) {
+    margin-top: $layout-row-gap;
+  }
+}

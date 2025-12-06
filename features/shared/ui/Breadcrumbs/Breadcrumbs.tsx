@@ -1,11 +1,13 @@
 "use client";
 
-import { ROUTES } from "@/features/shared/constants";
 import { BreadcrumbsProps, Route } from "@/types";
+import { ROUTES } from "@shared/constants";
 import { usePathname } from "next/navigation";
 import { Fragment } from "react";
+import { useSharedContext } from "../../contexts/SharedContext";
 import { getUniqueId } from "../../lib/utils";
 import Anchor from "../Anchor/Anchor";
+import Container from "../Container/Container";
 import Typography from "../Typography/Typography";
 import styles from "./Breadcrumbs.module.scss";
 
@@ -15,6 +17,7 @@ const Breadcrumbs = ({
   variant = undefined,
   size = "sm",
 }: BreadcrumbsProps) => {
+  const { breadcrumbsRef } = useSharedContext();
   const pathname = usePathname();
   const pathnameParts = pathname.split("/").filter(Boolean);
 
@@ -58,7 +61,7 @@ const Breadcrumbs = ({
   }
 
   return (
-    <nav className={breadcrumbs}>
+    <Container as="nav" ref={breadcrumbsRef} className={breadcrumbs}>
       <div className={breadcrumbsContainer}>
         {routes.map((route, index) => {
           const isLast = index === routes.length - 1;
@@ -87,7 +90,7 @@ const Breadcrumbs = ({
           );
         })}
       </div>
-    </nav>
+    </Container>
   );
 };
 

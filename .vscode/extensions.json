@@ -1,3 +1,6 @@
 {
-  "recommendations": ["Gruntfuggly.todo-tree"]
+  "recommendations": [
+    "Gruntfuggly.todo-tree",
+    "streetsidesoftware.code-spell-checker"
+  ]
 }

@@ -1,6 +1,6 @@
 import { getUniqueId } from "@/features/shared/lib/utils";
-import { Anchor, Typography } from "@/features/shared/ui";
 import { UserDetailProps } from "@/types";
+import { Anchor, Typography } from "@shared/ui";
 import { IconLink } from "@tabler/icons-react";
 import Image from "next/image";
 import FavsWidget from "../FavsWidget/FavsWidget";
@@ -29,7 +29,7 @@ const UserDetail = ({ user, repos }: UserDetailProps) => {
             {user.login}
           </Typography>
           <Image
-            src={user.avatar_url}
+            src={user.avatarUrl}
             alt={user.login}
             width={300}
             height={300}
@@ -50,7 +50,7 @@ const UserDetail = ({ user, repos }: UserDetailProps) => {
               Following: {user.following}
             </Typography>
             <Typography as="p" size="md">
-              Public Repos: {user.public_repos}
+              Public Repos: {user.publicRepos}
             </Typography>
           </div>
           <Typography as="p" size="md">
@@ -68,7 +68,7 @@ const UserDetail = ({ user, repos }: UserDetailProps) => {
               <li key={getUniqueId()} className={detailReposItem}>
                 <IconLink className={detailReposItemIcon} />
                 <Anchor
-                  href={repo.html_url}
+                  href={repo.htmlUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
