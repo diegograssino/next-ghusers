@@ -1,5 +1,5 @@
 import "@/styles/globals.scss";
-import { Breadcrumbs, Container, Footer, Header } from "@shared/ui";
+import { LayoutClient } from "@shared/ui";
 import clsx from "clsx";
 import type { Metadata } from "next";
 import { Mona_Sans, Noto_Sans } from "next/font/google";
@@ -40,12 +40,7 @@ const RootLayout = ({
         className={clsx(primaryFont.variable, secondaryFont.variable)}
       >
         <body>
-          <div className="globalLayout">
-            <Header />
-            <Breadcrumbs />
-            <Container as="main">{children}</Container>
-            <Footer />
-          </div>
+          <LayoutClient>{children}</LayoutClient>
         </body>
       </html>
     </Providers>

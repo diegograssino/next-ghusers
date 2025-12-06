@@ -1,6 +1,6 @@
-@use "../abstracts" as *;
+@use "../../../../styles/main" as *;
 
-.globalLayout {
+.layoutClient {
   display: grid;
   grid-template-rows: $layout-navbar-height $layout-breadcrumbs-height 1fr $layout-footer-height;
   min-height: 100dvh;

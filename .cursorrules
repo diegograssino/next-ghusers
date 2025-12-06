@@ -1038,6 +1038,9 @@ describe("Card", () => {
 - **Page Components** (`features/pages/`): Reusable page-level components that contain the UI
 - Next.js pages should be thin wrappers that fetch data and render page components
 - Page components should be client components if they need interactivity
+- **DO NOT add `<main>` tags in page components** - The main HTML tag is already provided by the layout client component, adding it in page components will create nested main tags which is invalid HTML
+- **DO NOT add `<header>` or `<footer>` tags in page components or other places** - Header and Footer components are already provided by the layout client component, adding them elsewhere will create duplicate header/footer tags which is invalid HTML and causes SEO issues
+- **Page-specific components should be added inside page components** - Components like hero sections, carousels, promo banners, or other page-specific features should be added within their respective page components. This keeps page singularities and unique features within their respective page components, not in the global layout
 
 ### Page Component Pattern Example
 
@@ -1703,6 +1706,22 @@ export const fetchUserAction = async (id: number) => { /* ... */ };
 - Use `initialData` carefully (only server-side)
 - Handle pagination with `useInfiniteQuery`
 
+### Element Size Tracking (ResizeObserver Pattern)
+
+- **Always use `ResizeObserver` for tracking element size changes** - Never use `window.addEventListener('resize')` for element size tracking
+- **Discarded approaches** (do not use):
+  - `window.addEventListener('resize')` - Fires many times per second during resize, causing excessive re-renders and performance issues
+  - Throttled window resize - Still fires frequently, requires manual throttling logic, less efficient than ResizeObserver
+  - Debounced window resize - Delays updates, poor UX, still requires manual debouncing, less efficient
+- **Benefits of ResizeObserver**:
+  - Browser-optimized: Only fires when elements actually resize (not on every frame)
+  - More efficient: Native browser API with built-in performance optimizations
+  - Precise: Observes actual element size changes, not window events
+  - No manual throttling/debouncing needed: Browser handles optimization automatically
+  - Better performance: Reduces unnecessary state updates and re-renders
+- **Use cases**: Tracking element heights, widths, viewport changes, dynamic layout measurements
+- **Pattern**: Create ResizeObserver instances in `useEffect`, observe elements, clean up in return function
+
 ## Dependency Management
 
 ### Version Ranges
@@ -1781,6 +1800,75 @@ export const fetchUserAction = async (id: number) => { /* ... */ };
 - **`npm audit`**: Check for security vulnerabilities
 - **`npm-check-updates`** (ncu): Interactive tool to update package.json
 - **Dependabot/Renovate**: Automated dependency update PRs (GitHub)
+
+## IDE Configuration
+
+### VS Code Settings
+
+- **All IDE and extension settings should be in `.vscode/` folder** - This ensures consistent development environment across the team
+- **Extension recommendations** should be in `.vscode/extensions.json` - Team members will be prompted to install recommended extensions
+- **Workspace settings** should be in `.vscode/settings.json` - Editor settings, format on save, code actions, and extension-specific configurations
+- **Commit `.vscode/` folder to version control** - This ensures all team members have the same development setup
+
+### VS Code Configuration Examples
+
+#### `.vscode/extensions.json`
+
+```json
+{
+  "recommendations": [
+    "Gruntfuggly.todo-tree",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint"
+  ]
+}
+```
+
+#### `.vscode/settings.json`
+
+```json
+{
+  "editor.formatOnSave": true,
+  "files.autoSave": "onFocusChange",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.organizeImports": "always"
+  },
+  "todo-tree.highlights.customHighlight": {
+    "TODO": {
+      "icon": "checklist",
+      "type": "text",
+      "foreground": "#000000",
+      "background": "#FFF9C4",
+      "iconColour": "#F9A825"
+    },
+    "FIX": {
+      "icon": "alert",
+      "type": "text",
+      "foreground": "#000000",
+      "background": "#FFCDD2",
+      "iconColour": "#C62828"
+    },
+    "DOC": {
+      "icon": "book",
+      "type": "text",
+      "foreground": "#000000",
+      "background": "#C8E6C9",
+      "iconColour": "#2E7D32"
+    }
+  },
+  "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*\\*)\\s*($TAGS)(.*)",
+  "todo-tree.regex.regexCaseSensitive": false,
+  "todo-tree.general.tags": ["TODO", "FIX", "DOC"]
+}
+```
+
+### Extension Configuration Guidelines
+
+- **List all required extensions** in `extensions.json` - Any extension needed for development, linting, formatting, or task management should be listed
+- **Configure extension settings** in `settings.json` - Extension-specific settings that affect code quality or development workflow should be configured
+- **Use workspace settings** for project-specific configurations - User-specific preferences should remain in user settings, but project requirements should be in workspace settings
+- **Document extension purposes** - If an extension has a specific purpose (e.g., TODO Tree for task management), document it in comments or project README
 
 ## Code Quality
 
@@ -1870,3 +1958,67 @@ const ERROR_MESSAGES = {
   network: "Network error occurred",
 } as const;
 ```
+
+## Git Hooks & Quality Gates
+
+### Husky Configuration
+
+- **Use Husky for Git hooks** - Ensures code quality checks run automatically before commits and pushes
+- **Hooks are configured in `.husky/` directory** - Commit this directory to version control
+- **Husky setup**: The `prepare` script in `package.json` automatically sets up husky on `npm install`
+
+### Pre-commit Hooks
+
+- **Purpose**: Run fast checks before code is committed to catch issues early
+- **Configuration**: `.husky/pre-commit` file
+- **Checks performed**:
+  - SCSS type generation (`npm run type-check:scss:build`) - Ensures SCSS module types are up-to-date
+  - SCSS linting (`npm run lint:scss:check`) - Validates SCSS code quality and style
+- **Performance**: These checks should be fast (< 10 seconds) to not slow down development workflow
+- **Failure behavior**: Commit is blocked if any check fails
+
+### Pre-push Hooks
+
+- **Purpose**: Run comprehensive checks before code is pushed to remote repository
+- **Configuration**: `.husky/pre-push` file
+- **Checks performed**:
+  - Full build (`npm run build`) - Includes:
+    - SCSS type generation
+    - Next.js build (TypeScript compilation, type checking, production build)
+- **Performance**: These checks can take longer (30+ seconds) as they run less frequently
+- **Failure behavior**: Push is blocked if build fails
+
+### Hook Configuration Best Practices
+
+- **Keep pre-commit hooks fast** - Only include quick checks (linting, type generation, formatting)
+- **Use pre-push for comprehensive checks** - Full builds, tests, and expensive operations
+- **Document all hooks** - List what each hook does and why it's needed
+- **Make hooks idempotent** - Running a hook multiple times should produce the same result
+- **Provide clear error messages** - When hooks fail, show actionable error messages
+
+### Adding New Hooks
+
+- **Add hook files in `.husky/` directory** - Use descriptive names (e.g., `pre-commit`, `pre-push`)
+- **Hook files should be executable** - Use `chmod +x .husky/hook-name`
+- **Use npm scripts** - Reference npm scripts from `package.json` rather than inline commands
+- **Test hooks locally** - Verify hooks work correctly before committing
+- **Update documentation** - Document new hooks in project README or `.cursorrules`
+
+### Hook File Example
+
+```bash
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npm run type-check:scss:build
+npm run lint:scss:check
+```
+
+### Current Hook Configuration
+
+**Pre-commit** (`.husky/pre-commit`):
+- `npm run type-check:scss:build` - Generate SCSS module types
+- `npm run lint:scss:check` - Check SCSS code quality
+
+**Pre-push** (`.husky/pre-push`):
+- `npm run build` - Full production build (includes type checking and Next.js build)

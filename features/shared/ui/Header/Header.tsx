@@ -1,6 +1,8 @@
+"use client";
 import { IconBrandGithub } from "@tabler/icons-react";
 import Link from "next/link";
 import { ROUTES } from "../../constants";
+import { useSharedContext } from "../../contexts/SharedContext";
 import Container from "../Container/Container";
 import FavsAnchor from "../FavsAnchor/FavsAnchor";
 import Typography from "../Typography/Typography";
@@ -11,9 +13,10 @@ const { header, headerNavbarContainer, headerNavbarIcon, headerNavbarBrand } =
 
 const Header = () => {
   // TODO Add a mobile menu
+  const { headerRef } = useSharedContext();
 
   return (
-    <header className={header} data-testid="header">
+    <header ref={headerRef} className={header}>
       <Container>
         <nav className={headerNavbarContainer}>
           <Link href={ROUTES.HOME.href} className={headerNavbarBrand}>

@@ -28,7 +28,6 @@ export const ROUTES: Routes = {
 };
 
 export const FETCH_TIMEOUT_MS = 10000;
-
 export const DEBOUNCE_DELAY_MS = 1000;
-
 export const STALE_TIME_ONE_MINUTE_MS = 1000 * 60;
+export const DEFAULT_VIEWPORT_HEIGHT = 1000;

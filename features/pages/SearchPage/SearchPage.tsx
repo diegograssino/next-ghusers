@@ -5,7 +5,6 @@ import { SearchPageProps } from "@/types";
 import { useSharedContext } from "@shared/contexts";
 import { useFiltersToUrl } from "@shared/hooks";
 import { Hero, PageMessage, Typography } from "@shared/ui";
-import { INTERSECTION_OBSERVER_THRESHOLD } from "@users/constants";
 import { useFiltersContext } from "@users/contexts";
 import useInfiniteUsers from "@users/services";
 import {
@@ -28,12 +27,11 @@ const {
 
 const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
   // TODO fix page always shows scrollbar, when is not present it make the ui shuffley
-  // TODO Add Hero section, then the scroll true on the router push in the hook should go to the search section, not to top of the page
   // TODO On infinite scroll loading state, we should show a skeleton, seems that is not being present now
   const { perPageConfig } = pageConfig;
   const { filters } = useFiltersContext();
-  const { isLoadingUsers } = useSharedContext();
-  useFiltersToUrl(filters);
+  const { isLoadingUsers, viewportHeight } = useSharedContext();
+  useFiltersToUrl(filters, "search-section");
   const { users, isError, isNoResults, isMore, totalCount, handleLoadMore } =
     useInfiniteUsers(filters, perPageConfig.items, initialUsers);
 
@@ -48,8 +46,10 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
         {/* TODO Add a button to go to the dashboard */}
         {/* <Button>Go to dashboard</Button> */}
       </Hero>
+      <div id="search-section" />
       <div className={searchPage}>
         <div className={searchPageSearch}>
+          {/* TODO Search input should be in the header and open a pallete style modal*/}
           <SearchInput />
         </div>
         <aside className={searchPageAside}>
@@ -63,7 +63,7 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
           ) : isNoResults ? (
             <PageMessage message="noResults" />
           ) : (
-            // TODO Check if we can move to a self developed version as is a key dependency that could break everything if it fails
+            // TODO Check if we can move to a self developed version as is a key dependency that could break everything if it fails, in the meantime we should wrap it on a component to an easy replacement
             <InfiniteScroll
               pageStart={0}
               loadMore={handleLoadMore}
@@ -74,9 +74,7 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
                   key={getUniqueId()}
                 />
               }
-              // TODO Check if we can detect the page height without killing the ssr to adjust the value as high as possible
-              // TODO Make threshold configurable by device type (currently using constant INTERSECTION_OBSERVER_THRESHOLD)
-              threshold={INTERSECTION_OBSERVER_THRESHOLD}
+              threshold={viewportHeight}
             >
               <CardGrid perPageConfig={perPageConfig}>
                 {users.map((user) => (
