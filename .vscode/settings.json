@@ -30,5 +30,32 @@
   },
   "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*\\*)\\s*($TAGS)(.*)",
   "todo-tree.regex.regexCaseSensitive": false,
-  "todo-tree.general.tags": ["TODO", "FIX", "DOC"]
+  "todo-tree.general.tags": ["TODO", "FIX", "DOC"],
+  "cSpell.enabled": true,
+  "cSpell.enabledFileTypes": {
+    "typescript": true,
+    "typescriptreact": true,
+    "javascript": true,
+    "javascriptreact": true,
+    "markdown": true,
+    "css": true,
+    "scss": true
+  },
+  "cSpell.ignorePaths": [
+    "**/node_modules/**",
+    "**/.next/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.git/**",
+    "**/coverage/**",
+    "**/*.d.ts",
+    "**/*.json",
+    "**/next.config.*",
+    "**/jest.config.*",
+    "**/typed-scss-modules.config.*",
+    "**/.husky/**",
+    "**/public/**"
+  ],
+  // TODO: Add ignore words here if you found any check with errors
+  "cSpell.ignoreWords": []
 }
