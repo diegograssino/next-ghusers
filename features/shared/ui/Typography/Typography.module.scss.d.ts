@@ -11,6 +11,7 @@ export type Styles = {
   'primary': string;
   'pulse': string;
   'secondary': string;
+  'shadow': string;
   'sm': string;
   'spin': string;
   'thin': string;

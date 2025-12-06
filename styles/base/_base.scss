@@ -10,6 +10,8 @@
   --color-success: #{$base-color-success};
   --color-error: #{$base-color-error};
   --color-warning: #{$base-color-warning};
+  --color-black: #{$base-color-black};
+  --color-white: #{$base-color-white};
 
   @media (prefers-color-scheme: dark) {
     --color-foreground: #{$base-color-primary-dark};
@@ -21,6 +23,8 @@
     --color-success: #{$base-color-success-dark};
     --color-error: #{$base-color-error-dark};
     --color-warning: #{$base-color-warning-dark};
+    --color-black: #{$base-color-black};
+    --color-white: #{$base-color-white};
   }
 }
 

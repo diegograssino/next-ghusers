@@ -13,8 +13,4 @@
   > *:nth-child(n + 3) {
     margin-top: $layout-row-gap;
   }
-
-  > main {
-    margin-top: calc($layout-row-gap + $layout-breadcrumbs-height);
-  }
 }

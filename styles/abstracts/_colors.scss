@@ -13,6 +13,8 @@ $base-color-accent2-dark: #3f3f3f !default;
 $base-color-success-dark: #059669 !default;
 $base-color-error-dark: #dc2626 !default;
 $base-color-warning-dark: #d97706 !default;
+$base-color-black: #000000 !default;
+$base-color-white: #ffffff !default;
 
 // DOC Theme Colors (CSS custom properties for dynamic theming)
 $color-foreground: var(--color-foreground) !default;
@@ -24,3 +26,5 @@ $color-accent2: var(--color-accent2) !default;
 $color-success: var(--color-success) !default;
 $color-error: var(--color-error) !default;
 $color-warning: var(--color-warning) !default;
+$color-black: var(--color-black) !default;
+$color-white: var(--color-white) !default;

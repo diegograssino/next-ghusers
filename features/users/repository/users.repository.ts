@@ -92,8 +92,8 @@ const getFetchOptions = (): RequestInit => {
       tokenPrefix: token?.substring(0, 4) || "none",
       //TODO Add an env helper to manage this things
       envVars: {
-        hasGITHUB_TOKEN: !!process.env.GITHUB_TOKEN,
-        hasNEXT_PUBLIC_GITHUB_TOKEN: !!process.env.NEXT_PUBLIC_GITHUB_TOKEN,
+        hasGithubToken: !!process.env.GITHUB_TOKEN,
+        hasNextPublicGithubToken: !!process.env.NEXT_PUBLIC_GITHUB_TOKEN,
       },
     });
   }

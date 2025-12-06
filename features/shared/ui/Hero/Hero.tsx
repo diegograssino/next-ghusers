@@ -1,19 +1,30 @@
+import { genericBlurData } from "@/features/users/ui";
 import { HeroProps } from "@/types";
-import Typography from "../Typography/Typography";
+import clsx from "clsx";
+import Image from "next/image";
 import styles from "./Hero.module.scss";
 
-const { hero } = styles;
+const { hero, heroBackgroundImage } = styles;
 
-const Hero = ({ route }: HeroProps) => {
-  const title = route.heroText || route.label;
+const Hero = ({ backgroundImage, alt, ...otherProps }: HeroProps) => {
+  const { children } = otherProps;
+  const hasBackgroundImage = backgroundImage !== undefined;
 
   return (
-    <section className={hero}>
-      {/* TODO Add background image */}
-      {/* TODO This should came as a children */}
-      <Typography weight="bold" size="xl" as="h2" variant="primary">
-        {title}
-      </Typography>
+    <section className={clsx(hero, otherProps.className)} {...otherProps}>
+      {hasBackgroundImage && (
+        <Image
+          src={backgroundImage}
+          alt={alt}
+          fill
+          priority
+          //  TODO Check sizes
+          placeholder="blur"
+          blurDataURL={genericBlurData}
+          className={heroBackgroundImage}
+        />
+      )}
+      {children}
     </section>
   );
 };

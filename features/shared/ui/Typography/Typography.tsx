@@ -3,14 +3,15 @@ import { TypographyProps } from "@/types";
 import clsx from "clsx";
 import styles from "./Typography.module.scss";
 
-const { typography, ellipsis } = styles;
+const { typography, ellipsis, shadow } = styles;
 
 const Typography = ({
   children,
   as: Tag = "p",
   weight = "normal",
   size = "md",
-  truncate = false,
+  truncate: isTruncated = false,
+  shadow: hasShadow = false,
   variant = "default",
   ...otherProps
 }: TypographyProps) => {
@@ -22,7 +23,8 @@ const Typography = ({
         getStyleClass(styles, variant),
         getStyleClass(styles, weight),
         getStyleClass(styles, size),
-        truncate && ellipsis,
+        isTruncated && ellipsis,
+        hasShadow && shadow,
         otherProps.className
       )}
     >

@@ -708,7 +708,11 @@ $color-secondary: #4a4a4a;
 - **CRITICAL**: Import and destructure styles OUTSIDE the component definition (before the component), not inside
 - This ensures the destructuring happens only once, improving performance
 - Use camelCase for class names
-- Use CSS custom properties and SCSS variables from abstracts
+- **Use `$color-*` variables (CSS custom properties) in component SCSS modules** - NOT `$base-color-*`
+  - `$color-accent`, `$color-background`, `$color-foreground`, etc. - These support dynamic theming (light/dark mode)
+  - `$base-color-*` variables are ONLY used in `styles/base/_base.scss` to define the CSS custom properties
+  - Example: `background-color: $color-accent;` ✅ NOT `background-color: $base-color-accent;` ❌
+- Use SCSS variables from abstracts (spacing, typography, etc.)
 - Mixins are part of abstracts, so importing `main.scss` gives access to all mixins
 
 ### CSS Class Naming Convention
@@ -1505,6 +1509,10 @@ initialData: initialData && !isClient ? { pages: [initialData] } : undefined,
 
 - Use camelCase: `fetchUsersService`, `handleLoadMore`, `isLoading`
 - **Boolean flags/variables must start with `is`, `has`, or `should`**: `isLoading`, `hasNextPage`, `shouldUpdate`, `isError`, `hasNoFavs`
+- **When converting constants to boolean flags, always use camelCase** - even if the constant is UPPER_SNAKE_CASE
+  - Constants: `GITHUB_TOKEN`, `NEXT_PUBLIC_GITHUB_TOKEN`
+  - Boolean flags: `hasGithubToken`, `hasNextPublicGithubToken` ✅ (NOT `hasGITHUB_TOKEN`, `hasNEXT_PUBLIC_GITHUB_TOKEN` ❌)
+  - This ensures consistent camelCase naming for all variables, regardless of the source constant's naming convention
 - **Functions must start with a verb**: `getSomething`, `fetchSomething`, `validateSomething`, `checkSomething`, `handleSomething`
 - Functions that return booleans: `checkFav`, `isAddingFav`, `validateFilterParams`
 - **Always prefer arrow functions over function declarations**: Use `const functionName = () => {}` instead of `function functionName() {}`

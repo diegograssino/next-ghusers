@@ -1,10 +1,10 @@
 "use client";
 import { getUniqueId } from "@/features/shared/lib/utils";
+import heroImage from "@/public/assets/hero.png";
 import { SearchPageProps } from "@/types";
-import { ROUTES } from "@shared/constants";
 import { useSharedContext } from "@shared/contexts";
 import { useFiltersToUrl } from "@shared/hooks";
-import { Hero, PageMessage } from "@shared/ui";
+import { Hero, PageMessage, Typography } from "@shared/ui";
 import { INTERSECTION_OBSERVER_THRESHOLD } from "@users/constants";
 import { useFiltersContext } from "@users/contexts";
 import useInfiniteUsers from "@users/services";
@@ -18,8 +18,13 @@ import {
 import InfiniteScroll from "react-infinite-scroller";
 import styles from "./SearchPage.module.scss";
 
-const { searchPage, searchPageAside, searchPageResults, searchPageSearch } =
-  styles;
+const {
+  searchPage,
+  searchPageAside,
+  searchPageResults,
+  searchPageSearch,
+  searchPageHeroContent,
+} = styles;
 
 const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
   // TODO fix page always shows scrollbar, when is not present it make the ui shuffley
@@ -34,7 +39,15 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
 
   return (
     <>
-      <Hero route={ROUTES.HOME} />
+      <Hero alt="Discover GitHub Users" backgroundImage={heroImage}>
+        <div className={searchPageHeroContent}>
+          <Typography weight="bold" size="xl" as="h2" variant="primary" shadow>
+            Discover GitHub Users
+          </Typography>
+        </div>
+        {/* TODO Add a button to go to the dashboard */}
+        {/* <Button>Go to dashboard</Button> */}
+      </Hero>
       <div className={searchPage}>
         <div className={searchPageSearch}>
           <SearchInput />
