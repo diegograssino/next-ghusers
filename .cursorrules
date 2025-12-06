@@ -712,6 +712,11 @@ $color-secondary: #4a4a4a;
   - `$color-accent`, `$color-background`, `$color-foreground`, etc. - These support dynamic theming (light/dark mode)
   - `$base-color-*` variables are ONLY used in `styles/base/_base.scss` to define the CSS custom properties
   - Example: `background-color: $color-accent;` ✅ NOT `background-color: $base-color-accent;` ❌
+- **Use short hex color format when possible** - Use 3-character hex codes instead of 6-character when the color allows it
+  - `#000` ✅ NOT `#000000` ❌
+  - `#fff` ✅ NOT `#ffffff` ❌
+  - `#3b82f6` ✅ (cannot be shortened, different digits)
+  - This follows the `color-hex-length` linting rule and keeps code concise
 - Use SCSS variables from abstracts (spacing, typography, etc.)
 - Mixins are part of abstracts, so importing `main.scss` gives access to all mixins
 
