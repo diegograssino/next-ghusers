@@ -2136,6 +2136,161 @@ export const FavsProvider = ({ children }) => {
 - **Linting/Formatting**: Use `^` and keep updated
   - Example: `"eslint": "^9"`, `"eslint-config-prettier": "^10.1.5"`
 
+### Essential Dependencies for Good Practices
+
+These dependencies are **required** for maintaining code quality, accessibility, and development workflow consistency across projects. They should be included in all projects following these rules.
+
+#### Code Quality & Linting
+
+- **`eslint`** - JavaScript/TypeScript linter for catching errors and enforcing code style
+  - **Why**: Catches bugs early, enforces consistent code style, improves code quality
+  - **Configuration**: Use framework-specific configs (e.g., `eslint-config-next` for Next.js)
+  - **Version**: Use `^` for flexibility (e.g., `"eslint": "^9"`)
+
+- **`eslint-config-prettier`** - Disables ESLint rules that conflict with Prettier
+  - **Why**: Prevents conflicts between ESLint and Prettier, ensures consistent formatting
+  - **Configuration**: Add to ESLint extends array after other configs
+  - **Version**: Use `^` (e.g., `"eslint-config-prettier": "^10.1.5"`)
+
+- **`prettier`** (if not included via framework config) - Code formatter
+  - **Why**: Ensures consistent code formatting across the project
+  - **Configuration**: Create `.prettierrc` or configure via ESLint
+  - **Version**: Use `^` (e.g., `"prettier": "^3.0.0"`)
+
+#### Accessibility
+
+- **`eslint-plugin-jsx-a11y`** - ESLint plugin for accessibility rules
+  - **Why**: Enforces accessibility standards, catches accessibility issues before commit
+  - **Configuration**: Enable recommended rules in ESLint config, add to pre-commit hook
+  - **Version**: Use `^` (e.g., `"eslint-plugin-jsx-a11y": "^6.10.2"`)
+  - **Enforcement**: Must be included in pre-commit hook with `--max-warnings 0`
+
+#### Git Hooks & Quality Gates
+
+- **`husky`** - Git hooks manager
+  - **Why**: Automates code quality checks before commits/pushes, prevents bad code from being committed
+  - **Setup**: Add `"prepare": "husky"` script to `package.json`
+  - **Configuration**: Create hooks in `.husky/` directory (pre-commit, pre-push)
+  - **Version**: Use `^` (e.g., `"husky": "^9.1.7"`)
+  - **Required hooks**: Pre-commit (fast checks), pre-push (comprehensive checks)
+
+#### Type Safety
+
+- **`typescript`** - Type-safe JavaScript
+  - **Why**: Catches type errors at compile time, improves code maintainability and IDE support
+  - **Configuration**: Use strict mode, configure `tsconfig.json` with path aliases
+  - **Version**: Use `^` for major version (e.g., `"typescript": "^5"`)
+
+#### Testing (Recommended)
+
+- **`jest`** - JavaScript testing framework
+  - **Why**: Enables unit and integration testing, ensures code reliability
+  - **Configuration**: Create `jest.config.ts` with appropriate test environment
+  - **Version**: Use `^` (e.g., `"jest": "^29.7.0"`)
+
+- **`@testing-library/react`** - React component testing utilities
+  - **Why**: Encourages testing best practices, focuses on user-centric testing
+  - **Configuration**: Use with Jest, configure test environment (jsdom)
+  - **Version**: Use `^` (e.g., `"@testing-library/react": "^16.3.0"`)
+
+- **`@testing-library/jest-dom`** - Custom Jest matchers for DOM testing
+  - **Why**: Provides helpful matchers for DOM assertions (e.g., `toBeInTheDocument()`)
+  - **Configuration**: Import in test setup file
+  - **Version**: Use `^` (e.g., `"@testing-library/jest-dom": "^6.6.3"`)
+
+#### Styling (If using CSS/SCSS)
+
+- **`stylelint`** - CSS/SCSS linter
+  - **Why**: Enforces consistent CSS/SCSS code style, catches styling errors
+  - **Configuration**: Use standard configs (e.g., `stylelint-config-standard-scss`)
+  - **Version**: Use `^` (e.g., `"stylelint": "^16.26.1"`)
+
+- **`stylelint-config-prettier-scss`** - Disables Stylelint rules that conflict with Prettier
+  - **Why**: Prevents conflicts between Stylelint and Prettier for CSS/SCSS
+  - **Configuration**: Add to Stylelint extends array
+  - **Version**: Use `^` (e.g., `"stylelint-config-prettier-scss": "^1.0.0"`)
+
+#### Development Workflow
+
+- **`concurrently`** - Run multiple commands concurrently in development
+  - **Why**: Enables running watch-mode tools (type checking, linting) alongside the dev server for better developer experience
+  - **Use case**: Run SCSS type generation in watch mode, stylelint in watch mode, or other watch tasks concurrently with `npm run dev`
+  - **Configuration**: Configure in `package.json` dev script to run multiple commands in parallel
+  - **Version**: Use `^` (e.g., `"concurrently": "^9.2.1"`)
+  - **Example**: `"dev": "concurrently \"npm run type-check:scss\" \"next dev --turbopack\" --names \"SCSS,DEV\" --prefix-colors \"cyan,green\""`
+  - **Benefits**:
+    - Type checking/linting runs automatically in background during development
+    - No need to manually run separate watch commands
+    - Immediate feedback on type errors and linting issues
+    - Better developer experience with parallel processes
+
+#### Essential Dependencies Summary
+
+**Minimum Required** (for all projects):
+```json
+{
+  "devDependencies": {
+    "eslint": "^9",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "husky": "^9.1.7",
+    "typescript": "^5"
+  }
+}
+```
+
+**Recommended** (for comprehensive code quality):
+```json
+{
+  "devDependencies": {
+    // ... minimum required above ...
+    "prettier": "^3.0.0",
+    "jest": "^29.7.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "stylelint": "^16.26.1",
+    "stylelint-config-prettier-scss": "^1.0.0",
+    "concurrently": "^9.2.1"
+  }
+}
+```
+
+#### Development Scripts Pattern
+
+- **Use `concurrently` for development workflow** - Run watch-mode tools alongside the dev server
+- **Pattern**: Configure `dev` script to run multiple commands in parallel
+- **Benefits**: Automatic type checking, linting, and other watch tasks during development
+- **Example configuration**:
+
+```json
+{
+  "scripts": {
+    "dev": "concurrently \"npm run type-check:scss\" \"next dev --turbopack\" --names \"SCSS,DEV\" --prefix-colors \"cyan,green\"",
+    "type-check:scss": "typed-scss-modules features --watch --logLevel error"
+  }
+}
+```
+
+- **When to use**:
+  - Projects with type generation tools (e.g., `typed-scss-modules`)
+  - Projects with watch-mode linting (e.g., `stylelint --watch`)
+  - Any project where multiple watch processes improve developer experience
+- **Alternative**: If not using watch-mode tools, standard `dev` script is sufficient
+
+#### Setup Checklist
+
+When starting a new project, ensure:
+
+1. ✅ **ESLint configured** - Framework-specific config + Prettier integration
+2. ✅ **Accessibility plugin** - `eslint-plugin-jsx-a11y` enabled with recommended rules
+3. ✅ **Husky installed** - Git hooks configured (pre-commit, pre-push)
+4. ✅ **TypeScript configured** - Strict mode enabled, path aliases configured
+5. ✅ **Testing setup** - Jest and Testing Library configured (if testing)
+6. ✅ **Stylelint configured** - For CSS/SCSS projects (if using styles)
+7. ✅ **Concurrently configured** - For running watch-mode tools alongside dev server (if using type generation or watch-mode linting)
+8. ✅ **Pre-commit hook** - Runs linting and accessibility checks
+9. ✅ **Pre-push hook** - Runs comprehensive build checks
+
 ### Best Practices
 
 - **Review changelogs before major version updates** - check for breaking changes
@@ -2402,6 +2557,332 @@ npm run lint:scss:check
 **Pre-commit** (`.husky/pre-commit`):
 - `npm run type-check:scss:build` - Generate SCSS module types
 - `npm run lint:scss:check` - Check SCSS code quality
+- `npx eslint app features --ext .ts,.tsx --max-warnings 0` - **Accessibility checks** - Enforces accessibility standards using `eslint-plugin-jsx-a11y`, blocks commits with accessibility warnings to prevent inaccessible code from being committed
 
 **Pre-push** (`.husky/pre-push`):
 - `npm run build` - Full production build (includes type checking and Next.js build)
+
+## Accessibility Standards
+
+### Overview
+
+- **Accessibility is enforced at commit time** - The pre-commit hook runs `eslint-plugin-jsx-a11y` to catch accessibility issues before code is committed
+- **No accessibility warnings allowed** - The ESLint configuration uses `--max-warnings 0` to block commits with any accessibility issues
+- **Static analysis approach** - We use `eslint-plugin-jsx-a11y` for static analysis rather than runtime libraries like React Aria to avoid SSR impact and bundle size overhead
+- **Manual implementation** - Accessibility features (ARIA attributes, keyboard handlers) are implemented manually following WCAG guidelines
+
+### ESLint Configuration
+
+- **Plugin**: `eslint-plugin-jsx-a11y` - Provides static analysis for accessibility issues
+- **Configuration**: Enabled in `eslint.config.mjs` with recommended rules
+- **Exception**: `jsx-a11y/no-autofocus` is disabled - `autoFocus` is needed for search input UX where users expect immediate focus for quick typing
+- **Pre-commit enforcement**: ESLint runs on `app` and `features` directories with zero warnings allowed
+
+### Interactive Elements
+
+#### Buttons
+
+- **Always use `<button>` element** - Never use `<div>` or other non-interactive elements with click handlers
+- **Add `type="button"`** - Prevents accidental form submission when buttons are inside forms
+- **Add `aria-label`** - Required for buttons that only contain icons or when the visible text doesn't fully describe the action
+- **Add keyboard handlers** - Implement `onKeyDown` handler for Enter and Space keys if using custom interactive elements (though prefer native `<button>`)
+- **Handle disabled state** - Use `disabled` prop and ensure disabled buttons are properly announced to screen readers
+
+#### Button Examples
+
+```typescript
+// ✅ CORRECT: Native button with aria-label
+<button
+  type="button"
+  onClick={handleClick}
+  aria-label="Remove filter"
+>
+  <IconX />
+</button>
+
+// ✅ CORRECT: Button with descriptive aria-label
+<button
+  type="button"
+  onClick={handleSort}
+  aria-label={`Sort ${sortOrder ? "ascending" : "descending"}`}
+>
+  <Typography>Sort {sortOrder ? "ASC" : "DESC"}</Typography>
+</button>
+
+// ✅ CORRECT: Button with dynamic aria-label based on state
+const ariaLabel = isLoading
+  ? "Adding to favorites..."
+  : isFavorite
+    ? `Remove ${user.login} from favorites`
+    : `Add ${user.login} to favorites`;
+
+<button
+  onClick={handleFavorite}
+  disabled={isLoading}
+  aria-label={ariaLabel}
+  title={ariaLabel} // Also provide title for tooltip
+>
+  {isFavorite ? <IconStarFilled /> : <IconStar />}
+</button>
+
+// ❌ WRONG: Using div with onClick
+<div onClick={handleClick}>Click me</div>
+
+// ❌ WRONG: Button without aria-label when text is unclear
+<button onClick={handleClick}>
+  <IconX /> {/* Screen reader won't know what this does */}
+</button>
+```
+
+#### Form Inputs
+
+- **Always add `aria-label`** - Required for inputs that don't have visible labels or when the label doesn't fully describe the input purpose
+- **Use semantic HTML** - Prefer `<input>`, `<textarea>`, `<select>` over custom implementations
+- **Associate labels properly** - Use `<label>` with `htmlFor` or wrap input in `<label>`
+- **Handle disabled state** - Use `disabled` prop and ensure proper ARIA attributes
+
+#### Input Examples
+
+```typescript
+// ✅ CORRECT: Input with aria-label
+<input
+  type="text"
+  value={value}
+  onChange={handleChange}
+  aria-label="Search GitHub users by username"
+  placeholder="Search users..."
+/>
+
+// ✅ CORRECT: Input with visible label
+<label htmlFor="search-input">
+  Search Users
+</label>
+<input
+  id="search-input"
+  type="text"
+  value={value}
+  onChange={handleChange}
+/>
+
+// ❌ WRONG: Input without aria-label or label
+<input
+  type="text"
+  value={value}
+  onChange={handleChange}
+  placeholder="Search..." // Placeholder is not enough for screen readers
+/>
+```
+
+### ARIA Attributes
+
+#### When to Use `aria-label`
+
+- **Icon-only buttons** - Buttons that only contain icons need descriptive `aria-label`
+- **Buttons with unclear text** - When the visible text doesn't fully describe the action
+- **Dynamic content** - When button text changes based on state (e.g., "Add favorite" vs "Remove favorite")
+- **Form inputs without labels** - Inputs that don't have visible `<label>` elements
+- **Decorative elements** - Elements that are interactive but don't have descriptive text
+
+#### `aria-label` Guidelines
+
+- **Be descriptive** - Describe what the element does, not just what it is
+- **Include context** - Include relevant context (e.g., "Remove followers filter" not just "Remove")
+- **Match user intent** - Use language that matches how users would describe the action
+- **Keep it concise** - Be descriptive but concise (aim for 1-2 sentences)
+- **Use dynamic labels** - Update `aria-label` based on component state when appropriate
+
+#### `aria-label` Examples
+
+```typescript
+// ✅ CORRECT: Descriptive and contextual
+<button aria-label={`Remove ${filterLabel} filter`}>
+  <IconX />
+</button>
+
+// ✅ CORRECT: Includes user context
+<button aria-label={`Add ${user.login} to favorites`}>
+  <IconStar />
+</button>
+
+// ✅ CORRECT: Describes action and state
+<button aria-label={`Sort ${sortOrder ? "ascending" : "descending"}`}>
+  Sort {sortOrder ? "ASC" : "DESC"}
+</button>
+
+// ❌ WRONG: Too vague
+<button aria-label="Button">
+  <IconX />
+</button>
+
+// ❌ WRONG: Missing context
+<button aria-label="Remove">
+  <IconX />
+</button>
+```
+
+### Keyboard Navigation
+
+#### Keyboard Event Handlers
+
+- **Use native HTML elements** - Native `<button>`, `<input>`, `<a>` elements handle keyboard events automatically
+- **Custom interactive elements** - If you must use custom elements, implement keyboard handlers for Enter and Space keys
+- **Prevent default behavior** - Use `e.preventDefault()` when handling keyboard events to prevent default browser behavior
+- **Support standard keys** - Enter and Space for activation, Escape for cancellation, Arrow keys for navigation
+
+#### Keyboard Handler Example
+
+```typescript
+// ✅ CORRECT: Keyboard handler for custom interactive element (prefer native button)
+const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+  if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    onRemove();
+  }
+};
+
+<button
+  type="button"
+  onClick={onRemove}
+  onKeyDown={handleKeyDown}
+  aria-label={`Remove ${label} filter`}
+>
+  <IconX />
+</button>
+```
+
+### Semantic HTML
+
+#### HTML Elements
+
+- **Use semantic elements** - Prefer `<button>`, `<nav>`, `<main>`, `<header>`, `<footer>`, `<article>`, `<section>` over generic `<div>`
+- **Use proper heading hierarchy** - Use `<h1>`, `<h2>`, etc. in order (h1 → h2 → h3)
+- **Use `<html lang="en">`** - Always include `lang` attribute on `<html>` element
+- **Use proper form elements** - Use `<form>`, `<label>`, `<input>`, `<button>` for forms
+
+#### Semantic HTML Examples
+
+```typescript
+// ✅ CORRECT: Semantic HTML
+<header>
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <article>
+    <h1>Page Title</h1>
+    <section>
+      <h2>Section Title</h2>
+    </section>
+  </article>
+</main>
+
+// ❌ WRONG: Generic divs everywhere
+<div>
+  <div>
+    <div>Home</div>
+  </div>
+</div>
+```
+
+### Images
+
+- **Always provide `alt` text** - Required for all `<img>` and Next.js `Image` components
+- **Descriptive alt text** - Describe the image content or purpose, not just "image" or "photo"
+- **Decorative images** - Use empty `alt=""` for purely decorative images
+- **Functional images** - Describe the function if the image is part of an interactive element
+
+#### Image Examples
+
+```typescript
+// ✅ CORRECT: Descriptive alt text
+<Image
+  src={user.avatarUrl}
+  alt={`${user.login}'s profile picture`}
+  fill
+/>
+
+// ✅ CORRECT: Decorative image
+<Image
+  src="/decorative-pattern.png"
+  alt=""
+  fill
+/>
+
+// ❌ WRONG: Missing alt text
+<Image src={user.avatarUrl} fill />
+
+// ❌ WRONG: Non-descriptive alt text
+<Image src={user.avatarUrl} alt="image" fill />
+```
+
+### Common Accessibility Patterns
+
+#### Interactive Elements Checklist
+
+When creating interactive components, ensure:
+
+1. ✅ Uses semantic HTML element (`<button>`, `<a>`, `<input>`, etc.)
+2. ✅ Has descriptive `aria-label` if text is unclear or icon-only
+3. ✅ Supports keyboard navigation (Enter, Space, Arrow keys as appropriate)
+4. ✅ Has proper focus management
+5. ✅ Handles disabled state correctly
+6. ✅ Provides visual feedback for interactions
+7. ✅ Works with screen readers
+
+#### Component Accessibility Example
+
+```typescript
+// ✅ CORRECT: Fully accessible component
+const Pill = ({ label, onRemove }: PillProps) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onRemove();
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      className={pill}
+      onClick={onRemove}
+      onKeyDown={handleKeyDown}
+      aria-label={`Remove ${label} filter`}
+    >
+      <IconX />
+      <Typography as="span">{label}</Typography>
+    </button>
+  );
+};
+```
+
+### Testing Accessibility
+
+- **ESLint catches static issues** - `eslint-plugin-jsx-a11y` catches most common accessibility issues during development
+- **Manual testing recommended** - Test with keyboard navigation and screen readers
+- **Automated testing** - Consider adding `jest-axe` for automated accessibility testing in test suites
+- **Browser DevTools** - Use browser accessibility inspectors to verify ARIA attributes
+
+### Accessibility vs React Aria
+
+**Why we use `eslint-plugin-jsx-a11y` instead of React Aria:**
+
+- ✅ **No SSR impact** - Static analysis doesn't require client components
+- ✅ **No bundle size impact** - Dev dependency only, no runtime code
+- ✅ **Enforced at commit time** - Prevents inaccessible code from being committed
+- ✅ **Simple setup** - Easy to configure and maintain
+- ✅ **Covers most cases** - Catches 90%+ of common accessibility issues
+
+**When to consider React Aria:**
+
+- Complex keyboard navigation (multi-select, drag-and-drop)
+- Focus management (modals, dropdowns, tooltips)
+- Dynamic ARIA updates
+- Internationalization requirements
+- Complex interactive components (combobox, autocomplete, menu)
+
+For most use cases, manual implementation with ESLint enforcement is sufficient and more performant.

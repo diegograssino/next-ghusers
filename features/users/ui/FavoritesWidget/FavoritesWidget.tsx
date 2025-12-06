@@ -40,19 +40,21 @@ const FavoritesWidget = ({ id, user }: FavoritesWidgetProps) => {
     }
   };
 
+  const ariaLabel =
+    error ||
+    (isLoading
+      ? "Adding to favorites..."
+      : isFavorite
+        ? `Remove ${user.login} from favorites`
+        : `Add ${user.login} to favorites`);
+
   return (
     <button
       onClick={handleFavorite}
       disabled={isLoading}
       data-testid="card-widget"
-      title={
-        error ||
-        (isLoading
-          ? "Adding..."
-          : isFavorite
-            ? "Remove favorite"
-            : "Add favorite")
-      }
+      aria-label={ariaLabel}
+      title={ariaLabel}
     >
       {isLoading ? (
         <IconStar className={favoritesWidgetEmptyStar} />

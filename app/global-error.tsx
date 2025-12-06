@@ -4,7 +4,7 @@ import { PageMessage } from "@shared/ui";
 
 const GlobalError = () => {
   return (
-    <html>
+    <html lang="en">
       <body>
         <PageMessage message="error" />
       </body>
