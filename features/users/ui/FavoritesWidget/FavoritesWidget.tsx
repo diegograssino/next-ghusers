@@ -12,12 +12,8 @@ interface FavoritesWidgetProps extends CardWidgetProps {
 }
 
 const FavoritesWidget = ({ id, user }: FavoritesWidgetProps) => {
-  const {
-    checkFavorite,
-    addFavorite,
-    removeFavorite,
-    isAddingFavorite,
-  } = useFavoritesContext();
+  const { checkFavorite, addFavorite, removeFavorite, isAddingFavorite } =
+    useFavoritesContext();
   const [error, setError] = useState<string | null>(null);
   // DOC Simple boolean checks don't need memoization
   const isFavorite = checkFavorite(id);
@@ -45,8 +41,8 @@ const FavoritesWidget = ({ id, user }: FavoritesWidgetProps) => {
     (isLoading
       ? "Adding to favorites..."
       : isFavorite
-        ? `Remove ${user.login} from favorites`
-        : `Add ${user.login} to favorites`);
+      ? `Remove ${user.login} from favorites`
+      : `Add ${user.login} to favorites`);
 
   return (
     <button
@@ -68,4 +64,3 @@ const FavoritesWidget = ({ id, user }: FavoritesWidgetProps) => {
 };
 
 export default FavoritesWidget;
-
