@@ -6,7 +6,11 @@ const { sortButton } = styles;
 
 const SortButton = ({ sortOrder, onSort }: SortButtonProps) => {
   return (
-    <button onClick={onSort} className={sortButton}>
+    <button
+      onClick={onSort}
+      className={sortButton}
+      aria-label={`Sort ${sortOrder ? "ascending" : "descending"}`}
+    >
       <Typography size="lg" weight="bold">
         Sort {sortOrder ? "ASC" : "DESC"}
       </Typography>

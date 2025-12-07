@@ -67,6 +67,7 @@ const SearchInput = () => {
           autoComplete="off"
           autoFocus={true}
           placeholder="Search users..."
+          aria-label="Search GitHub users by username"
         />
         <div
           className={clsx(

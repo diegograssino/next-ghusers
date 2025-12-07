@@ -4,7 +4,7 @@ import { clsx } from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { genericBlurData } from "../../lib/constants";
-import FavsWidget from "../FavsWidget/FavsWidget";
+import FavoritesWidget from "../FavoritesWidget/FavoritesWidget";
 import styles from "./Card.module.scss";
 
 const {
@@ -14,7 +14,7 @@ const {
   cardSkeleton,
   cardImage,
   cardImageContainer,
-  cardContentatSymbol,
+  cardContentAtSymbol,
 } = styles;
 
 const Card = ({ user }: CardProps) => {
@@ -37,12 +37,12 @@ const Card = ({ user }: CardProps) => {
         </div>
         <div className={cardContent}>
           <Typography as="h3" weight="bold" size="md" truncate>
-            <span className={cardContentatSymbol}>@</span>
+            <span className={cardContentAtSymbol}>@</span>
             {user.login}
           </Typography>
         </div>
         <div className={cardOptions}>
-          <FavsWidget id={user.id} user={user} />
+          <FavoritesWidget id={user.id} user={user} />
         </div>
       </article>
     </Link>

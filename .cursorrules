@@ -122,10 +122,17 @@ Each component should follow this structure:
 
 ```
 ComponentName/
-  ├── ComponentName.tsx         # Component file (PascalCase)
-  ├── ComponentName.module.scss # Styles (CSS Modules)
-  └── ComponentName.spec.tsx    # Tests (same name + .spec)
+  ├── ComponentName.tsx              # Component file (PascalCase)
+  ├── ComponentName.module.scss      # Styles (CSS Modules)
+  ├── ComponentName.spec.tsx         # Tests (same name + .spec)
+  └── ComponentName.constants.ts     # Optional: Component-specific constants
 ```
+
+**Component-specific constants files**:
+- Use `ComponentName.constants.ts` when a component has its own constants (e.g., message mappings, configuration objects)
+- Export named constants (camelCase for objects, UPPER_SNAKE_CASE for primitive values)
+- Import in component: `import { componentConstants } from "./ComponentName.constants"`
+- Example: `PageMessage.constants.ts` exports `pageMessages` object
 
 ### File Naming
 
@@ -319,7 +326,7 @@ const { card, cardContent, cardImage } = styles;
 
 const Card = ({ user }: CardProps) => {
   return (
-    <article className={card}>
+    <article className={card} data-testid="card">
       <div className={cardContent}>{/* component content */}</div>
     </article>
   );
@@ -328,11 +335,148 @@ const Card = ({ user }: CardProps) => {
 export default Card;
 ```
 
+### Component Props Patterns
+
+#### Children Prop
+
+- **Always type `children` as `React.ReactNode`** - supports any valid React child (string, number, element, array, etc.)
+- Destructure `children` from props
+- Render `children` directly in JSX
+
+#### Spread Props Pattern
+
+- **Use `...otherProps` to forward HTML attributes** - allows components to accept standard HTML props
+- **Type `otherProps` properly** - extend `HTMLAttributes<HTMLElement>` or use `Omit<HTMLAttributes<HTMLElement>, "conflictingProp">`
+- **Spread `otherProps` to the root element** - enables className, onClick, data-* attributes, etc.
+- **Merge className properly** - use `clsx` to combine component className with `otherProps.className`
+- **Document Omit exclusions** - When using `Omit` to exclude props (e.g., `"color"`, `"ref"`), add DOC comments explaining why:
+  - `// DOC Omit "color" to use variant prop instead (variant controls text color via ColorVariants)`
+  - `// DOC Omit "ref" because Typography doesn't use forwardRef - refs are not supported`
+  - `// DOC Omit "color" - Container is a layout component, doesn't use color styling`
+
+#### Boolean Flag Destructuring
+
+- **Rename boolean props with descriptive names** when destructuring
+- Pattern: `propName: isPropName` or `propName: hasPropName` (follow boolean naming conventions)
+- Examples: `truncate: isTruncated`, `shadow: hasShadow`, `backgroundImage: hasBackgroundImage`
+
+### Component Props Examples
+
+```typescript
+// ✅ Children prop
+interface ContainerProps {
+  children: React.ReactNode;
+}
+
+const Container = ({ children }: ContainerProps) => {
+  return <div>{children}</div>;
+};
+
+// ✅ Spread props pattern
+interface TypographyProps extends Omit<HTMLAttributes<HTMLElement>, "color"> {
+  size?: Sizes;
+  variant?: ColorVariants;
+}
+
+const Typography = ({
+  children,
+  size = "md",
+  variant = "default",
+  ...otherProps
+}: TypographyProps) => {
+  return (
+    <p
+      {...otherProps}
+      className={clsx(typography, otherProps.className)}
+    >
+      {children}
+    </p>
+  );
+};
+
+// ✅ Boolean flag destructuring
+const Typography = ({
+  truncate: isTruncated = false,
+  shadow: hasShadow = false,
+  ...otherProps
+}: TypographyProps) => {
+  return (
+    <p
+      className={clsx(
+        typography,
+        isTruncated && ellipsis,
+        hasShadow && shadow
+      )}
+    >
+      {children}
+    </p>
+  );
+};
+```
+
+### Event Handlers
+
+- **Use `useCallback` for event handlers** - prevents unnecessary re-renders
+- **Type event handlers properly** - `React.MouseEvent<HTMLButtonElement>`, `React.ChangeEvent<HTMLInputElement>`, etc.
+- **Use `preventDefault()` when needed** - especially for buttons inside Links or forms
+- **Handle errors in async event handlers** - use try-catch blocks
+
+### Event Handler Example
+
+```typescript
+const handleClick = useCallback(
+  async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    try {
+      await someAsyncAction();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  },
+  [dependencies]
+);
+```
+
+### CSS Custom Properties (CSS Variables)
+
+- **Use CSS custom properties for dynamic values** - especially for grid columns, spacing, colors
+- **Type style prop correctly** - use `React.CSSProperties` with type assertion
+- **Set custom properties via inline styles** - `style={{ "--grid-cols": cols } as React.CSSProperties}`
+- **Use in SCSS** - reference with `var(--grid-cols)` or `grid-template-columns: repeat(var(--grid-cols), 1fr)`
+
+### CSS Custom Properties Example
+
+```typescript
+const CardGrid = ({ children, perPageConfig }: CardGridProps) => {
+  const cols = perPageConfig?.columns || "1";
+
+  return (
+    <div
+      className={cardGrid}
+      style={{ "--grid-cols": cols } as React.CSSProperties}
+    >
+      {children}
+    </div>
+  );
+};
+```
+
+```scss
+// CardGrid.module.scss
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), 1fr);
+}
+```
+
 ### Component Props
 
 - Define props using interfaces from `types/` directory
 - Use destructuring for props
 - Support polymorphic components with `as` prop pattern when needed
+- **Always use `React.ReactNode` type for `children` prop** - supports any valid React child
+- **Use `...otherProps` pattern to forward HTML attributes** - allows components to accept standard HTML props
+- **Type `otherProps` properly** - extend `HTMLAttributes<HTMLElement>` or use `Omit<HTMLAttributes<HTMLElement>, "color">` to exclude conflicting props
 
 ### Reusable Components with Variants, Sizes, and Weights
 
@@ -411,29 +555,51 @@ const Typography = ({
 
 - Use `as` prop pattern for components that can render as different HTML elements
 - Default to a sensible element (e.g., `div` for containers)
-- Spread remaining props to the rendered element
+- Spread remaining props to the rendered element using `...otherProps`
 - Use TypeScript to ensure type safety
+- **When using `forwardRef` with polymorphic components, always set `displayName`** for better debugging
+
+### forwardRef Pattern
+
+- **Use `forwardRef` for reusable UI components** that render HTML elements - allows parent components to access the underlying DOM element
+- **Always set `displayName`** when using `forwardRef` for better debugging experience in React DevTools
+- **When to use `forwardRef`**:
+  - Reusable components that render HTML elements (buttons, inputs, containers, etc.)
+  - Components that might need refs for focus management, animations, measurements, or third-party library integration
+  - Polymorphic components that can render as different HTML elements
+- **When NOT to use `forwardRef`**:
+  - Page components or feature-specific components that are not reused
+  - Components that don't render HTML elements directly
+  - Components where refs are never needed (e.g., `Typography` - text components typically don't need refs)
+  - If refs aren't needed, exclude `ref` from the interface using `Omit<HTMLAttributes<HTMLElement>, "ref">` and document why
+- **Type the ref correctly** - Use the appropriate HTML element type (e.g., `HTMLButtonElement`, `HTMLAnchorElement`, `HTMLElement`)
+- **For polymorphic components**, use union types for refs (e.g., `HTMLButtonElement | HTMLAnchorElement`)
+- **Document ref exclusions** - When excluding `ref` from an interface, add a DOC comment explaining why (e.g., "DOC Omit 'ref' because Typography doesn't use forwardRef - refs are not supported")
 
 ### Polymorphic Component Example
 
 ```typescript
+import { forwardRef } from "react";
+
 interface ContainerProps {
   children: React.ReactNode;
   as?: keyof JSX.IntrinsicElements;
   [key: string]: unknown;
 }
 
-const Container = ({
-  children,
-  as: Tag = "div",
-  ...otherProps
-}: ContainerProps) => {
-  return (
-    <Tag {...otherProps} className={container}>
-      {children}
-    </Tag>
-  );
-};
+const Container = forwardRef<HTMLElement, ContainerProps>(
+  ({ children, as: Tag = "div", ...otherProps }, ref) => {
+    return (
+      <Tag ref={ref} {...otherProps} className={container}>
+        {children}
+      </Tag>
+    );
+  }
+);
+
+Container.displayName = "Container";
+
+export default Container;
 ```
 
 ### Skeleton Components
@@ -717,6 +883,10 @@ $color-secondary: #4a4a4a;
   - `#fff` ✅ NOT `#ffffff` ❌
   - `#3b82f6` ✅ (cannot be shortened, different digits)
   - This follows the `color-hex-length` linting rule and keeps code concise
+- **Never hardcode sizing values** - Always use SCSS variables for padding, font sizes, spacing, etc.
+  - Create variables in `styles/abstracts/_variables.scss` for component-specific sizes (e.g., `$button-padding-*-*`, `$font-size-*-*`)
+  - Use descriptive variable names that indicate the component, property, size, and breakpoint (e.g., `$button-padding-md-vertical-base`, `$font-size-sm-md`)
+  - This ensures consistency across components and makes global changes easier
 - Use SCSS variables from abstracts (spacing, typography, etc.)
 - Mixins are part of abstracts, so importing `main.scss` gives access to all mixins
 
@@ -993,6 +1163,14 @@ const MyComponent = () => {
 - Group tests with `describe` blocks
 - Test both main components and skeleton variants
 
+### data-testid Requirement
+
+- **All interactive and testable components MUST have `data-testid` attributes**
+- Place `data-testid` on the root element of the component
+- Use kebab-case for test IDs: `data-testid="card"`, `data-testid="card-skeleton"`, `data-testid="card-widget"`
+- **Test IDs should be descriptive and match component purpose**
+- Skeleton components should have `data-testid="component-name-skeleton"`
+
 ### Test File Naming Examples
 
 ```
@@ -1132,11 +1310,13 @@ const UserPage = async ({ params }: UserPageProps) => {
 ### Image Optimization
 
 - Always use Next.js `Image` component for images
-- Use `fill` prop with positioned parent containers
-- Set `priority` for above-the-fold images
+- Use `fill` prop with positioned parent containers (parent must have `position: relative`)
+- Set `priority` for above-the-fold images (improves LCP)
 - Provide appropriate `sizes` prop for responsive images
 - Use `placeholder="blur"` with `blurDataURL` for better UX
 - Export blur data constants from feature constants files
+- **Parent container must have `position: relative`** when using `fill` prop
+- **Always provide `alt` text** for accessibility
 
 ### Image Optimization Example
 
@@ -1144,9 +1324,10 @@ const UserPage = async ({ params }: UserPageProps) => {
 import Image from "next/image";
 import { genericBlurData } from "../../lib/constants";
 
-<div className={cardImageContainer}>
+// Parent container with position: relative
+<div className={cardImageContainer}> {/* position: relative in SCSS */}
   <Image
-    src={user.avatar_url}
+    src={user.avatarUrl}
     alt={user.login}
     fill
     priority
@@ -1156,6 +1337,32 @@ import { genericBlurData } from "../../lib/constants";
     className={cardImage}
   />
 </div>;
+```
+
+### Next.js Link Component
+
+- **Always use Next.js `Link` component for internal navigation** - provides client-side transitions and prefetching
+- **Wrap interactive elements** (like cards, buttons) with `Link` when they navigate
+- **Spread props to Link** - use `...otherProps` to forward HTML attributes
+- **Use `href` prop** - can be string or template literal for dynamic routes
+- **Link children** - Can wrap other components or elements
+- **External links** - Next.js `Link` automatically handles external URLs by rendering a regular `<a>` tag, so it can be used for both internal and external navigation
+- **Button component for links** - Use `Button` component with `unstyled` variant and `as={Link}` or `href` prop instead of creating separate anchor/link components - this provides consistent styling and behavior
+
+### Link Component Example
+
+```typescript
+import Link from "next/link";
+
+const Card = ({ user }: CardProps) => {
+  return (
+    <Link href={`/${user.id}`} data-testid="card">
+      <article className={card}>
+        {/* Card content */}
+      </article>
+    </Link>
+  );
+};
 ```
 
 ### Provider Pattern
@@ -1694,11 +1901,214 @@ export const fetchUserAction = async (id: number) => { /* ... */ };
 
 ## Performance Best Practices
 
-### Memoization
+### Memoization (useMemo & useCallback)
 
-- Use `useMemo` for expensive computations
-- Use `useCallback` for functions passed as props or in dependency arrays
-- Memoize context values
+**Only memoize when you need referential stability** - Memoization has overhead and should only be used when necessary.
+
+#### When to Memoize
+
+1. **Passing to memoized components** (`React.memo`):
+   - If you pass functions or non-primitive values to components wrapped in `React.memo`, they need stable references
+   - React compares props with `Object.is` - if references change, memoization breaks
+
+2. **Preventing effects from firing too often**:
+   - Functions or values used in `useEffect`, `useMemo`, or `useCallback` dependency arrays need stable references
+   - Without memoization, effects may run on every render
+
+3. **Expensive computations**:
+   - Use `useMemo` for computationally expensive operations (e.g., filtering large arrays, complex calculations)
+   - The computation itself must be slow enough to justify the memoization overhead
+
+4. **Context values and methods**:
+   - Context values should be memoized to prevent unnecessary re-renders of all consumers
+   - Context methods should be memoized to maintain stable references
+
+#### When NOT to Memoize (Useless Memoization)
+
+1. **Passing to React built-ins** (`button`, `div`, `input`, etc.):
+   - React built-in components don't care about referential stability
+   - Memoizing handlers passed to them achieves nothing and adds overhead
+
+2. **Passing to non-memoized components**:
+   - If the component isn't wrapped in `React.memo`, memoization provides no benefit
+   - The component will re-render anyway when parent re-renders
+
+3. **Simple computations**:
+   - Don't memoize simple boolean checks, string concatenations, or trivial operations
+   - The memoization overhead may be greater than the computation itself
+
+4. **Props as dependencies**:
+   - Avoid using non-primitive props (objects, arrays, functions) as dependencies in `useCallback`/`useMemo`
+   - You have no control over their referential stability from parent components
+   - This creates fragile memoization chains that break easily
+
+#### The "Latest Ref" Pattern
+
+When you need the latest value in an effect without re-running the effect, use the "latest ref" pattern instead of memoization:
+
+```typescript
+export const useHotkeys = (hotkeys: Hotkey[]) => {
+  const hotkeysRef = useRef(hotkeys);
+
+  // DOC Update ref on every render to always have latest value
+  useEffect(() => {
+    hotkeysRef.current = hotkeys;
+  });
+
+  const onKeyDown = useCallback(() => {
+    // DOC Use hotkeysRef.current to access latest hotkeys without re-running effect
+    const currentHotkeys = hotkeysRef.current;
+    // ... use currentHotkeys
+  }, []); // Empty deps - effect only runs once
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [onKeyDown]); // Stable reference, effect only runs once
+};
+```
+
+**Benefits**:
+- Effect only runs once (setup/cleanup)
+- Always has access to latest values via ref
+- No fragile memoization chains
+- Simpler, more maintainable code
+
+**Future**: React's `useEffectEvent` (when available) will make this pattern first-class.
+
+#### Memoization Examples
+
+```typescript
+// ✅ CORRECT: Passing to memoized component
+const MemoizedCard = React.memo(Card);
+
+function Parent() {
+  const handleClick = useCallback(() => {
+    // ... handler logic
+  }, []); // ✅ Needed for memoized component
+
+  return <MemoizedCard onClick={handleClick} />;
+}
+
+// ❌ WRONG: Passing to React built-in (useless)
+function MyButton() {
+  const onClick = useCallback(() => {
+    console.log("clicked");
+  }, []); // ❌ Useless - button doesn't care about referential stability
+
+  return <button onClick={onClick}>Click</button>;
+}
+
+// ✅ CORRECT: No memoization needed for built-ins
+function MyButton() {
+  const onClick = () => {
+    console.log("clicked");
+  }; // ✅ Simple inline function is fine
+
+  return <button onClick={onClick}>Click</button>;
+}
+
+// ✅ CORRECT: Used in effect dependency
+function MyComponent() {
+  const fetchData = useCallback(async () => {
+    // ... fetch logic
+  }, []); // ✅ Needed for effect dependency
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]); // Effect only runs when fetchData changes
+
+  return <div>...</div>;
+}
+
+// ✅ CORRECT: Expensive computation
+function ExpensiveComponent({ items }) {
+  const filteredItems = useMemo(() => {
+    // DOC Expensive filtering operation on large array
+    return items.filter(/* complex logic */).map(/* transformation */);
+  }, [items]); // ✅ Memoize expensive computation
+
+  return <div>{filteredItems.length} items</div>;
+}
+
+// ❌ WRONG: Simple computation (overkill)
+function SimpleComponent({ count }) {
+  const doubled = useMemo(() => count * 2, [count]); // ❌ Overkill - simple multiplication
+
+  return <div>{doubled}</div>;
+}
+
+// ✅ CORRECT: Simple computation without memoization
+function SimpleComponent({ count }) {
+  const doubled = count * 2; // ✅ Simple computation, no memoization needed
+
+  return <div>{doubled}</div>;
+}
+
+// ❌ WRONG: Props as dependencies (fragile)
+function OhNo({ onChange }) {
+  const handleChange = useCallback(
+    (e) => {
+      onChange?.(e);
+    },
+    [onChange] // ❌ Fragile - depends on parent's referential stability
+  );
+
+  return <SomeComponent onChange={handleChange} />;
+}
+
+// ✅ CORRECT: Latest ref pattern for props
+function Better({ onChange }) {
+  const onChangeRef = useRef(onChange);
+
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  });
+
+  const handleChange = useCallback((e) => {
+    onChangeRef.current?.(e); // ✅ Always uses latest onChange
+  }, []); // ✅ Stable reference, no dependency on prop
+
+  return <SomeComponent onChange={handleChange} />;
+}
+```
+
+#### Context Memoization (Always Needed)
+
+Context values and methods should always be memoized:
+
+```typescript
+export const FavsProvider = ({ children }) => {
+  const [favs, setFavs] = useState([]);
+
+  const addFav = useCallback(async (user) => {
+    // ... implementation
+  }, []); // ✅ Context methods should be memoized
+
+  const contextValue = useMemo(
+    () => ({
+      favs,
+      addFav,
+    }),
+    [favs, addFav] // ✅ Context values should be memoized
+  );
+
+  return (
+    <FavsContext.Provider value={contextValue}>
+      {children}
+    </FavsContext.Provider>
+  );
+};
+```
+
+#### Summary
+
+- **Memoize**: Context values/methods, expensive computations, values passed to `React.memo` components, effect dependencies
+- **Don't memoize**: Handlers for React built-ins, simple computations, values passed to non-memoized components
+- **Use latest ref pattern**: When you need latest values in effects without re-running effects
+- **Avoid**: Props as dependencies in memoization (creates fragile chains)
 
 ### React Query
 
@@ -1752,6 +2162,161 @@ export const fetchUserAction = async (id: number) => { /* ... */ };
   - Example: `"@testing-library/react": "^16.3.0"`
 - **Linting/Formatting**: Use `^` and keep updated
   - Example: `"eslint": "^9"`, `"eslint-config-prettier": "^10.1.5"`
+
+### Essential Dependencies for Good Practices
+
+These dependencies are **required** for maintaining code quality, accessibility, and development workflow consistency across projects. They should be included in all projects following these rules.
+
+#### Code Quality & Linting
+
+- **`eslint`** - JavaScript/TypeScript linter for catching errors and enforcing code style
+  - **Why**: Catches bugs early, enforces consistent code style, improves code quality
+  - **Configuration**: Use framework-specific configs (e.g., `eslint-config-next` for Next.js)
+  - **Version**: Use `^` for flexibility (e.g., `"eslint": "^9"`)
+
+- **`eslint-config-prettier`** - Disables ESLint rules that conflict with Prettier
+  - **Why**: Prevents conflicts between ESLint and Prettier, ensures consistent formatting
+  - **Configuration**: Add to ESLint extends array after other configs
+  - **Version**: Use `^` (e.g., `"eslint-config-prettier": "^10.1.5"`)
+
+- **`prettier`** (if not included via framework config) - Code formatter
+  - **Why**: Ensures consistent code formatting across the project
+  - **Configuration**: Create `.prettierrc` or configure via ESLint
+  - **Version**: Use `^` (e.g., `"prettier": "^3.0.0"`)
+
+#### Accessibility
+
+- **`eslint-plugin-jsx-a11y`** - ESLint plugin for accessibility rules
+  - **Why**: Enforces accessibility standards, catches accessibility issues before commit
+  - **Configuration**: Enable recommended rules in ESLint config, add to pre-commit hook
+  - **Version**: Use `^` (e.g., `"eslint-plugin-jsx-a11y": "^6.10.2"`)
+  - **Enforcement**: Must be included in pre-commit hook with `--max-warnings 0`
+
+#### Git Hooks & Quality Gates
+
+- **`husky`** - Git hooks manager
+  - **Why**: Automates code quality checks before commits/pushes, prevents bad code from being committed
+  - **Setup**: Add `"prepare": "husky"` script to `package.json`
+  - **Configuration**: Create hooks in `.husky/` directory (pre-commit, pre-push)
+  - **Version**: Use `^` (e.g., `"husky": "^9.1.7"`)
+  - **Required hooks**: Pre-commit (fast checks), pre-push (comprehensive checks)
+
+#### Type Safety
+
+- **`typescript`** - Type-safe JavaScript
+  - **Why**: Catches type errors at compile time, improves code maintainability and IDE support
+  - **Configuration**: Use strict mode, configure `tsconfig.json` with path aliases
+  - **Version**: Use `^` for major version (e.g., `"typescript": "^5"`)
+
+#### Testing (Recommended)
+
+- **`jest`** - JavaScript testing framework
+  - **Why**: Enables unit and integration testing, ensures code reliability
+  - **Configuration**: Create `jest.config.ts` with appropriate test environment
+  - **Version**: Use `^` (e.g., `"jest": "^29.7.0"`)
+
+- **`@testing-library/react`** - React component testing utilities
+  - **Why**: Encourages testing best practices, focuses on user-centric testing
+  - **Configuration**: Use with Jest, configure test environment (jsdom)
+  - **Version**: Use `^` (e.g., `"@testing-library/react": "^16.3.0"`)
+
+- **`@testing-library/jest-dom`** - Custom Jest matchers for DOM testing
+  - **Why**: Provides helpful matchers for DOM assertions (e.g., `toBeInTheDocument()`)
+  - **Configuration**: Import in test setup file
+  - **Version**: Use `^` (e.g., `"@testing-library/jest-dom": "^6.6.3"`)
+
+#### Styling (If using CSS/SCSS)
+
+- **`stylelint`** - CSS/SCSS linter
+  - **Why**: Enforces consistent CSS/SCSS code style, catches styling errors
+  - **Configuration**: Use standard configs (e.g., `stylelint-config-standard-scss`)
+  - **Version**: Use `^` (e.g., `"stylelint": "^16.26.1"`)
+
+- **`stylelint-config-prettier-scss`** - Disables Stylelint rules that conflict with Prettier
+  - **Why**: Prevents conflicts between Stylelint and Prettier for CSS/SCSS
+  - **Configuration**: Add to Stylelint extends array
+  - **Version**: Use `^` (e.g., `"stylelint-config-prettier-scss": "^1.0.0"`)
+
+#### Development Workflow
+
+- **`concurrently`** - Run multiple commands concurrently in development
+  - **Why**: Enables running watch-mode tools (type checking, linting) alongside the dev server for better developer experience
+  - **Use case**: Run SCSS type generation in watch mode, stylelint in watch mode, or other watch tasks concurrently with `npm run dev`
+  - **Configuration**: Configure in `package.json` dev script to run multiple commands in parallel
+  - **Version**: Use `^` (e.g., `"concurrently": "^9.2.1"`)
+  - **Example**: `"dev": "concurrently \"npm run type-check:scss\" \"next dev --turbopack\" --names \"SCSS,DEV\" --prefix-colors \"cyan,green\""`
+  - **Benefits**:
+    - Type checking/linting runs automatically in background during development
+    - No need to manually run separate watch commands
+    - Immediate feedback on type errors and linting issues
+    - Better developer experience with parallel processes
+
+#### Essential Dependencies Summary
+
+**Minimum Required** (for all projects):
+```json
+{
+  "devDependencies": {
+    "eslint": "^9",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "husky": "^9.1.7",
+    "typescript": "^5"
+  }
+}
+```
+
+**Recommended** (for comprehensive code quality):
+```json
+{
+  "devDependencies": {
+    // ... minimum required above ...
+    "prettier": "^3.0.0",
+    "jest": "^29.7.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "stylelint": "^16.26.1",
+    "stylelint-config-prettier-scss": "^1.0.0",
+    "concurrently": "^9.2.1"
+  }
+}
+```
+
+#### Development Scripts Pattern
+
+- **Use `concurrently` for development workflow** - Run watch-mode tools alongside the dev server
+- **Pattern**: Configure `dev` script to run multiple commands in parallel
+- **Benefits**: Automatic type checking, linting, and other watch tasks during development
+- **Example configuration**:
+
+```json
+{
+  "scripts": {
+    "dev": "concurrently \"npm run type-check:scss\" \"next dev --turbopack\" --names \"SCSS,DEV\" --prefix-colors \"cyan,green\"",
+    "type-check:scss": "typed-scss-modules features --watch --logLevel error"
+  }
+}
+```
+
+- **When to use**:
+  - Projects with type generation tools (e.g., `typed-scss-modules`)
+  - Projects with watch-mode linting (e.g., `stylelint --watch`)
+  - Any project where multiple watch processes improve developer experience
+- **Alternative**: If not using watch-mode tools, standard `dev` script is sufficient
+
+#### Setup Checklist
+
+When starting a new project, ensure:
+
+1. ✅ **ESLint configured** - Framework-specific config + Prettier integration
+2. ✅ **Accessibility plugin** - `eslint-plugin-jsx-a11y` enabled with recommended rules
+3. ✅ **Husky installed** - Git hooks configured (pre-commit, pre-push)
+4. ✅ **TypeScript configured** - Strict mode enabled, path aliases configured
+5. ✅ **Testing setup** - Jest and Testing Library configured (if testing)
+6. ✅ **Stylelint configured** - For CSS/SCSS projects (if using styles)
+7. ✅ **Concurrently configured** - For running watch-mode tools alongside dev server (if using type generation or watch-mode linting)
+8. ✅ **Pre-commit hook** - Runs linting and accessibility checks
+9. ✅ **Pre-push hook** - Runs comprehensive build checks
 
 ### Best Practices
 
@@ -2019,6 +2584,332 @@ npm run lint:scss:check
 **Pre-commit** (`.husky/pre-commit`):
 - `npm run type-check:scss:build` - Generate SCSS module types
 - `npm run lint:scss:check` - Check SCSS code quality
+- `npm run lint` - **ESLint checks** - Runs Next.js ESLint (includes accessibility checks via `eslint-plugin-jsx-a11y`), blocks commits with linting or accessibility warnings to prevent code quality issues and inaccessible code from being committed
 
 **Pre-push** (`.husky/pre-push`):
 - `npm run build` - Full production build (includes type checking and Next.js build)
+
+## Accessibility Standards
+
+### Overview
+
+- **Accessibility is enforced at commit time** - The pre-commit hook runs `eslint-plugin-jsx-a11y` to catch accessibility issues before code is committed
+- **No accessibility warnings allowed** - The ESLint configuration uses `--max-warnings 0` to block commits with any accessibility issues
+- **Static analysis approach** - We use `eslint-plugin-jsx-a11y` for static analysis rather than runtime libraries like React Aria to avoid SSR impact and bundle size overhead
+- **Manual implementation** - Accessibility features (ARIA attributes, keyboard handlers) are implemented manually following WCAG guidelines
+
+### ESLint Configuration
+
+- **Plugin**: `eslint-plugin-jsx-a11y` - Provides static analysis for accessibility issues
+- **Configuration**: Enabled in `eslint.config.mjs` with recommended rules
+- **Exception**: `jsx-a11y/no-autofocus` is disabled - `autoFocus` is needed for search input UX where users expect immediate focus for quick typing
+- **Pre-commit enforcement**: ESLint runs via `npm run lint` (Next.js ESLint) which checks all relevant files including `app`, `features`, root-level config files (middleware.ts, next.config.ts, etc.), and other TypeScript/JavaScript files, with zero warnings allowed
+
+### Interactive Elements
+
+#### Buttons
+
+- **Always use `<button>` element** - Never use `<div>` or other non-interactive elements with click handlers
+- **Add `type="button"`** - Prevents accidental form submission when buttons are inside forms
+- **Add `aria-label`** - Required for buttons that only contain icons or when the visible text doesn't fully describe the action
+- **Add keyboard handlers** - Implement `onKeyDown` handler for Enter and Space keys if using custom interactive elements (though prefer native `<button>`)
+- **Handle disabled state** - Use `disabled` prop and ensure disabled buttons are properly announced to screen readers
+
+#### Button Examples
+
+```typescript
+// ✅ CORRECT: Native button with aria-label
+<button
+  type="button"
+  onClick={handleClick}
+  aria-label="Remove filter"
+>
+  <IconX />
+</button>
+
+// ✅ CORRECT: Button with descriptive aria-label
+<button
+  type="button"
+  onClick={handleSort}
+  aria-label={`Sort ${sortOrder ? "ascending" : "descending"}`}
+>
+  <Typography>Sort {sortOrder ? "ASC" : "DESC"}</Typography>
+</button>
+
+// ✅ CORRECT: Button with dynamic aria-label based on state
+const ariaLabel = isLoading
+  ? "Adding to favorites..."
+  : isFavorite
+    ? `Remove ${user.login} from favorites`
+    : `Add ${user.login} to favorites`;
+
+<button
+  onClick={handleFavorite}
+  disabled={isLoading}
+  aria-label={ariaLabel}
+  title={ariaLabel} // Also provide title for tooltip
+>
+  {isFavorite ? <IconStarFilled /> : <IconStar />}
+</button>
+
+// ❌ WRONG: Using div with onClick
+<div onClick={handleClick}>Click me</div>
+
+// ❌ WRONG: Button without aria-label when text is unclear
+<button onClick={handleClick}>
+  <IconX /> {/* Screen reader won't know what this does */}
+</button>
+```
+
+#### Form Inputs
+
+- **Always add `aria-label`** - Required for inputs that don't have visible labels or when the label doesn't fully describe the input purpose
+- **Use semantic HTML** - Prefer `<input>`, `<textarea>`, `<select>` over custom implementations
+- **Associate labels properly** - Use `<label>` with `htmlFor` or wrap input in `<label>`
+- **Handle disabled state** - Use `disabled` prop and ensure proper ARIA attributes
+
+#### Input Examples
+
+```typescript
+// ✅ CORRECT: Input with aria-label
+<input
+  type="text"
+  value={value}
+  onChange={handleChange}
+  aria-label="Search GitHub users by username"
+  placeholder="Search users..."
+/>
+
+// ✅ CORRECT: Input with visible label
+<label htmlFor="search-input">
+  Search Users
+</label>
+<input
+  id="search-input"
+  type="text"
+  value={value}
+  onChange={handleChange}
+/>
+
+// ❌ WRONG: Input without aria-label or label
+<input
+  type="text"
+  value={value}
+  onChange={handleChange}
+  placeholder="Search..." // Placeholder is not enough for screen readers
+/>
+```
+
+### ARIA Attributes
+
+#### When to Use `aria-label`
+
+- **Icon-only buttons** - Buttons that only contain icons need descriptive `aria-label`
+- **Buttons with unclear text** - When the visible text doesn't fully describe the action
+- **Dynamic content** - When button text changes based on state (e.g., "Add favorite" vs "Remove favorite")
+- **Form inputs without labels** - Inputs that don't have visible `<label>` elements
+- **Decorative elements** - Elements that are interactive but don't have descriptive text
+
+#### `aria-label` Guidelines
+
+- **Be descriptive** - Describe what the element does, not just what it is
+- **Include context** - Include relevant context (e.g., "Remove followers filter" not just "Remove")
+- **Match user intent** - Use language that matches how users would describe the action
+- **Keep it concise** - Be descriptive but concise (aim for 1-2 sentences)
+- **Use dynamic labels** - Update `aria-label` based on component state when appropriate
+
+#### `aria-label` Examples
+
+```typescript
+// ✅ CORRECT: Descriptive and contextual
+<button aria-label={`Remove ${filterLabel} filter`}>
+  <IconX />
+</button>
+
+// ✅ CORRECT: Includes user context
+<button aria-label={`Add ${user.login} to favorites`}>
+  <IconStar />
+</button>
+
+// ✅ CORRECT: Describes action and state
+<button aria-label={`Sort ${sortOrder ? "ascending" : "descending"}`}>
+  Sort {sortOrder ? "ASC" : "DESC"}
+</button>
+
+// ❌ WRONG: Too vague
+<button aria-label="Button">
+  <IconX />
+</button>
+
+// ❌ WRONG: Missing context
+<button aria-label="Remove">
+  <IconX />
+</button>
+```
+
+### Keyboard Navigation
+
+#### Keyboard Event Handlers
+
+- **Use native HTML elements** - Native `<button>`, `<input>`, `<a>` elements handle keyboard events automatically
+- **Custom interactive elements** - If you must use custom elements, implement keyboard handlers for Enter and Space keys
+- **Prevent default behavior** - Use `e.preventDefault()` when handling keyboard events to prevent default browser behavior
+- **Support standard keys** - Enter and Space for activation, Escape for cancellation, Arrow keys for navigation
+
+#### Keyboard Handler Example
+
+```typescript
+// ✅ CORRECT: Keyboard handler for custom interactive element (prefer native button)
+const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+  if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    onRemove();
+  }
+};
+
+<button
+  type="button"
+  onClick={onRemove}
+  onKeyDown={handleKeyDown}
+  aria-label={`Remove ${label} filter`}
+>
+  <IconX />
+</button>
+```
+
+### Semantic HTML
+
+#### HTML Elements
+
+- **Use semantic elements** - Prefer `<button>`, `<nav>`, `<main>`, `<header>`, `<footer>`, `<article>`, `<section>` over generic `<div>`
+- **Use proper heading hierarchy** - Use `<h1>`, `<h2>`, etc. in order (h1 → h2 → h3)
+- **Use `<html lang="en">`** - Always include `lang` attribute on `<html>` element
+- **Use proper form elements** - Use `<form>`, `<label>`, `<input>`, `<button>` for forms
+
+#### Semantic HTML Examples
+
+```typescript
+// ✅ CORRECT: Semantic HTML
+<header>
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <article>
+    <h1>Page Title</h1>
+    <section>
+      <h2>Section Title</h2>
+    </section>
+  </article>
+</main>
+
+// ❌ WRONG: Generic divs everywhere
+<div>
+  <div>
+    <div>Home</div>
+  </div>
+</div>
+```
+
+### Images
+
+- **Always provide `alt` text** - Required for all `<img>` and Next.js `Image` components
+- **Descriptive alt text** - Describe the image content or purpose, not just "image" or "photo"
+- **Decorative images** - Use empty `alt=""` for purely decorative images
+- **Functional images** - Describe the function if the image is part of an interactive element
+
+#### Image Examples
+
+```typescript
+// ✅ CORRECT: Descriptive alt text
+<Image
+  src={user.avatarUrl}
+  alt={`${user.login}'s profile picture`}
+  fill
+/>
+
+// ✅ CORRECT: Decorative image
+<Image
+  src="/decorative-pattern.png"
+  alt=""
+  fill
+/>
+
+// ❌ WRONG: Missing alt text
+<Image src={user.avatarUrl} fill />
+
+// ❌ WRONG: Non-descriptive alt text
+<Image src={user.avatarUrl} alt="image" fill />
+```
+
+### Common Accessibility Patterns
+
+#### Interactive Elements Checklist
+
+When creating interactive components, ensure:
+
+1. ✅ Uses semantic HTML element (`<button>`, `<a>`, `<input>`, etc.)
+2. ✅ Has descriptive `aria-label` if text is unclear or icon-only
+3. ✅ Supports keyboard navigation (Enter, Space, Arrow keys as appropriate)
+4. ✅ Has proper focus management
+5. ✅ Handles disabled state correctly
+6. ✅ Provides visual feedback for interactions
+7. ✅ Works with screen readers
+
+#### Component Accessibility Example
+
+```typescript
+// ✅ CORRECT: Fully accessible component
+const Pill = ({ label, onRemove }: PillProps) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onRemove();
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      className={pill}
+      onClick={onRemove}
+      onKeyDown={handleKeyDown}
+      aria-label={`Remove ${label} filter`}
+    >
+      <IconX />
+      <Typography as="span">{label}</Typography>
+    </button>
+  );
+};
+```
+
+### Testing Accessibility
+
+- **ESLint catches static issues** - `eslint-plugin-jsx-a11y` catches most common accessibility issues during development
+- **Manual testing recommended** - Test with keyboard navigation and screen readers
+- **Automated testing** - Consider adding `jest-axe` for automated accessibility testing in test suites
+- **Browser DevTools** - Use browser accessibility inspectors to verify ARIA attributes
+
+### Accessibility vs React Aria
+
+**Why we use `eslint-plugin-jsx-a11y` instead of React Aria:**
+
+- ✅ **No SSR impact** - Static analysis doesn't require client components
+- ✅ **No bundle size impact** - Dev dependency only, no runtime code
+- ✅ **Enforced at commit time** - Prevents inaccessible code from being committed
+- ✅ **Simple setup** - Easy to configure and maintain
+- ✅ **Covers most cases** - Catches 90%+ of common accessibility issues
+
+**When to consider React Aria:**
+
+- Complex keyboard navigation (multi-select, drag-and-drop)
+- Focus management (modals, dropdowns, tooltips)
+- Dynamic ARIA updates
+- Internationalization requirements
+- Complex interactive components (combobox, autocomplete, menu)
+
+For most use cases, manual implementation with ESLint enforcement is sufficient and more performant.

@@ -2,11 +2,12 @@
 
 import { BreadcrumbsProps, Route } from "@/types";
 import { ROUTES } from "@shared/constants";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment } from "react";
 import { useSharedContext } from "../../contexts/SharedContext";
 import { getUniqueId } from "../../lib/utils";
-import Anchor from "../Anchor/Anchor";
+import Button from "../Button/Button";
 import Container from "../Container/Container";
 import Typography from "../Typography/Typography";
 import styles from "./Breadcrumbs.module.scss";
@@ -82,9 +83,16 @@ const Breadcrumbs = ({
                   {route.label}
                 </Typography>
               ) : (
-                <Anchor size={size} href={route.href} variant={variant}>
-                  {route.label}
-                </Anchor>
+                <Button
+                  as={Link}
+                  href={route.href}
+                  variant="unstyled"
+                  size={size}
+                >
+                  <Typography size={size} variant={variant} as="span">
+                    {route.label}
+                  </Typography>
+                </Button>
               )}
             </Fragment>
           );

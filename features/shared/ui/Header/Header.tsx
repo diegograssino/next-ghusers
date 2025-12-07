@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ROUTES } from "../../constants";
 import { useSharedContext } from "../../contexts/SharedContext";
 import Container from "../Container/Container";
-import FavsAnchor from "../FavsAnchor/FavsAnchor";
+import FavoritesAnchor from "../FavoritesAnchor/FavoritesAnchor";
 import Typography from "../Typography/Typography";
 import styles from "./Header.module.scss";
 
@@ -30,7 +30,7 @@ const Header = () => {
           </Link>
           <ul>
             <li>
-              <FavsAnchor />
+              <FavoritesAnchor />
             </li>
           </ul>
         </nav>

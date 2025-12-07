@@ -1,6 +1,6 @@
 @use "../../../../styles/main" as *;
 
-.favsAnchor {
+.favoritesAnchor {
   display: flex;
   align-items: center;
   @include property-per-breakpoint(
@@ -12,7 +12,7 @@
   );
 }
 
-.favsAnchorIcon {
+.favoritesAnchorIcon {
   color: $color-primary;
   @include property-per-breakpoint(
     width,
@@ -39,3 +39,4 @@
     )
   );
 }
+

@@ -1,7 +1,7 @@
 export type Styles = {
   'card': string;
   'cardContent': string;
-  'cardContentatSymbol': string;
+  'cardContentAtSymbol': string;
   'cardImage': string;
   'cardImageContainer': string;
   'cardOptions': string;

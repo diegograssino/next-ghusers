@@ -1,6 +1,7 @@
 export type Styles = {
-  'favsAnchor': string;
-  'favsAnchorIcon': string;
+  'favoritesWidgetEmptyStar': string;
+  'favoritesWidgetFilledStar': string;
+  'favoritesWidgetIcon': string;
   'pulse': string;
   'spin': string;
 };

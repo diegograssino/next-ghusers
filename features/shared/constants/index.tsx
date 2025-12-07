@@ -17,9 +17,9 @@ export const ROUTES: Routes = {
     href: "/",
     heroText: "Discover GitHub Users",
   },
-  FAVS: {
+  FAVORITES: {
     label: "Favorites",
-    href: "/favs",
+    href: "/favorites",
   },
   USER_DETAIL: (id: number | string) => ({
     label: id.toString(),

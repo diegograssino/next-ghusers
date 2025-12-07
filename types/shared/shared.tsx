@@ -40,6 +40,6 @@ export interface Route {
 
 export interface Routes {
   HOME: Route;
-  FAVS: Route;
+  FAVORITES: Route;
   USER_DETAIL: (id: number | string) => Route;
 }

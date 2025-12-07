@@ -1,5 +1,8 @@
 export type Styles = {
-  'anchor': string;
+  'favoritesPage': string;
+  'favoritesPageAside': string;
+  'favoritesPageResults': string;
+  'favoritesPageSearch': string;
   'pulse': string;
   'spin': string;
 };
