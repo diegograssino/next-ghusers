@@ -32,4 +32,5 @@ const Typography = ({
     </Tag>
   );
 };
+
 export default Typography;

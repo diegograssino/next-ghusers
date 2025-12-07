@@ -2,7 +2,9 @@
 import { ROUTES } from "@shared/constants";
 import { IconStarFilled } from "@tabler/icons-react";
 import { useFavoritesContext } from "@users/contexts";
-import Anchor from "../Anchor/Anchor";
+import Link from "next/link";
+import Button from "../Button/Button";
+import Typography from "../Typography/Typography";
 import styles from "./FavoritesAnchor.module.scss";
 
 const { favoritesAnchor, favoritesAnchorIcon } = styles;
@@ -11,14 +13,15 @@ const FavoritesAnchor = () => {
   const { favorites } = useFavoritesContext();
 
   return (
-    <Anchor variant="primary" size="sm" href={ROUTES.FAVORITES.href}>
+    <Button as={Link} href={ROUTES.FAVORITES.href} variant="unstyled" size="sm">
       <div className={favoritesAnchor}>
         <IconStarFilled className={favoritesAnchorIcon} />
-        <span>({favorites.length})</span>
+        <Typography as="span" size="sm" variant="primary">
+          ({favorites.length})
+        </Typography>
       </div>
-    </Anchor>
+    </Button>
   );
 };
 
 export default FavoritesAnchor;
-

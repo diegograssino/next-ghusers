@@ -1,8 +1,9 @@
 import { getUniqueId } from "@/features/shared/lib/utils";
 import { UserDetailProps } from "@/types";
-import { Anchor, Typography } from "@shared/ui";
+import { Button, Typography } from "@shared/ui";
 import { IconLink } from "@tabler/icons-react";
 import Image from "next/image";
+import Link from "next/link";
 import FavoritesWidget from "../FavoritesWidget/FavoritesWidget";
 import styles from "./UserDetail.module.scss";
 
@@ -67,13 +68,17 @@ const UserDetail = ({ user, repos }: UserDetailProps) => {
             {repos.map((repo) => (
               <li key={getUniqueId()} className={detailReposItem}>
                 <IconLink className={detailReposItemIcon} />
-                <Anchor
+                <Button
+                  as={Link}
                   href={repo.htmlUrl}
+                  variant="unstyled"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {repo.name}
-                </Anchor>
+                  <Typography as="span" size="md" variant="default">
+                    {repo.name}
+                  </Typography>
+                </Button>
               </li>
             ))}
           </ul>

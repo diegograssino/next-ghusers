@@ -2,9 +2,10 @@
 import { getUniqueId } from "@/features/shared/lib/utils";
 import heroImage from "@/public/assets/hero.png";
 import { SearchPageProps } from "@/types";
+import { ROUTES } from "@shared/constants";
 import { useSharedContext } from "@shared/contexts";
 import { useFiltersToUrl } from "@shared/hooks";
-import { Hero, PageMessage, Typography } from "@shared/ui";
+import { Button, Hero, PageMessage, Typography } from "@shared/ui";
 import { useFiltersContext } from "@users/contexts";
 import useInfiniteUsers from "@users/services";
 import {
@@ -14,6 +15,7 @@ import {
   Filters,
   SearchInput,
 } from "@users/ui";
+import Link from "next/link";
 import InfiniteScroll from "react-infinite-scroller";
 import styles from "./SearchPage.module.scss";
 
@@ -42,14 +44,22 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
           <Typography weight="bold" size="xl" as="h2" variant="primary" shadow>
             Discover GitHub Users
           </Typography>
+          <Button
+            as={Link}
+            href={ROUTES.FAVORITES.href}
+            variant="accent"
+            size="lg"
+          >
+            <Typography variant="inverse" size="md">
+              Go to Favorites
+            </Typography>
+          </Button>
         </div>
-        {/* TODO Add a button to go to the dashboard */}
-        {/* <Button>Go to dashboard</Button> */}
       </Hero>
       <div id="search-section" />
       <div className={searchPage}>
         <div className={searchPageSearch}>
-          {/* TODO Search input should be in the header and open a pallete style modal*/}
+          {/* TODO Search input should be in the header and open a palette style modal*/}
           <SearchInput />
         </div>
         <aside className={searchPageAside}>

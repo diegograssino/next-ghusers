@@ -22,3 +22,52 @@ $input-padding-3xl: 0.75rem !default;
 // DOC Transitions
 $transition-fast: all 0.2s ease-in-out !default;
 $transition-transform: transform 0.2s ease-in-out !default;
+
+// DOC Font Sizes - Shared across Typography and Button components
+$font-size-xs-base: 0.625rem !default;
+$font-size-xs-sm: 0.6875rem !default;
+$font-size-xs-md: 0.75rem !default;
+$font-size-sm-base: 0.75rem !default;
+$font-size-sm-sm: 0.8125rem !default;
+$font-size-sm-md: 0.875rem !default;
+$font-size-md-base: 0.875rem !default;
+$font-size-md-sm: 0.9375rem !default;
+$font-size-md-md: 1rem !default;
+$font-size-lg-base: 1rem !default;
+$font-size-lg-sm: 1.125rem !default;
+$font-size-lg-md: 1.25rem !default;
+$font-size-xl-base: 1.125rem !default;
+$font-size-xl-sm: 1.25rem !default;
+$font-size-xl-md: 1.5rem !default;
+
+// DOC Button Padding - Vertical and horizontal padding for button sizes
+$button-padding-xs-vertical-base: 0.25rem !default;
+$button-padding-xs-horizontal-base: 0.5rem !default;
+$button-padding-xs-vertical-sm: 0.3125rem !default;
+$button-padding-xs-horizontal-sm: 0.5625rem !default;
+$button-padding-xs-vertical-md: 0.375rem !default;
+$button-padding-xs-horizontal-md: 0.625rem !default;
+$button-padding-sm-vertical-base: 0.375rem !default;
+$button-padding-sm-horizontal-base: 0.75rem !default;
+$button-padding-sm-vertical-sm: 0.4375rem !default;
+$button-padding-sm-horizontal-sm: 0.8125rem !default;
+$button-padding-sm-vertical-md: 0.5rem !default;
+$button-padding-sm-horizontal-md: 0.875rem !default;
+$button-padding-md-vertical-base: 0.5rem !default;
+$button-padding-md-horizontal-base: 1rem !default;
+$button-padding-md-vertical-sm: 0.5625rem !default;
+$button-padding-md-horizontal-sm: 1.125rem !default;
+$button-padding-md-vertical-md: 0.625rem !default;
+$button-padding-md-horizontal-md: 1.25rem !default;
+$button-padding-lg-vertical-base: 0.625rem !default;
+$button-padding-lg-horizontal-base: 1.25rem !default;
+$button-padding-lg-vertical-sm: 0.75rem !default;
+$button-padding-lg-horizontal-sm: 1.5rem !default;
+$button-padding-lg-vertical-md: 0.875rem !default;
+$button-padding-lg-horizontal-md: 1.75rem !default;
+$button-padding-xl-vertical-base: 0.75rem !default;
+$button-padding-xl-horizontal-base: 1.5rem !default;
+$button-padding-xl-vertical-sm: 0.875rem !default;
+$button-padding-xl-horizontal-sm: 1.75rem !default;
+$button-padding-xl-vertical-md: 1rem !default;
+$button-padding-xl-horizontal-md: 2rem !default;

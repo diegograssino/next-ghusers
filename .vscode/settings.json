@@ -57,5 +57,5 @@
     "**/public/**"
   ],
   // TODO: Add ignore words here if you found any check with errors
-  "cSpell.ignoreWords": []
+  "cSpell.ignoreWords": ["tabler"]
 }

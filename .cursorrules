@@ -349,6 +349,10 @@ export default Card;
 - **Type `otherProps` properly** - extend `HTMLAttributes<HTMLElement>` or use `Omit<HTMLAttributes<HTMLElement>, "conflictingProp">`
 - **Spread `otherProps` to the root element** - enables className, onClick, data-* attributes, etc.
 - **Merge className properly** - use `clsx` to combine component className with `otherProps.className`
+- **Document Omit exclusions** - When using `Omit` to exclude props (e.g., `"color"`, `"ref"`), add DOC comments explaining why:
+  - `// DOC Omit "color" to use variant prop instead (variant controls text color via ColorVariants)`
+  - `// DOC Omit "ref" because Typography doesn't use forwardRef - refs are not supported`
+  - `// DOC Omit "color" - Container is a layout component, doesn't use color styling`
 
 #### Boolean Flag Destructuring
 
@@ -554,6 +558,23 @@ const Typography = ({
 - Spread remaining props to the rendered element using `...otherProps`
 - Use TypeScript to ensure type safety
 - **When using `forwardRef` with polymorphic components, always set `displayName`** for better debugging
+
+### forwardRef Pattern
+
+- **Use `forwardRef` for reusable UI components** that render HTML elements - allows parent components to access the underlying DOM element
+- **Always set `displayName`** when using `forwardRef` for better debugging experience in React DevTools
+- **When to use `forwardRef`**:
+  - Reusable components that render HTML elements (buttons, inputs, containers, etc.)
+  - Components that might need refs for focus management, animations, measurements, or third-party library integration
+  - Polymorphic components that can render as different HTML elements
+- **When NOT to use `forwardRef`**:
+  - Page components or feature-specific components that are not reused
+  - Components that don't render HTML elements directly
+  - Components where refs are never needed (e.g., `Typography` - text components typically don't need refs)
+  - If refs aren't needed, exclude `ref` from the interface using `Omit<HTMLAttributes<HTMLElement>, "ref">` and document why
+- **Type the ref correctly** - Use the appropriate HTML element type (e.g., `HTMLButtonElement`, `HTMLAnchorElement`, `HTMLElement`)
+- **For polymorphic components**, use union types for refs (e.g., `HTMLButtonElement | HTMLAnchorElement`)
+- **Document ref exclusions** - When excluding `ref` from an interface, add a DOC comment explaining why (e.g., "DOC Omit 'ref' because Typography doesn't use forwardRef - refs are not supported")
 
 ### Polymorphic Component Example
 
@@ -862,6 +883,10 @@ $color-secondary: #4a4a4a;
   - `#fff` ✅ NOT `#ffffff` ❌
   - `#3b82f6` ✅ (cannot be shortened, different digits)
   - This follows the `color-hex-length` linting rule and keeps code concise
+- **Never hardcode sizing values** - Always use SCSS variables for padding, font sizes, spacing, etc.
+  - Create variables in `styles/abstracts/_variables.scss` for component-specific sizes (e.g., `$button-padding-*-*`, `$font-size-*-*`)
+  - Use descriptive variable names that indicate the component, property, size, and breakpoint (e.g., `$button-padding-md-vertical-base`, `$font-size-sm-md`)
+  - This ensures consistency across components and makes global changes easier
 - Use SCSS variables from abstracts (spacing, typography, etc.)
 - Mixins are part of abstracts, so importing `main.scss` gives access to all mixins
 
@@ -1316,11 +1341,13 @@ import { genericBlurData } from "../../lib/constants";
 
 ### Next.js Link Component
 
-- Use Next.js `Link` component for internal navigation
+- **Always use Next.js `Link` component for internal navigation** - provides client-side transitions and prefetching
 - **Wrap interactive elements** (like cards, buttons) with `Link` when they navigate
 - **Spread props to Link** - use `...otherProps` to forward HTML attributes
 - **Use `href` prop** - can be string or template literal for dynamic routes
 - **Link children** - Can wrap other components or elements
+- **External links** - Next.js `Link` automatically handles external URLs by rendering a regular `<a>` tag, so it can be used for both internal and external navigation
+- **Button component for links** - Use `Button` component with `unstyled` variant and `as={Link}` or `href` prop instead of creating separate anchor/link components - this provides consistent styling and behavior
 
 ### Link Component Example
 

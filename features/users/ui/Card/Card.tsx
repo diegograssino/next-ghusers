@@ -14,7 +14,7 @@ const {
   cardSkeleton,
   cardImage,
   cardImageContainer,
-  cardContentatSymbol,
+  cardContentAtSymbol,
 } = styles;
 
 const Card = ({ user }: CardProps) => {
@@ -37,7 +37,7 @@ const Card = ({ user }: CardProps) => {
         </div>
         <div className={cardContent}>
           <Typography as="h3" weight="bold" size="md" truncate>
-            <span className={cardContentatSymbol}>@</span>
+            <span className={cardContentAtSymbol}>@</span>
             {user.login}
           </Typography>
         </div>
