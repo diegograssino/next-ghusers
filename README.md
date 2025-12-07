@@ -16,6 +16,9 @@ A Next.js application for exploring GitHub users with infinite scroll and real-t
 - 🔒 **Type-safe SCSS** with automatic type generation for CSS Modules
 - 🎯 **Code quality** with Stylelint for SCSS linting and Husky Git hooks
 - 📝 **Structured logging** with Pino for better debugging and monitoring
+- ♿ **Accessibility first** with ESLint accessibility checks enforced at commit time
+- 🧩 **Reusable UI components** with polymorphic Button component supporting both button and Link rendering
+- 🏗️ **Clean Architecture** with Repository, Adapter, and Service layers for maintainable data flow
 
 ## Requirements
 
@@ -80,12 +83,14 @@ The application is deployed at: https://next-ghusers.vercel.app
 ### Development Tools
 
 - **ESLint & Prettier** - Code linting and formatting
+- **eslint-plugin-jsx-a11y** - Accessibility linting enforced at commit time
 - **Stylelint** - SCSS/CSS linting with standard rules and Prettier integration
 - **typed-scss-modules** - Automatic TypeScript type generation for CSS Modules
 - **Husky** - Git hooks for pre-commit and pre-push checks
 - **Jest** - JavaScript testing framework
 - **Testing Library** - React component testing utilities
 - **Istanbul/NYC** - Code coverage reporting
+- **Concurrently** - Run multiple development tasks in parallel
 
 ### Additional Libraries
 
@@ -138,12 +143,15 @@ The application is deployed at: https://next-ghusers.vercel.app
 ## Architecture Highlights
 
 - **Feature-based architecture** - Code organized by business domains for better maintainability
+- **Clean Architecture** - Three-layer data architecture (Repository, Adapter, Service) following Clean Architecture principles
 - **Component composition** - Reusable UI components with consistent APIs and design patterns
+- **Polymorphic components** - Flexible components like Button that can render as different HTML elements or Next.js Links
 - **Type safety** - Full TypeScript coverage ensuring runtime reliability, including type-safe SCSS Modules
 - **Modern CSS** - Sass with CSS custom properties enabling dynamic theming
 - **Performance optimized** - Server-side rendering, code splitting, and optimized bundle size
+- **Accessibility enforced** - ESLint accessibility checks prevent inaccessible code from being committed
 - **Test-driven development** - Comprehensive test coverage with unit and integration tests
-- **Code quality automation** - Git hooks ensure type generation and linting before commits and builds before pushes
+- **Code quality automation** - Git hooks ensure type generation, linting, and accessibility checks before commits and builds before pushes
 - **Structured logging** - Pino-based logging for better debugging and production monitoring
 
 ## Code Quality & Automation
@@ -152,12 +160,13 @@ The application is deployed at: https://next-ghusers.vercel.app
 
 The project uses Husky to enforce code quality standards:
 
-- **Pre-commit hook**: Automatically runs SCSS type generation and Stylelint checks before each commit
+- **Pre-commit hook**: Automatically runs SCSS type generation, Stylelint checks, and ESLint (including accessibility checks) before each commit
 - **Pre-push hook**: Runs the full build process before pushing to ensure everything compiles correctly
 
 These hooks ensure that:
 - SCSS Module types are always up-to-date
 - Code follows Stylelint rules
+- Accessibility standards are enforced (no accessibility warnings allowed)
 - The project builds successfully before pushing
 
 ### Type-Safe SCSS Modules
@@ -179,6 +188,17 @@ Stylelint is configured with:
 - **Smart defaults** - Disabled rules are documented with reasons
 
 The configuration is in `.stylelintrc.js` with inline documentation explaining any disabled rules.
+
+### Accessibility Standards
+
+The project enforces accessibility standards through:
+
+- **ESLint accessibility plugin** - `eslint-plugin-jsx-a11y` catches accessibility issues during development
+- **Pre-commit enforcement** - Accessibility checks run automatically before commits with zero warnings allowed
+- **Manual implementation** - Accessibility features (ARIA attributes, keyboard handlers) are implemented manually following WCAG guidelines
+- **Static analysis approach** - Uses ESLint for static analysis rather than runtime libraries to avoid SSR impact and bundle size overhead
+
+This ensures that all interactive components are accessible by default, with proper semantic HTML, ARIA labels, and keyboard navigation support.
 
 ## License
 

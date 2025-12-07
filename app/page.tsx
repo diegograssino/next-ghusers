@@ -6,7 +6,6 @@ import { INITIAL_PAGE_PARAM } from "@users/constants";
 import { FiltersProvider } from "@users/contexts";
 
 const Home = async (pageParams: PageParamsProps) => {
-  // TODO GLOBAL implement react aria for accessibility
   const pageConfig = await getPageConfig(pageParams);
 
   const initialUsers = await fetchUsersAction({
