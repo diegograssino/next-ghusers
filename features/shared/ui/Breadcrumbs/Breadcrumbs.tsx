@@ -20,7 +20,7 @@ const { breadcrumbs, breadcrumbsContainer } = styles;
 
 const Breadcrumbs = ({
   variant = undefined,
-  size = "sm",
+  size = "xs",
 }: BreadcrumbsProps) => {
   const { breadcrumbsRef } = useSharedContext();
   const pathname = usePathname();

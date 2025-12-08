@@ -1,5 +1,6 @@
 "use client";
 import { Breadcrumbs, Container, Footer, Header } from "@shared/ui";
+
 import styles from "./LayoutClient.module.scss";
 
 const { layoutClient } = styles;
