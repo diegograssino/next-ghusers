@@ -21,9 +21,9 @@ export const ROUTES: Routes = {
     label: "Favorites",
     href: "/favorites",
   },
-  USER_DETAIL: (id: number | string) => ({
-    label: id.toString(),
-    href: `/${id}`,
+  USER_DETAIL: (login: string) => ({
+    label: login,
+    href: `/${login}`,
   }),
 };
 

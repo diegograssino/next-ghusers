@@ -1,12 +1,15 @@
 "use client";
 
+import { useEffect, useMemo } from "react";
+
 import { FetchUsersResult, QueryParams, User } from "@/types";
+
 import { PER_PAGE_CONFIGS, STALE_TIME_ONE_MINUTE_MS } from "@shared/constants";
 import { useSharedContext } from "@shared/contexts";
 import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
 import { toFetchUsersResultAdapter, toUserAdapter } from "@users/adapter";
 import { usersRepository } from "@users/repository";
-import { useEffect, useMemo } from "react";
+
 import {
   DEFAULT_QUERY_PARAMS,
   FIRST_PAGE_PARAM,
@@ -113,9 +116,9 @@ export const useInfiniteFavoriteUsers = (
 
   const refreshQueries = useQueries({
     queries: staleUsers.map((fav) => ({
-      queryKey: ["user", fav.user.id, "refresh"],
+      queryKey: ["user", fav.user.login, "refresh"],
       queryFn: async () => {
-        const rawUser = await usersRepository.getUser(fav.user.id);
+        const rawUser = await usersRepository.getUser(fav.user.login);
         if (!rawUser) return null;
         return toUserAdapter(rawUser);
       },
@@ -179,8 +182,8 @@ export const useInfiniteFavoriteUsers = (
   };
 };
 
-export const fetchUserService = async (id: number): Promise<User | null> => {
-  const rawUser = await usersRepository.getUser(id);
+export const fetchUserService = async (login: string): Promise<User | null> => {
+  const rawUser = await usersRepository.getUser(login);
   if (!rawUser) return null;
   return toUserAdapter(rawUser);
 };

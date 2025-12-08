@@ -36,7 +36,6 @@ import {
   GITHUB_API_REPOS_ENDPOINT,
   GITHUB_API_SEARCH_USERS_ENDPOINT,
   GITHUB_API_STATUS_FORBIDDEN,
-  GITHUB_API_USER_ENDPOINT,
   GITHUB_API_USERS_ENDPOINT,
   VALID_FILTER_KEYS,
 } from "../lib/constants";
@@ -196,12 +195,12 @@ export const usersRepository = {
     }
   },
 
-  getUser: async (id: number): Promise<GitHubUser | null> => {
+  getUser: async (login: string): Promise<GitHubUser | null> => {
     const fetchOptions = getFetchOptions();
 
     try {
       const res = await fetch(
-        `${GITHUB_API_BASE_URL}${GITHUB_API_USER_ENDPOINT}/${id}`,
+        `${GITHUB_API_BASE_URL}${GITHUB_API_USERS_ENDPOINT}/${login}`,
         fetchOptions
       );
 
@@ -258,12 +257,12 @@ export const usersRepository = {
     }
   },
 
-  getUserRepos: async (id: number): Promise<GitHubRepo[]> => {
+  getUserRepos: async (login: string): Promise<GitHubRepo[]> => {
     const fetchOptions = getFetchOptions();
 
     try {
       const res = await fetch(
-        `${GITHUB_API_BASE_URL}${GITHUB_API_USER_ENDPOINT}/${id}${GITHUB_API_REPOS_ENDPOINT}`,
+        `${GITHUB_API_BASE_URL}${GITHUB_API_USERS_ENDPOINT}/${login}${GITHUB_API_REPOS_ENDPOINT}`,
         fetchOptions
       );
 
@@ -304,7 +303,7 @@ export const usersRepository = {
             rateLimitReset,
             isRateLimit,
             hasToken,
-            url: `${GITHUB_API_BASE_URL}${GITHUB_API_USER_ENDPOINT}/${id}${GITHUB_API_REPOS_ENDPOINT}`,
+            url: `${GITHUB_API_BASE_URL}${GITHUB_API_USERS_ENDPOINT}/${login}${GITHUB_API_REPOS_ENDPOINT}`,
           });
 
           return [];

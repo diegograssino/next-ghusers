@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Mona_Sans, Noto_Sans } from "next/font/google";
+
 import clsx from "clsx";
 
 import { LayoutClient } from "@shared/ui";

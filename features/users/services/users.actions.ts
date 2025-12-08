@@ -27,24 +27,23 @@ export const fetchUsersAction = async ({
   return toFetchUsersResultAdapter(rawResponse);
 };
 
-export const fetchUserAction = async (id: number) => {
-  const rawUser = await usersRepository.getUser(id);
+export const fetchUserAction = async (login: string) => {
+  const rawUser = await usersRepository.getUser(login);
   if (!rawUser) return null;
   return toUserAdapter(rawUser);
 };
 
-export const fetchUserReposAction = async (id: number): Promise<Repo[]> => {
-  const rawRepos = await usersRepository.getUserRepos(id);
+export const fetchUserReposAction = async (login: string): Promise<Repo[]> => {
+  const rawRepos = await usersRepository.getUserRepos(login);
   return toReposAdapter(rawRepos);
 };
 
 export const fetchUserWithReposAction = async (
-  id: string | number
+  login: string
 ): Promise<{ user: User | null; repos: Repo[] }> => {
-  const userId = Number(id);
   const [user, repos] = await Promise.all([
-    fetchUserAction(userId),
-    fetchUserReposAction(userId),
+    fetchUserAction(login),
+    fetchUserReposAction(login),
   ]);
   return { user, repos };
 };

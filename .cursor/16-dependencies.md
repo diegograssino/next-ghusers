@@ -36,16 +36,19 @@ These dependencies are **required** for maintaining code quality, accessibility,
 #### Code Quality & Linting
 
 - **`eslint`** - JavaScript/TypeScript linter for catching errors and enforcing code style
+
   - **Why**: Catches bugs early, enforces consistent code style, improves code quality
   - **Configuration**: Use framework-specific configs (e.g., `eslint-config-next` for Next.js)
   - **Version**: Use `^` for flexibility (e.g., `"eslint": "^9"`)
 
 - **`eslint-config-prettier`** - Disables ESLint rules that conflict with Prettier
+
   - **Why**: Prevents conflicts between ESLint and Prettier, ensures consistent formatting
   - **Configuration**: Add to ESLint extends array after other configs
   - **Version**: Use `^` (e.g., `"eslint-config-prettier": "^10.1.5"`)
 
 - **`prettier`** (if not included via framework config) - Code formatter
+
   - **Why**: Ensures consistent code formatting across the project
   - **Configuration**: Create `.prettierrc` or configure via ESLint
   - **Version**: Use `^` (e.g., `"prettier": "^3.0.0"`)
@@ -83,11 +86,13 @@ These dependencies are **required** for maintaining code quality, accessibility,
 #### Testing (Recommended)
 
 - **`jest`** - JavaScript testing framework
+
   - **Why**: Enables unit and integration testing, ensures code reliability
   - **Configuration**: Create `jest.config.ts` with appropriate test environment
   - **Version**: Use `^` (e.g., `"jest": "^29.7.0"`)
 
 - **`@testing-library/react`** - React component testing utilities
+
   - **Why**: Encourages testing best practices, focuses on user-centric testing
   - **Configuration**: Use with Jest, configure test environment (jsdom)
   - **Version**: Use `^` (e.g., `"@testing-library/react": "^16.3.0"`)
@@ -100,6 +105,7 @@ These dependencies are **required** for maintaining code quality, accessibility,
 #### Styling (If using CSS/SCSS)
 
 - **`stylelint`** - CSS/SCSS linter
+
   - **Why**: Enforces consistent CSS/SCSS code style, catches styling errors
   - **Configuration**: Use standard configs (e.g., `stylelint-config-standard-scss`)
   - **Version**: Use `^` (e.g., `"stylelint": "^16.26.1"`)
@@ -126,6 +132,7 @@ These dependencies are **required** for maintaining code quality, accessibility,
 #### Essential Dependencies Summary
 
 **Minimum Required** (for all projects):
+
 ```json
 {
   "devDependencies": {
@@ -139,6 +146,7 @@ These dependencies are **required** for maintaining code quality, accessibility,
 ```
 
 **Recommended** (for comprehensive code quality):
+
 ```json
 {
   "devDependencies": {
@@ -239,4 +247,3 @@ When starting a new project, ensure:
 - **`npm audit`**: Check for security vulnerabilities
 - **`npm-check-updates`** (ncu): Interactive tool to update package.json
 - **Dependabot/Renovate**: Automated dependency update PRs (GitHub)
-

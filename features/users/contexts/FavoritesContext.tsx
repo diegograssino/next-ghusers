@@ -1,6 +1,5 @@
 "use client";
-import { User } from "@/types";
-import { fetchUserService } from "@users/services";
+
 import {
   createContext,
   useCallback,
@@ -10,6 +9,11 @@ import {
   useRef,
   useState,
 } from "react";
+
+import { User } from "@/types";
+
+import { fetchUserService } from "@users/services";
+
 import { useSharedContext } from "../../shared/contexts/SharedContext";
 
 interface FavoritesProviderProps {
@@ -31,14 +35,16 @@ interface FavoritesContextProps {
   isAddingFavorite: (id: number) => boolean;
 }
 
-export const FavoritesContext = createContext<FavoritesContextProps | undefined>(
-  undefined
-);
+export const FavoritesContext = createContext<
+  FavoritesContextProps | undefined
+>(undefined);
 
 export const FavoritesProvider = ({ children }: FavoritesProviderProps) => {
   const [favorites, setFavorites] = useState<FavoredUser[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
-  const [addingFavorites, setAddingFavorites] = useState<Set<number>>(new Set());
+  const [addingFavorites, setAddingFavorites] = useState<Set<number>>(
+    new Set()
+  );
   const { isClient } = useSharedContext();
   const favoritesRef = useRef<FavoredUser[]>([]);
   const addingFavoritesRef = useRef<Set<number>>(new Set());
@@ -96,7 +102,7 @@ export const FavoritesProvider = ({ children }: FavoritesProviderProps) => {
     setAddingFavorites((current) => new Set(current).add(user.id));
 
     try {
-      const completeUser = await fetchUserService(user.id);
+      const completeUser = await fetchUserService(user.login);
       if (!completeUser) {
         throw new Error("User not found");
       }
@@ -186,4 +192,3 @@ export const useFavoritesContext = () => {
   }
   return context;
 };
-

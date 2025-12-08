@@ -123,6 +123,7 @@ ComponentName/
 ```
 
 **Component-specific constants files**:
+
 - Use `ComponentName.constants.ts` when a component has its own constants (e.g., message mappings, configuration objects)
 - Export named constants (camelCase for objects, UPPER_SNAKE_CASE for primitive values)
 - Import in component: `import { componentConstants } from "./ComponentName.constants"`
@@ -167,4 +168,3 @@ ComponentName/
 - Examples:
   - `features/users/ui/index.tsx` - Barrel export: `export { default as Card } from "./Card/Card";`
   - `types/index.tsx` - Barrel export: `export * from "./users/users";`
-

@@ -1,8 +1,11 @@
-import { CardProps } from "@/types";
-import { Typography } from "@shared/ui";
 import { clsx } from "clsx";
 import Image from "next/image";
 import Link from "next/link";
+
+import { CardProps } from "@/types";
+
+import { Typography } from "@shared/ui";
+
 import { genericBlurData } from "../../lib/constants";
 import FavoritesWidget from "../FavoritesWidget/FavoritesWidget";
 import styles from "./Card.module.scss";
@@ -21,7 +24,7 @@ const Card = ({ user }: CardProps) => {
   // TODO The cards are shuffling on hover, more noticeable on safari, seems to be the border
 
   return (
-    <Link href={`/${user.id}`} data-testid="card">
+    <Link href={`/${user.login}`} data-testid="card">
       <article className={card}>
         <div className={cardImageContainer}>
           <Image

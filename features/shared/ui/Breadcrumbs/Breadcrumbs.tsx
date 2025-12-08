@@ -1,10 +1,14 @@
 "use client";
 
-import { BreadcrumbsProps, Route } from "@/types";
-import { ROUTES } from "@shared/constants";
+import { Fragment } from "react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Fragment } from "react";
+
+import { BreadcrumbsProps, Route } from "@/types";
+
+import { ROUTES } from "@shared/constants";
+
 import { useSharedContext } from "../../contexts/SharedContext";
 import { getUniqueId } from "../../lib/utils";
 import Button from "../Button/Button";
@@ -41,10 +45,10 @@ const Breadcrumbs = ({
     if (matchingRoute) {
       return matchingRoute;
     }
-    // DOC Check if it's a number (user ID) - for dynamic routes like USER_DETAIL
-    const userId = Number(part);
-    if (!isNaN(userId) && userId > 0) {
-      return ROUTES.USER_DETAIL(userId);
+    // DOC Check if it's a login (not a known static route) - for dynamic routes like USER_DETAIL
+    // Logins are alphanumeric with hyphens and underscores, and not empty
+    if (part && /^[a-zA-Z0-9_-]+$/.test(part)) {
+      return ROUTES.USER_DETAIL(part);
     }
     return {
       label: part,

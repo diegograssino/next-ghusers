@@ -1,6 +1,7 @@
-import { FlatCompat } from "@eslint/eslintrc";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
+
+import { FlatCompat } from "@eslint/eslintrc";
 
 const compat = new FlatCompat({
   // DOC import.meta.dirname is available after Node.js v20.11.0
@@ -25,13 +26,17 @@ const eslintConfig = [
         "error",
         {
           groups: [
-            // External libraries (React, Next.js, third-party)
-            ["^react", "^next", "^@?\\w"],
-            // Internal imports with @/ alias
+            // DOC External libraries - React first
+            ["^react"],
+            // DOC External libraries - Next.js second
+            ["^next"],
+            // DOC External libraries - Other third-party packages
+            ["^@?\\w"],
+            // DOC Internal imports with @/ alias
             ["^@/"],
-            // Feature-specific short aliases (e.g., @users/repository)
+            // DOC Feature-specific short aliases (e.g., @users/repository)
             ["^@\\w+/"],
-            // Relative imports
+            // DOC Relative imports
             ["^\\."],
           ],
         },

@@ -55,4 +55,3 @@ import { fetchUsersAction } from "@/features/users/services/users.actions";
 import { usersRepository } from "../../repository/users.repository";
 import { toUserAdapter } from "../../adapter/users.adapter";
 ```
-

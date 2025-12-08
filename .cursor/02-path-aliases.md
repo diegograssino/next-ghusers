@@ -24,4 +24,3 @@
 ```
 
 **Note**: Add similar aliases for other features as needed (e.g., `@posts/repository`, `@posts/adapter`, etc.)
-
