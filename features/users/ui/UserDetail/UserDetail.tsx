@@ -7,6 +7,7 @@ import { UserDetailProps } from "@/types";
 import { Button, Typography } from "@shared/ui";
 import { IconLink } from "@tabler/icons-react";
 
+import { genericBlurData } from "../../lib/constants";
 import FavoritesWidget from "../FavoritesWidget/FavoritesWidget";
 import styles from "./UserDetail.module.scss";
 
@@ -14,6 +15,9 @@ const {
   detail,
   detailInfoSection,
   detailHeader,
+  detailHeaderTitle,
+  detailHeaderWidget,
+  detailHeaderImage,
   detailInfo,
   detailStats,
   detailRepos,
@@ -29,7 +33,13 @@ const UserDetail = ({ user, repos }: UserDetailProps) => {
     <article className={detail}>
       <div className={detailInfoSection}>
         <header className={detailHeader}>
-          <Typography weight="bold" size="lg" as="h2">
+          <Typography
+            weight="bold"
+            size="lg"
+            as="h2"
+            className={detailHeaderTitle}
+            truncate
+          >
             {user.login}
           </Typography>
           <Image
@@ -37,8 +47,13 @@ const UserDetail = ({ user, repos }: UserDetailProps) => {
             alt={user.login}
             width={300}
             height={300}
+            priority
+            sizes="(max-width: 48rem) 25rem, 18.75rem"
+            placeholder="blur"
+            blurDataURL={genericBlurData}
+            className={detailHeaderImage}
           />
-          <div>
+          <div className={detailHeaderWidget}>
             <FavoritesWidget id={user.id} user={user} />
           </div>
         </header>

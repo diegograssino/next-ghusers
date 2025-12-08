@@ -1,6 +1,9 @@
 export type Styles = {
   'detail': string;
   'detailHeader': string;
+  'detailHeaderImage': string;
+  'detailHeaderTitle': string;
+  'detailHeaderWidget': string;
   'detailInfo': string;
   'detailInfoSection': string;
   'detailRepos': string;
