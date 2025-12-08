@@ -1,5 +1,7 @@
 import { PerPageConfig, Routes } from "../../../types";
 
+export { primaryFont, secondaryFont } from "./fonts";
+
 // TODO validate these values with real device testing
 export const PER_PAGE_CONFIGS: PerPageConfig = {
   mobile: { items: "10", columns: "2" },

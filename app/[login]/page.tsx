@@ -14,7 +14,6 @@ const UserPage = async ({ params }: UserPageProps) => {
     throw new Error("Login is required");
   }
   const { user, repos } = await fetchUserWithReposAction(userLogin);
-  // TODO improve error handling and display, now and error is thrown
 
   if (!user) {
     return (

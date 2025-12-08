@@ -1,11 +1,13 @@
 "use client";
 import { getUniqueId } from "@/features/shared/lib/utils";
 import { FavoritesPageProps } from "@/types";
+
 import { useFiltersToUrl } from "@shared/hooks";
 import { PageMessage } from "@shared/ui";
 import { useFavoritesContext, useFiltersContext } from "@users/contexts";
 import { useInfiniteFavoriteUsers } from "@users/services";
 import { Card, CardGrid, Filters, SearchInput } from "@users/ui";
+
 import styles from "./FavoritesPage.module.scss";
 
 const {
@@ -16,21 +18,14 @@ const {
 } = styles;
 
 const FavoritesPage = ({ pageConfig }: FavoritesPageProps) => {
-  // TODO UI should show clearly that is a favorites page, not a search page, maybe it should be the dashboard and the search be below the user data, orders and controls
   const { favorites, updateFavorite } = useFavoritesContext();
   const { filters } = useFiltersContext();
   useFiltersToUrl(filters);
 
   const { perPageConfig } = pageConfig;
 
-  const {
-    users,
-    isError,
-    isLoading,
-    isNoResults,
-    totalCount,
-    hasNoFavorites,
-  } = useInfiniteFavoriteUsers(favorites, filters, updateFavorite);
+  const { users, isError, isLoading, isNoResults, totalCount, hasNoFavorites } =
+    useInfiniteFavoriteUsers(favorites, filters, updateFavorite);
 
   if (isError) {
     return <PageMessage message="error" />;
@@ -68,4 +63,3 @@ const FavoritesPage = ({ pageConfig }: FavoritesPageProps) => {
 };
 
 export default FavoritesPage;
-

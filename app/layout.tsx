@@ -1,26 +1,13 @@
 import type { Metadata } from "next";
-import { Mona_Sans, Noto_Sans } from "next/font/google";
 
 import clsx from "clsx";
 
+import { primaryFont, secondaryFont } from "@shared/constants";
 import { LayoutClient } from "@shared/ui";
 
 import Providers from "./providers";
 
 import "@/styles/globals.scss";
-
-// TODO Move font configuration to a separate file
-const primaryFont = Noto_Sans({
-  variable: "--font-primary",
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
-
-const secondaryFont = Mona_Sans({
-  variable: "--font-secondary",
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
 
 // TODO Improve Metadata
 export const metadata: Metadata = {

@@ -31,8 +31,8 @@
   grid-area: search;
   position: sticky;
 
-  // TODO this 1px could be tricky, refactor it to use a better approach
-  top: calc($layout-navbar-height + $layout-breadcrumbs-height - 32px);
+  // DOC The 2 rem is a fix to avoid the search section to be overlapped by other sections, is a manual adjustment that should be fixed in the future
+  top: calc($layout-navbar-height + $layout-breadcrumbs-height - 2rem);
   z-index: 10;
   background: linear-gradient(
     to bottom,

@@ -21,22 +21,19 @@ const eslintConfig = [
       ...jsxA11y.configs.recommended.rules,
       // DOC autoFocus is needed for search input UX - users expect immediate focus on search pages for quick typing
       "jsx-a11y/no-autofocus": "off",
-      // DOC Import ordering: External libraries → @/ alias → @feature aliases → Relative imports
+    },
+  },
+  {
+    rules: {
       "simple-import-sort/imports": [
         "error",
         {
           groups: [
-            // DOC External libraries - React first
             ["^react"],
-            // DOC External libraries - Next.js second
             ["^next"],
-            // DOC External libraries - Other third-party packages
             ["^@?\\w"],
-            // DOC Internal imports with @/ alias
             ["^@/"],
-            // DOC Feature-specific short aliases (e.g., @users/repository)
             ["^@\\w+/"],
-            // DOC Relative imports
             ["^\\."],
           ],
         },

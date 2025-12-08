@@ -55,6 +55,6 @@
     "**/.husky/**",
     "**/public/**"
   ],
-  // TODO: Add ignore words here if you found any check with errors
+  // DOC: Add ignore words here if you found any check with errors
   "cSpell.ignoreWords": ["tabler"]
 }
