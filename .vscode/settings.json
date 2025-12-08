@@ -30,6 +30,8 @@
   "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*\\*)\\s*($TAGS)(.*)",
   "todo-tree.regex.regexCaseSensitive": false,
   "todo-tree.general.tags": ["TODO", "FIX", "DOC"],
+  "todo-tree.filtering.excludeGlobs": ["**/node_modules/**"],
+  "todo-tree.filtering.useBuiltInExcludes": "search excludes",
   "cSpell.enabled": true,
   "cSpell.enabledFileTypes": {
     "typescript": true,

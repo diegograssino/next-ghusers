@@ -27,8 +27,6 @@ const {
 } = styles;
 
 const UserDetail = ({ user, repos }: UserDetailProps) => {
-  // TODO Fix UI
-
   return (
     <article className={detail}>
       <div className={detailInfoSection}>

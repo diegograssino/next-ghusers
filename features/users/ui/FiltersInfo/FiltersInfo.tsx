@@ -29,7 +29,6 @@ const FiltersInfo = ({ totalCount }: FiltersInfoProps) => {
   const { isLoadingUsers } = useSharedContext();
   const { filters, clearFilters, removeFilter } = useFiltersContext();
 
-  // TODO Work on responsivness
   const isOneUserFound = totalCount === 1;
   const nonLoginFilters = getNonLoginFilters(filters);
   const isOtherFiltersApplied = nonLoginFilters.length > 0;

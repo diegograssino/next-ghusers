@@ -32,7 +32,6 @@ const {
 } = styles;
 
 const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
-  // TODO fix page always shows scrollbar, when is not present it make the ui shuffley
   // TODO On infinite scroll loading state, we should show a skeleton, seems that is not being present now
   const { perPageConfig } = pageConfig;
   const { filters } = useFiltersContext();

@@ -56,7 +56,9 @@
   },
   "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*\\*)\\s*($TAGS)(.*)",
   "todo-tree.regex.regexCaseSensitive": false,
-  "todo-tree.general.tags": ["TODO", "FIX", "DOC"]
+  "todo-tree.general.tags": ["TODO", "FIX", "DOC"],
+  "todo-tree.filtering.excludeGlobs": ["**/node_modules/**"],
+  "todo-tree.filtering.useBuiltInExcludes": "search excludes"
 }
 ```
 
@@ -66,4 +68,4 @@
 - **Configure extension settings** in `settings.json` - Extension-specific settings that affect code quality or development workflow should be configured
 - **Use workspace settings** for project-specific configurations - User-specific preferences should remain in user settings, but project requirements should be in workspace settings
 - **Document extension purposes** - If an extension has a specific purpose (e.g., TODO Tree for task management), document it in comments or project README
-
+- **Exclude third-party files from TODO Tree** - `node_modules` is excluded from TODO Tree via `todo-tree.filtering.excludeGlobs` to avoid tracking TODOs in third-party code that we don't control. The `useBuiltInExcludes` setting also respects VS Code's built-in search excludes

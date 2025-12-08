@@ -21,7 +21,7 @@ const Hero = ({ backgroundImage, alt, ...otherProps }: HeroProps) => {
           alt={alt}
           fill
           priority
-          //  TODO Check sizes
+          sizes="100vw"
           placeholder="blur"
           blurDataURL={genericBlurData}
           className={heroBackgroundImage}
