@@ -1,7 +1,8 @@
 "use server";
 // TODO Verify error handling and logging
 
-import { FetchUsersParams, FetchUsersResult, Repo } from "@/types";
+import { FetchUsersParams, FetchUsersResult, Repo, User } from "@/types";
+
 import { PER_PAGE_CONFIGS } from "@shared/constants";
 import {
   toFetchUsersResultAdapter,
@@ -9,6 +10,7 @@ import {
   toUserAdapter,
 } from "@users/adapter";
 import { usersRepository } from "@users/repository";
+
 import { DEFAULT_QUERY_PARAMS, FIRST_PAGE_PARAM } from "../lib/constants";
 
 export const fetchUsersAction = async ({
@@ -34,4 +36,15 @@ export const fetchUserAction = async (id: number) => {
 export const fetchUserReposAction = async (id: number): Promise<Repo[]> => {
   const rawRepos = await usersRepository.getUserRepos(id);
   return toReposAdapter(rawRepos);
+};
+
+export const fetchUserWithReposAction = async (
+  id: string | number
+): Promise<{ user: User | null; repos: Repo[] }> => {
+  const userId = Number(id);
+  const [user, repos] = await Promise.all([
+    fetchUserAction(userId),
+    fetchUserReposAction(userId),
+  ]);
+  return { user, repos };
 };

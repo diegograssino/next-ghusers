@@ -1,18 +1,19 @@
 import { Params } from "next/dist/server/request/params";
 
 import UserDetailPage from "@/features/pages/UserDetailPage/UserDetailPage";
+import { getStringParam } from "@/features/shared/lib/utils";
 import { UserPageProps } from "@/types";
 
 import { Typography } from "@shared/ui";
-import { fetchUserAction, fetchUserReposAction } from "@users/actions";
+import { fetchUserWithReposAction } from "@users/actions";
 
 const UserPage = async ({ params }: UserPageProps) => {
   const { id } = (await params) as Params;
-  // TODO Can we handle the conversion to number on function? Is other aproach to avoid conversions?
-  const [user, repos] = await Promise.all([
-    fetchUserAction(Number(id)),
-    fetchUserReposAction(Number(id)),
-  ]);
+  const userId = getStringParam(id);
+  if (!userId) {
+    throw new Error("User ID is required");
+  }
+  const { user, repos } = await fetchUserWithReposAction(userId);
   // TODO explore implement slugs with username (if we can)
   // TODO improve error handling and display, now and error is thrown
 

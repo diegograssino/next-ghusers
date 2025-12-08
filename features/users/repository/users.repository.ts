@@ -6,7 +6,9 @@ import {
   GitHubUsersResponse,
   QueryParams,
 } from "@/types";
+
 import { FETCH_TIMEOUT_MS, PER_PAGE_CONFIGS } from "@shared/constants";
+
 import {
   DEFAULT_QUERY_PARAMS,
   FIRST_PAGE_PARAM,
@@ -149,9 +151,10 @@ export const usersRepository = {
       VALID_FILTER_KEYS.some((filterKey) => queryParams[filterKey]?.trim())
     );
     const page = isSearch
-      ? Number(pageParam) < 1
-        ? 1
-        : Number(pageParam)
+      ? (() => {
+          const pageNumber = Number(pageParam);
+          return pageNumber < 1 ? 1 : pageNumber;
+        })()
       : pageParam;
     const url = getFetchUsersUrl(
       queryParams,
@@ -169,11 +172,12 @@ export const usersRepository = {
 
       if (isSearch) {
         const data = await res.json();
+        const pageNumber = typeof page === "number" ? page : Number(page);
         const hasMore =
           data.items && data.items.length === Number(perPageParam);
         return {
           users: data.items || [],
-          nextSince: hasMore ? String(Number(page) + 1) : null,
+          nextSince: hasMore ? String(pageNumber + 1) : null,
           totalCount: data.total_count || 0,
         };
       } else {

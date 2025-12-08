@@ -1,5 +1,7 @@
-import { DeviceType, PageConfig, PageParamsProps, QueryParams } from "@/types";
 import { v4 } from "uuid";
+
+import { DeviceType, PageConfig, PageParamsProps, QueryParams } from "@/types";
+
 import {
   VALID_FILTER_PARAMS,
   VALID_FOLLOWERS_VALUES,
@@ -7,19 +9,19 @@ import {
 import { PER_PAGE_CONFIGS } from "../constants";
 import { log } from "./logger";
 
+export const getStringParam = (
+  value: string | string[] | undefined
+): string | undefined => {
+  if (Array.isArray(value)) {
+    return value[0];
+  }
+  return value;
+};
+
 export const getPageConfig = async (
   pageParams: PageParamsProps
 ): Promise<PageConfig> => {
   const searchParams = await pageParams.searchParams;
-
-  const getStringParam = (
-    value: string | string[] | undefined
-  ): string | undefined => {
-    if (Array.isArray(value)) {
-      return value[0];
-    }
-    return value;
-  };
 
   const deviceParam = getStringParam(searchParams.device);
   const deviceType: DeviceType = (deviceParam as DeviceType) || "desktop";
