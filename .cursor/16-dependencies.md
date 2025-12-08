@@ -50,6 +50,12 @@ These dependencies are **required** for maintaining code quality, accessibility,
   - **Configuration**: Create `.prettierrc` or configure via ESLint
   - **Version**: Use `^` (e.g., `"prettier": "^3.0.0"`)
 
+- **`eslint-plugin-simple-import-sort`** - ESLint plugin for automatic import sorting
+  - **Why**: Enforces consistent import ordering, automatically sorts imports on save and during linting
+  - **Configuration**: Configure import groups in ESLint config to match project's import organization rules
+  - **Version**: Use `^` (e.g., `"eslint-plugin-simple-import-sort": "^12.0.0"`)
+  - **Auto-fix**: Works with VS Code's `source.fixAll` on save and `npm run lint -- --fix`
+
 #### Accessibility
 
 - **`eslint-plugin-jsx-a11y`** - ESLint plugin for accessibility rules
@@ -138,6 +144,7 @@ These dependencies are **required** for maintaining code quality, accessibility,
   "devDependencies": {
     // ... minimum required above ...
     "prettier": "^3.0.0",
+    "eslint-plugin-simple-import-sort": "^12.0.0",
     "jest": "^29.7.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/jest-dom": "^6.6.3",
@@ -175,14 +182,15 @@ These dependencies are **required** for maintaining code quality, accessibility,
 When starting a new project, ensure:
 
 1. ✅ **ESLint configured** - Framework-specific config + Prettier integration
-2. ✅ **Accessibility plugin** - `eslint-plugin-jsx-a11y` enabled with recommended rules
-3. ✅ **Husky installed** - Git hooks configured (pre-commit, pre-push)
-4. ✅ **TypeScript configured** - Strict mode enabled, path aliases configured
-5. ✅ **Testing setup** - Jest and Testing Library configured (if testing)
-6. ✅ **Stylelint configured** - For CSS/SCSS projects (if using styles)
-7. ✅ **Concurrently configured** - For running watch-mode tools alongside dev server (if using type generation or watch-mode linting)
-8. ✅ **Pre-commit hook** - Runs linting and accessibility checks
-9. ✅ **Pre-push hook** - Runs comprehensive build checks
+2. ✅ **Import sorting plugin** - `eslint-plugin-simple-import-sort` configured with import order groups matching project rules
+3. ✅ **Accessibility plugin** - `eslint-plugin-jsx-a11y` enabled with recommended rules
+4. ✅ **Husky installed** - Git hooks configured (pre-commit, pre-push)
+5. ✅ **TypeScript configured** - Strict mode enabled, path aliases configured
+6. ✅ **Testing setup** - Jest and Testing Library configured (if testing)
+7. ✅ **Stylelint configured** - For CSS/SCSS projects (if using styles)
+8. ✅ **Concurrently configured** - For running watch-mode tools alongside dev server (if using type generation or watch-mode linting)
+9. ✅ **Pre-commit hook** - Runs linting and accessibility checks
+10. ✅ **Pre-push hook** - Runs comprehensive build checks
 
 ### Best Practices
 

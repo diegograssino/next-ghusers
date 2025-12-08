@@ -84,6 +84,7 @@ The application is deployed at: https://next-ghusers.vercel.app
 
 - **ESLint & Prettier** - Code linting and formatting
 - **eslint-plugin-jsx-a11y** - Accessibility linting enforced at commit time
+- **eslint-plugin-simple-import-sort** - Automatic import ordering and sorting
 - **Stylelint** - SCSS/CSS linting with standard rules and Prettier integration
 - **typed-scss-modules** - Automatic TypeScript type generation for CSS Modules
 - **Husky** - Git hooks for pre-commit and pre-push checks
@@ -113,7 +114,8 @@ The application is deployed at: https://next-ghusers.vercel.app
 
 ### Code Quality
 
-- `npm run lint` — Run ESLint for code linting
+- `npm run lint` — Run ESLint for code linting (includes import ordering checks)
+- `npm run lint -- --fix` — Run ESLint and auto-fix issues (including import sorting)
 - `npm run lint:scss` — Run Stylelint for SCSS/CSS linting and auto-fix
 - `npm run lint:scss:check` — Run Stylelint for SCSS/CSS linting (check only)
 

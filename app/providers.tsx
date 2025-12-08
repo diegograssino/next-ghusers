@@ -1,9 +1,10 @@
 "use client";
+import React from "react";
+
 import { SharedProvider } from "@shared/contexts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { FavoritesProvider } from "@users/contexts";
-import React from "react";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient();

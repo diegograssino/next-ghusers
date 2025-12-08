@@ -1,6 +1,7 @@
 import SearchPage from "@/features/pages/SearchPage/SearchPage";
 import { getPageConfig } from "@/features/shared/lib/utils";
 import { PageParamsProps } from "@/types";
+
 import { fetchUsersAction } from "@users/actions";
 import { INITIAL_PAGE_PARAM } from "@users/constants";
 import { FiltersProvider } from "@users/contexts";

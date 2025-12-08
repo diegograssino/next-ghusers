@@ -1,9 +1,12 @@
-import "@/styles/globals.scss";
-import { LayoutClient } from "@shared/ui";
-import clsx from "clsx";
 import type { Metadata } from "next";
 import { Mona_Sans, Noto_Sans } from "next/font/google";
+import clsx from "clsx";
+
+import { LayoutClient } from "@shared/ui";
+
 import Providers from "./providers";
+
+import "@/styles/globals.scss";
 
 // TODO Move font configuration to a separate file
 const primaryFont = Noto_Sans({

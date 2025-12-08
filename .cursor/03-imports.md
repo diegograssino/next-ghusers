@@ -4,8 +4,11 @@
 
 1. External libraries (React, Next.js, third-party)
 2. Internal imports using `@/` path alias (features, types, styles)
-3. Relative imports (same directory or nearby)
-4. Type-only imports should use `import type` when appropriate
+3. Feature-specific short aliases (e.g., `@users/repository`, `@users/adapter`)
+4. Relative imports (same directory or nearby)
+5. Type-only imports should use `import type` when appropriate
+
+**Note**: Import ordering is automatically enforced via ESLint (`eslint-plugin-simple-import-sort`). Imports are automatically sorted on save (via VS Code's `source.fixAll`) and can be manually fixed with `npm run lint -- --fix`.
 
 ### Import Examples
 

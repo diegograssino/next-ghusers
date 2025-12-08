@@ -1,8 +1,10 @@
+import { Params } from "next/dist/server/request/params";
+
 import UserDetailPage from "@/features/pages/UserDetailPage/UserDetailPage";
 import { UserPageProps } from "@/types";
+
 import { Typography } from "@shared/ui";
 import { fetchUserAction, fetchUserReposAction } from "@users/actions";
-import { Params } from "next/dist/server/request/params";
 
 const UserPage = async ({ params }: UserPageProps) => {
   const { id } = (await params) as Params;
