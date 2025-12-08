@@ -1,6 +1,3 @@
-import { pageMessages } from "@/features/shared/ui/PageMessage/PageMessage.constants";
-import { StaticImageData } from "next/image";
-import Link from "next/link";
 import {
   ButtonHTMLAttributes,
   ComponentProps,
@@ -9,6 +6,11 @@ import {
   JSX,
   ReactNode,
 } from "react";
+
+import { StaticImageData } from "next/image";
+import Link from "next/link";
+
+import { pageMessages } from "@/features/shared/ui/PageMessage/PageMessage.constants";
 
 export type ColorVariants =
   | "default"

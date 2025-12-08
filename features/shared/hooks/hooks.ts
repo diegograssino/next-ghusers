@@ -1,8 +1,11 @@
+import { useCallback, useEffect } from "react";
+
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 import { QueryParams } from "@/types";
+
 import { useSharedContext } from "@shared/contexts";
 import { VALID_FILTER_KEYS } from "@users/constants";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect } from "react";
 
 export const useUrl = () => {
   const router = useRouter();

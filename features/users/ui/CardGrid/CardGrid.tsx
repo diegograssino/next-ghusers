@@ -1,7 +1,10 @@
+import clsx from "clsx";
+
 import { getUniqueId } from "@/features/shared/lib/utils";
 import { CardGridProps, CardGridSkeletonProps } from "@/types";
+
 import { PER_PAGE_CONFIGS } from "@shared/constants";
-import clsx from "clsx";
+
 import { CardSkeleton } from "../Card/Card";
 import styles from "./CardGrid.module.scss";
 

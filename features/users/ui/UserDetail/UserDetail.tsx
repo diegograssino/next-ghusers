@@ -1,9 +1,12 @@
-import { getUniqueId } from "@/features/shared/lib/utils";
-import { UserDetailProps } from "@/types";
-import { Button, Typography } from "@shared/ui";
-import { IconLink } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
+
+import { getUniqueId } from "@/features/shared/lib/utils";
+import { UserDetailProps } from "@/types";
+
+import { Button, Typography } from "@shared/ui";
+import { IconLink } from "@tabler/icons-react";
+
 import FavoritesWidget from "../FavoritesWidget/FavoritesWidget";
 import styles from "./UserDetail.module.scss";
 

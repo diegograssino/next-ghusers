@@ -1,5 +1,7 @@
 import { SortButtonProps } from "@/types";
+
 import { Typography } from "@shared/ui";
+
 import styles from "./SortButton.module.scss";
 
 const { sortButton } = styles;

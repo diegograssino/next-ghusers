@@ -1,8 +1,10 @@
 "use client";
+import Link from "next/link";
+
 import { ROUTES } from "@shared/constants";
 import { IconStarFilled } from "@tabler/icons-react";
 import { useFavoritesContext } from "@users/contexts";
-import Link from "next/link";
+
 import Button from "../Button/Button";
 import Typography from "../Typography/Typography";
 import styles from "./FavoritesAnchor.module.scss";

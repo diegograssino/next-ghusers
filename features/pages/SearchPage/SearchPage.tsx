@@ -1,7 +1,12 @@
 "use client";
+import InfiniteScroll from "react-infinite-scroller";
+
+import Link from "next/link";
+
 import { getUniqueId } from "@/features/shared/lib/utils";
 import heroImage from "@/public/assets/hero.png";
 import { SearchPageProps } from "@/types";
+
 import { ROUTES } from "@shared/constants";
 import { useSharedContext } from "@shared/contexts";
 import { useFiltersToUrl } from "@shared/hooks";
@@ -15,8 +20,7 @@ import {
   Filters,
   SearchInput,
 } from "@users/ui";
-import Link from "next/link";
-import InfiniteScroll from "react-infinite-scroller";
+
 import styles from "./SearchPage.module.scss";
 
 const {

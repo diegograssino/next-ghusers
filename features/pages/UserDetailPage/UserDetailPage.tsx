@@ -1,4 +1,5 @@
 import { UserDetailProps } from "@/types";
+
 import { UserDetail } from "@users/ui";
 
 const userDetailPage = ({ user, repos }: UserDetailProps) => {

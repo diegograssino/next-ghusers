@@ -1,10 +1,14 @@
 "use client";
+import { useEffect, useRef } from "react";
+
+import { useSearchParams } from "next/navigation";
+
+import clsx from "clsx";
+
 import { useSharedContext } from "@shared/contexts";
 import { IconRotate, IconSearch } from "@tabler/icons-react";
 import { useFiltersContext } from "@users/contexts";
-import clsx from "clsx";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+
 import styles from "./SearchInput.module.scss";
 
 const {

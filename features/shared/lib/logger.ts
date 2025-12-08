@@ -1,5 +1,6 @@
-import { LogContext } from "@/types";
 import pino from "pino";
+
+import { LogContext } from "@/types";
 // TODO Add proper log support
 
 const config = {

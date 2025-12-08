@@ -1,6 +1,4 @@
 "use client";
-import { DEFAULT_VIEWPORT_HEIGHT } from "@shared/constants";
-import { useIsFetching } from "@tanstack/react-query";
 import {
   createContext,
   useContext,
@@ -9,6 +7,9 @@ import {
   useRef,
   useState,
 } from "react";
+
+import { DEFAULT_VIEWPORT_HEIGHT } from "@shared/constants";
+import { useIsFetching } from "@tanstack/react-query";
 
 interface SharedProviderProps {
   children: React.ReactNode;

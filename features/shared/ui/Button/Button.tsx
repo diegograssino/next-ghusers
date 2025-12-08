@@ -1,8 +1,12 @@
+import { forwardRef } from "react";
+
+import Link from "next/link";
+
+import clsx from "clsx";
+
 import { getStyleClass } from "@/features/shared/lib/utils";
 import { ButtonProps } from "@/types";
-import clsx from "clsx";
-import Link from "next/link";
-import { forwardRef } from "react";
+
 import styles from "./Button.module.scss";
 
 const { button } = styles;

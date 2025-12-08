@@ -1,6 +1,4 @@
 "use client";
-import { Params, QueryParams, ValidFilterLabels } from "@/types";
-import { DEBOUNCE_DELAY_MS } from "@shared/constants";
 import {
   createContext,
   useCallback,
@@ -8,7 +6,13 @@ import {
   useMemo,
   useState,
 } from "react";
+
 import { useDebounceValue } from "usehooks-ts";
+
+import { Params, QueryParams, ValidFilterLabels } from "@/types";
+
+import { DEBOUNCE_DELAY_MS } from "@shared/constants";
+
 import { DEFAULT_FILTER_STATE } from "../lib/constants";
 import { addFilterParamLabel } from "../lib/utils";
 

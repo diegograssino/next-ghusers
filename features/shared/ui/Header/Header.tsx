@@ -1,6 +1,8 @@
 "use client";
-import { IconBrandGithub } from "@tabler/icons-react";
 import Link from "next/link";
+
+import { IconBrandGithub } from "@tabler/icons-react";
+
 import { ROUTES } from "../../constants";
 import { useSharedContext } from "../../contexts/SharedContext";
 import Container from "../Container/Container";
