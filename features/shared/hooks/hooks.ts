@@ -2,6 +2,7 @@ import { useCallback, useEffect } from "react";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+import { scrollToElementWithOffset } from "@/features/shared/lib/utils";
 import { QueryParams } from "@/types";
 
 import { useSharedContext } from "@shared/contexts";
@@ -40,20 +41,8 @@ export const useUrl = () => {
         router.replace(newUrl, { scroll: !scrollTargetId });
 
         if (scrollTargetId) {
-          setTimeout(() => {
-            const targetElement = document.getElementById(scrollTargetId);
-            if (targetElement) {
-              const offset = navbarHeight + breadcrumbsHeight;
-              const elementPosition = targetElement.getBoundingClientRect().top;
-              const offsetPosition =
-                elementPosition + window.pageYOffset - offset;
-
-              window.scrollTo({
-                top: offsetPosition,
-                behavior: "smooth",
-              });
-            }
-          }, 0);
+          const offset = navbarHeight + breadcrumbsHeight;
+          scrollToElementWithOffset(scrollTargetId, offset);
         }
       }
     },

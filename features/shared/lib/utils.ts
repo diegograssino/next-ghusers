@@ -72,3 +72,43 @@ export const getStyleClass = <T extends Record<string, string>>(
 ): string | undefined => {
   return key && key in styles ? styles[key as keyof T] : undefined;
 };
+
+const accumulateOffsetTop = (element: HTMLElement | null): number => {
+  if (!element) return 0;
+  return (
+    element.offsetTop +
+    accumulateOffsetTop(element.offsetParent as HTMLElement | null)
+  );
+};
+
+export const getScrollPositionWithOffset = (
+  element: HTMLElement,
+  offset: number
+): number => accumulateOffsetTop(element) - offset;
+
+export const scrollToElementWithOffset = (
+  elementId: string,
+  offset: number,
+  maxRetries = 3
+): void => {
+  const attemptScroll = (retryCount = 0) => {
+    requestAnimationFrame(() => {
+      const targetElement = document.getElementById(elementId);
+      if (!targetElement) {
+        if (retryCount < maxRetries) {
+          setTimeout(() => attemptScroll(retryCount + 1), 50);
+        }
+        return;
+      }
+
+      const offsetPosition = getScrollPositionWithOffset(targetElement, offset);
+
+      window.scrollTo({
+        top: Math.max(0, offsetPosition),
+        behavior: "smooth",
+      });
+    });
+  };
+
+  attemptScroll();
+};
