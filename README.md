@@ -103,22 +103,27 @@ The application is deployed at: https://next-ghusers.vercel.app
 ## Available Scripts
 
 ### Development
+
 - `npm run dev` — Start the development server with Turbopack
 - `npm run start` — Start the app in production mode
 
 ### Building
+
 - `npm run build` — Build the app for production (includes SCSS type generation)
 
 ### Code Quality
+
 - `npm run lint` — Run ESLint for code linting
 - `npm run lint:scss` — Run Stylelint for SCSS/CSS linting and auto-fix
 - `npm run lint:scss:check` — Run Stylelint for SCSS/CSS linting (check only)
 
 ### Type Safety
+
 - `npm run type-check:scss` — Generate TypeScript types for SCSS Modules (watch mode)
 - `npm run type-check:scss:build` — Generate TypeScript types for SCSS Modules (one-time)
 
 ### Testing
+
 - `npm test` — Run the test suite
 - `npm run test:watch` — Run tests in watch mode
 - `npm run test:coverage` — Generate and display test coverage report
@@ -164,6 +169,7 @@ The project uses Husky to enforce code quality standards:
 - **Pre-push hook**: Runs the full build process before pushing to ensure everything compiles correctly
 
 These hooks ensure that:
+
 - SCSS Module types are always up-to-date
 - Code follows Stylelint rules
 - Accessibility standards are enforced (no accessibility warnings allowed)
@@ -182,6 +188,7 @@ Types are automatically generated during the build process and can be watched du
 ### Stylelint Configuration
 
 Stylelint is configured with:
+
 - **Standard SCSS rules** - Enforces best practices for SCSS/CSS
 - **Prettier integration** - Prevents conflicts between Stylelint and Prettier
 - **Custom rules** - Enforces camelCase class naming convention
