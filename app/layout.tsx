@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 
 import clsx from "clsx";
 
+import { HeaderSlotItem } from "@/types";
+
 import { primaryFont, secondaryFont } from "@shared/constants";
 import { LayoutClient } from "@shared/ui";
 
@@ -19,6 +21,13 @@ export const metadata: Metadata = {
   },
 };
 
+// DOC Header slots - will be configured via CMS in the future, probably
+const headerCentralSlot: HeaderSlotItem | HeaderSlotItem[] = [];
+
+const headerRightSlot: HeaderSlotItem | HeaderSlotItem[] = {
+  type: "favorites" as const,
+};
+
 const RootLayout = ({
   children,
 }: Readonly<{
@@ -31,7 +40,12 @@ const RootLayout = ({
         className={clsx(primaryFont.variable, secondaryFont.variable)}
       >
         <body>
-          <LayoutClient>{children}</LayoutClient>
+          <LayoutClient
+            headerCentralSlot={headerCentralSlot ?? undefined}
+            headerRightSlot={headerRightSlot ?? undefined}
+          >
+            {children}
+          </LayoutClient>
         </body>
       </html>
     </Providers>

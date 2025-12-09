@@ -13,6 +13,35 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+}
+
+.headerNavbarCenter {
+  display: flex;
+  align-items: center;
+
+  // DOC Hide on md and below, show on larger screens
+  @media (max-width: $screen-md) {
+    display: none;
+  }
+}
+
+.headerNavbarCenterList {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 1rem;
+}
+
+.headerNavbarRight {
+  display: flex;
+  align-items: center;
+
+  // DOC Hide on md and below, show on larger screens
+  @media (max-width: $screen-md) {
+    display: none;
+  }
 }
 
 .headerNavbarBrand {
@@ -52,6 +81,37 @@
       xl: 1.25rem,
       2xl: 1.375rem,
       3xl: 1.5rem,
+    )
+  );
+}
+
+.headerNavbarMenuButton {
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  // DOC Show on md and below, hide on larger screens
+  @media (max-width: $screen-md) {
+    display: flex;
+  }
+}
+
+.headerNavbarMenuIcon {
+  color: $color-primary;
+  @include property-per-breakpoint(
+    width,
+    (
+      base: 1.25rem,
+      sm: 1.375rem,
+      md: 1.5rem,
+    )
+  );
+  @include property-per-breakpoint(
+    height,
+    (
+      base: 1.25rem,
+      sm: 1.375rem,
+      md: 1.5rem,
     )
   );
 }

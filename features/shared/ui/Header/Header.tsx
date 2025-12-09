@@ -1,21 +1,39 @@
 "use client";
+
 import Link from "next/link";
 
-import { IconBrandGithub } from "@tabler/icons-react";
+import { HeaderProps } from "@/types";
+
+import { IconBrandGithub, IconMenu } from "@tabler/icons-react";
 
 import { ROUTES } from "../../constants";
 import { useSharedContext } from "../../contexts/SharedContext";
+import Button from "../Button/Button";
 import Container from "../Container/Container";
-import FavoritesAnchor from "../FavoritesAnchor/FavoritesAnchor";
+import HeaderSlotComponent from "../HeaderSlotComponent/HeaderSlotComponent";
 import Typography from "../Typography/Typography";
 import styles from "./Header.module.scss";
 
-const { header, headerNavbarContainer, headerNavbarIcon, headerNavbarBrand } =
-  styles;
+const {
+  header,
+  headerNavbarContainer,
+  headerNavbarIcon,
+  headerNavbarBrand,
+  headerNavbarCenter,
+  headerNavbarRight,
+  headerNavbarMenuButton,
+  headerNavbarMenuIcon,
+} = styles;
 
-const Header = () => {
-  // TODO Add a mobile menu
+const Header = ({
+  centerSlot = undefined,
+  rightSlot = undefined,
+}: HeaderProps) => {
   const { headerRef } = useSharedContext();
+
+  const handleMenuClick = () => {
+    // TODO Open mobile menu modal when implemented
+  };
 
   return (
     <header ref={headerRef} className={header}>
@@ -30,11 +48,24 @@ const Header = () => {
               </Typography>
             </Typography>
           </Link>
-          <ul>
-            <li>
-              <FavoritesAnchor />
-            </li>
-          </ul>
+          <Button
+            variant="unstyled"
+            onClick={handleMenuClick}
+            className={headerNavbarMenuButton}
+          >
+            {/* DOC Preferred a css approach instead of using client logics to hide/show the menu button, is a fair trade off by now*/}
+            <IconMenu className={headerNavbarMenuIcon} />
+          </Button>
+          {centerSlot && (
+            <div className={headerNavbarCenter}>
+              <HeaderSlotComponent components={centerSlot} />
+            </div>
+          )}
+          {rightSlot && (
+            <div className={headerNavbarRight}>
+              <HeaderSlotComponent components={rightSlot} />
+            </div>
+          )}
         </nav>
       </Container>
     </header>

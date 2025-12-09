@@ -5,7 +5,7 @@ import { TypographyProps } from "@/types";
 
 import styles from "./Typography.module.scss";
 
-const { typography, ellipsis, shadow } = styles;
+const { typography, ellipsis, shadow, disabled } = styles;
 
 const Typography = ({
   children,
@@ -15,6 +15,7 @@ const Typography = ({
   truncate: isTruncated = false,
   shadow: hasShadow = false,
   variant = "default",
+  disabled: isDisabled = false,
   ...otherProps
 }: TypographyProps) => {
   return (
@@ -27,6 +28,7 @@ const Typography = ({
         getStyleClass(styles, size),
         isTruncated && ellipsis,
         hasShadow && shadow,
+        isDisabled && disabled,
         otherProps.className
       )}
     >

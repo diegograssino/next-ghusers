@@ -45,8 +45,7 @@ const Breadcrumbs = ({
     if (matchingRoute) {
       return matchingRoute;
     }
-    // DOC Check if it's a login (not a known static route) - for dynamic routes like USER_DETAIL
-    // Logins are alphanumeric with hyphens and underscores, and not empty
+    // DOC Check if it's a login (not a known static route) - for dynamic routes like USER_DETAIL, logins are alphanumeric with hyphens and underscores, and not empty
     if (part && /^[a-zA-Z0-9_-]+$/.test(part)) {
       return ROUTES.USER_DETAIL(part);
     }

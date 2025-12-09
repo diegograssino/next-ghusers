@@ -54,6 +54,7 @@ export interface TypographyProps
   truncate?: boolean;
   shadow?: boolean;
   variant?: ColorVariants;
+  disabled?: boolean;
 }
 
 export type IconNames =
@@ -109,3 +110,23 @@ type ButtonAsLink = Omit<ComponentProps<typeof Link>, "color"> & {
 };
 
 export type ButtonProps = ButtonAsButton | ButtonAsLink;
+
+export interface HeaderProps {
+  centerSlot?: HeaderSlotItem | HeaderSlotItem[];
+  rightSlot?: HeaderSlotItem | HeaderSlotItem[];
+}
+
+export interface LayoutClientProps {
+  children: ReactNode;
+  headerCentralSlot?: HeaderSlotItem | HeaderSlotItem[];
+  headerRightSlot?: HeaderSlotItem | HeaderSlotItem[];
+}
+
+export type HeaderSlotItemType = "favorites" | "link" | string;
+
+export interface HeaderSlotItem {
+  type: HeaderSlotItemType;
+  label?: string;
+  href?: string;
+  disabled?: boolean;
+}

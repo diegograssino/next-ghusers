@@ -3,6 +3,7 @@ export type Styles = {
   'accent2': string;
   'bold': string;
   'default': string;
+  'disabled': string;
   'ellipsis': string;
   'inverse': string;
   'lg': string;

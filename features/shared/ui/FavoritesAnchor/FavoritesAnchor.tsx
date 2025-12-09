@@ -15,10 +15,10 @@ const FavoritesAnchor = () => {
   const { favorites } = useFavoritesContext();
 
   return (
-    <Button as={Link} href={ROUTES.FAVORITES.href} variant="unstyled" size="sm">
+    <Button as={Link} href={ROUTES.FAVORITES.href} variant="unstyled" size="xs">
       <div className={favoritesAnchor}>
         <IconStarFilled className={favoritesAnchorIcon} />
-        <Typography as="span" size="sm" variant="primary">
+        <Typography as="span" size="xs" variant="primary">
           ({favorites.length})
         </Typography>
       </div>

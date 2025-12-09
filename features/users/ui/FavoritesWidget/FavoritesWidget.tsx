@@ -18,7 +18,6 @@ const FavoritesWidget = ({ id, user }: FavoritesWidgetProps) => {
   const { checkFavorite, addFavorite, removeFavorite, isAddingFavorite } =
     useFavoritesContext();
   const [error, setError] = useState<string | null>(null);
-  // DOC Simple boolean checks don't need memoization
   const isFavorite = checkFavorite(id);
   const isLoading = isAddingFavorite(id);
 
