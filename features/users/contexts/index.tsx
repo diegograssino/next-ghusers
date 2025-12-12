@@ -2,9 +2,9 @@ export {
   FavoritesContext,
   FavoritesProvider,
   useFavoritesContext,
-} from "./FavoritesContext";
+} from "./Favorites.context";
 export {
   FiltersContext,
   FiltersProvider,
   useFiltersContext,
-} from "./FiltersContext";
+} from "./Filters.context";

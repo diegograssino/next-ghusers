@@ -11,13 +11,39 @@ import styles from "./FavoritesAnchor.module.scss";
 
 const { favoritesAnchor, favoritesAnchorIcon } = styles;
 
-const FavoritesAnchor = () => {
+interface FavoritesAnchorProps {
+  onClick?: () => void;
+  showLabel?: boolean;
+}
+
+// TODO Abstract this component to a NavbarWidget component, so we can pass different icons and labels, and some other features
+const FavoritesAnchor = ({
+  onClick,
+  showLabel = false,
+}: FavoritesAnchorProps = {}) => {
   const { favorites } = useFavoritesContext();
 
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
-    <Button as={Link} href={ROUTES.FAVORITES.href} variant="unstyled" size="xs">
+    <Button
+      as={Link}
+      href={ROUTES.FAVORITES.href}
+      variant="unstyled"
+      size="xs"
+      onClick={handleClick}
+    >
       <div className={favoritesAnchor}>
         <IconStarFilled className={favoritesAnchorIcon} />
+        {showLabel && (
+          <Typography as="span" size="xs" variant="primary">
+            {ROUTES.FAVORITES.label}
+          </Typography>
+        )}
         <Typography as="span" size="xs" variant="primary">
           ({favorites.length})
         </Typography>

@@ -4,7 +4,7 @@ import clsx from "clsx";
 
 import { HeaderSlotItem } from "@/types";
 
-import { primaryFont, secondaryFont } from "@shared/constants";
+import { primaryFont, ROUTES, secondaryFont } from "@shared/constants";
 import { LayoutClient } from "@shared/ui";
 
 import Providers from "./providers";
@@ -22,7 +22,18 @@ export const metadata: Metadata = {
 };
 
 // DOC Header slots - will be configured via CMS in the future, probably
-const headerCentralSlot: HeaderSlotItem | HeaderSlotItem[] = [];
+const headerCentralSlot: HeaderSlotItem | HeaderSlotItem[] = [
+  {
+    type: "link",
+    href: ROUTES.FAVORITES.href,
+    label: "Favorites",
+  },
+  {
+    type: "link",
+    href: ROUTES.FAVORITES.href,
+    label: "Favorites",
+  },
+];
 
 const headerRightSlot: HeaderSlotItem | HeaderSlotItem[] = {
   type: "favorites" as const,

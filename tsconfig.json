@@ -30,7 +30,7 @@
       "@shared/constants": ["./features/shared/constants"],
       "@shared/hooks": ["./features/shared/hooks/hooks"],
       "@shared/ui": ["./features/shared/ui"],
-      "@shared/contexts": ["./features/shared/contexts/SharedContext"]
+      "@shared/contexts": ["./features/shared/contexts"]
     }
   },
   "include": [

@@ -4,10 +4,12 @@ import Link from "next/link";
 
 import { HeaderProps } from "@/types";
 
+import { Z_INDEX_STICKY } from "@shared/constants";
+import { useModalContext, useSharedContext } from "@shared/contexts";
+import { Drawer } from "@shared/ui";
 import { IconBrandGithub, IconMenu } from "@tabler/icons-react";
 
 import { ROUTES } from "../../constants";
-import { useSharedContext } from "../../contexts/SharedContext";
 import Button from "../Button/Button";
 import Container from "../Container/Container";
 import HeaderSlotComponent from "../HeaderSlotComponent/HeaderSlotComponent";
@@ -23,6 +25,7 @@ const {
   headerNavbarRight,
   headerNavbarMenuButton,
   headerNavbarMenuIcon,
+  headerDrawerContent,
 } = styles;
 
 const Header = ({
@@ -30,13 +33,34 @@ const Header = ({
   rightSlot = undefined,
 }: HeaderProps) => {
   const { headerRef } = useSharedContext();
+  const { openModal } = useModalContext();
 
   const handleMenuClick = () => {
-    // TODO Open mobile menu modal when implemented
+    if (!centerSlot || !rightSlot) return;
+
+    openModal(
+      <Drawer>
+        <div className={headerDrawerContent}>
+          {centerSlot && (
+            <HeaderSlotComponent components={centerSlot} variant="drawer" />
+          )}
+          {rightSlot && (
+            <HeaderSlotComponent components={rightSlot} variant="drawer" />
+          )}
+        </div>
+      </Drawer>,
+      {
+        ariaLabel: "Navigation drawer",
+      }
+    );
   };
 
   return (
-    <header ref={headerRef} className={header}>
+    <header
+      ref={headerRef}
+      className={header}
+      style={{ zIndex: Z_INDEX_STICKY }}
+    >
       <Container>
         <nav className={headerNavbarContainer}>
           <Link href={ROUTES.HOME.href} className={headerNavbarBrand}>
@@ -48,14 +72,17 @@ const Header = ({
               </Typography>
             </Typography>
           </Link>
-          <Button
-            variant="unstyled"
-            onClick={handleMenuClick}
-            className={headerNavbarMenuButton}
-          >
-            {/* DOC Preferred a css approach instead of using client logics to hide/show the menu button, is a fair trade off by now*/}
-            <IconMenu className={headerNavbarMenuIcon} />
-          </Button>
+          {centerSlot && (
+            <Button
+              variant="unstyled"
+              onClick={handleMenuClick}
+              className={headerNavbarMenuButton}
+              aria-label="Open navigation menu"
+            >
+              {/* DOC Preferred a css approach instead of using client logics to hide/show the menu button, is a fair trade off by now*/}
+              <IconMenu className={headerNavbarMenuIcon} />
+            </Button>
+          )}
           {centerSlot && (
             <div className={headerNavbarCenter}>
               <HeaderSlotComponent components={centerSlot} />

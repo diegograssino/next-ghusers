@@ -49,8 +49,14 @@ export function handleClick() {
 
 ### Components & Types
 
-- Use PascalCase: `Card`, `Header`, `FavsContext`, `CardProps`
+- Use PascalCase: `Card`, `Header`, `FavoritesContext`, `CardProps`
 - Component files match component name: `Card.tsx` exports `Card`
+
+### Context Files
+
+- **Context files must use `.context.tsx` suffix**: `{Feature}.context.tsx` (e.g., `Modal.context.tsx`, `Shared.context.tsx`, `Filters.context.tsx`, `Favorites.context.tsx`)
+- Context name inside file: `{Feature}Context` (e.g., `ModalContext`, `SharedContext`)
+- Custom hook name: `use{Feature}Context` (e.g., `useModalContext`, `useSharedContext`)
 
 ### Constants
 
@@ -76,21 +82,25 @@ export function handleClick() {
 ### Data Layer Naming Conventions
 
 **Repository Layer**:
+
 - **Do NOT use "fetch" prefix** - Repository methods should use action verbs like `get`, `find`, `retrieve`
 - Examples: `getUsers()`, `getUser()`, `findUserById()` (NOT `fetchUsers()`, `fetchUser()`)
 - Repository is an abstraction, not a fetch function
 
 **Adapter Layer**:
+
 - **Use "to" prefix** for transformation functions: `toUserAdapter()`, `toUsersAdapter()`, `toFetchUsersResultAdapter()`
 - Pattern: `to{TargetType}Adapter()` - transforms source → target
 - Examples: `toUserAdapter()`, `toRepoAdapter()`, `toUsersAdapter()`
 
 **Service Layer (Hooks)**:
+
 - **Use "use" prefix** (React convention): `useInfiniteUsers()`, `useInfiniteFavUsers()`
 - Follow React hook naming conventions
 - Examples: `useInfiniteUsers()`, `useUser()`, `useUsers()`
 
 **Service Layer (Actions)**:
+
 - **Use "fetch" prefix + "Action" suffix**: `fetchUsersAction()`, `fetchUserAction()`
 - Explicit naming for server actions
 - Examples: `fetchUsersAction()`, `fetchUserAction()`, `fetchUserReposAction()`
@@ -100,50 +110,74 @@ export function handleClick() {
 ```typescript
 // ✅ Repository Layer - No "fetch" prefix
 export const usersRepository = {
-  getUsers: async (params: FetchUsersParams) => { /* ... */ },
-  getUser: async (id: number) => { /* ... */ },
+  getUsers: async (params: FetchUsersParams) => {
+    /* ... */
+  },
+  getUser: async (id: number) => {
+    /* ... */
+  },
   // ❌ NOT: fetchUsers, fetchUser
 };
 
 // ✅ Adapter Layer - "to" prefix
-export const toUserAdapter = (apiUser: GitHubUser): User => { /* ... */ };
-export const toUsersAdapter = (apiUsers: GitHubUser[]): User[] => { /* ... */ };
-export const toFetchUsersResultAdapter = (response: GitHubUsersResponse): FetchUsersResult => { /* ... */ };
+export const toUserAdapter = (apiUser: GitHubUser): User => {
+  /* ... */
+};
+export const toUsersAdapter = (apiUsers: GitHubUser[]): User[] => {
+  /* ... */
+};
+export const toFetchUsersResultAdapter = (
+  response: GitHubUsersResponse
+): FetchUsersResult => {
+  /* ... */
+};
 
 // ✅ Service Layer (Hooks) - "use" prefix
-export const useInfiniteUsers = () => { /* ... */ };
-export const useUser = (id: number) => { /* ... */ };
+export const useInfiniteUsers = () => {
+  /* ... */
+};
+export const useUser = (id: number) => {
+  /* ... */
+};
 
 // ✅ Service Layer (Actions) - "fetch" prefix + "Action" suffix
-export const fetchUsersAction = async (params: FetchUsersParams) => { /* ... */ };
-export const fetchUserAction = async (id: number) => { /* ... */ };
+export const fetchUsersAction = async (params: FetchUsersParams) => {
+  /* ... */
+};
+export const fetchUserAction = async (id: number) => {
+  /* ... */
+};
 ```
 
 ### Data Layer Naming Conventions
 
 **Repository Layer**:
+
 - **Do NOT use "fetch" prefix** - Repository methods should use action verbs like `get`, `find`, `retrieve`
 - Examples: `getUsers()`, `getUser()`, `findUserById()` (NOT `fetchUsers()`, `fetchUser()`)
 - Repository is an abstraction, not a fetch function
 
 **Adapter Layer**:
+
 - **Use "to" prefix** for transformation functions: `toUserAdapter()`, `toUsersAdapter()`, `toFetchUsersResultAdapter()`
 - Pattern: `to{TargetType}Adapter()` - transforms source → target
 - Examples: `toUserAdapter()`, `toRepoAdapter()`, `toUsersAdapter()`
 
 **Service Layer (Hooks)**:
+
 - **Use "use" prefix** (React convention): `useInfiniteUsers()`, `useInfiniteFavUsers()`
 - Follow React hook naming conventions
 - Examples: `useInfiniteUsers()`, `useUser()`, `useUsers()`
 
 **Service Layer (Actions)**:
+
 - **Use "fetch" prefix + "Action" suffix**: `fetchUsersAction()`, `fetchUserAction()`
 - Explicit naming for server actions
 - Examples: `fetchUsersAction()`, `fetchUserAction()`, `fetchUserReposAction()`
 
 ### Data Layer Naming Examples
 
-```typescript
+````typescript
 // ✅ Repository Layer - No "fetch" prefix
 export const usersRepository = {
   getUsers: async (params: FetchUsersParams) => { /* ... */ },
@@ -166,3 +200,4 @@ export const fetchUserAction = async (id: number) => { /* ... */ };
 ``` for client-side
 - Actions files are named `[feature].actions.ts` (e.g., `users.actions.ts`) for server-side
 
+````

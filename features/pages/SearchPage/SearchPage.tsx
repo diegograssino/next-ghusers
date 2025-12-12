@@ -7,7 +7,7 @@ import { getUniqueId } from "@/features/shared/lib/utils";
 import heroImage from "@/public/assets/hero.png";
 import { SearchPageProps } from "@/types";
 
-import { ROUTES } from "@shared/constants";
+import { ROUTES, Z_INDEX_STICKY_CONTENT } from "@shared/constants";
 import { useSharedContext } from "@shared/contexts";
 import { useFiltersToUrl } from "@shared/hooks";
 import { Button, Hero, PageMessage, Typography } from "@shared/ui";
@@ -61,11 +61,17 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
       </Hero>
       <div id="search-section" />
       <div className={searchPage}>
-        <div className={searchPageSearch}>
+        <div
+          className={searchPageSearch}
+          style={{ zIndex: Z_INDEX_STICKY_CONTENT }}
+        >
           {/* TODO Search input should be in the header and open a palette style modal*/}
           <SearchInput />
         </div>
-        <aside className={searchPageAside}>
+        <aside
+          className={searchPageAside}
+          style={{ zIndex: Z_INDEX_STICKY_CONTENT }}
+        >
           <Filters totalCount={totalCount} />
         </aside>
         <div className={searchPageResults}>

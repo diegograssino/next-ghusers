@@ -2,6 +2,7 @@
 import { getUniqueId } from "@/features/shared/lib/utils";
 import { FavoritesPageProps } from "@/types";
 
+import { Z_INDEX_STICKY_CONTENT } from "@shared/constants";
 import { useFiltersToUrl } from "@shared/hooks";
 import { PageMessage } from "@shared/ui";
 import { useFavoritesContext, useFiltersContext } from "@users/contexts";
@@ -41,10 +42,16 @@ const FavoritesPage = ({ pageConfig }: FavoritesPageProps) => {
 
   return (
     <div className={favoritesPage}>
-      <div className={favoritesPageSearch}>
+      <div
+        className={favoritesPageSearch}
+        style={{ zIndex: Z_INDEX_STICKY_CONTENT }}
+      >
         <SearchInput />
       </div>
-      <aside className={favoritesPageAside}>
+      <aside
+        className={favoritesPageAside}
+        style={{ zIndex: Z_INDEX_STICKY_CONTENT }}
+      >
         <Filters totalCount={totalCount} />
       </aside>
       <div className={favoritesPageResults}>

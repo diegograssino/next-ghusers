@@ -4,8 +4,8 @@ import { useState } from "react";
 import { CardWidgetProps, User } from "@/types";
 
 import { IconStar, IconStarFilled } from "@tabler/icons-react";
+import { useFavoritesContext } from "@users/contexts";
 
-import { useFavoritesContext } from "../../contexts/FavoritesContext";
 import styles from "./FavoritesWidget.module.scss";
 
 const { favoritesWidgetEmptyStar, favoritesWidgetFilledStar } = styles;

@@ -75,3 +75,9 @@ export const useFiltersToUrl = (
     updateUrlFromFilters(filters, scrollTargetId);
   }, [filters, scrollTargetId, updateUrlFromFilters]);
 };
+
+export {
+  useModalBodyScrollLock,
+  useModalFocus,
+  useModalKeyboard,
+} from "./useModalEffects";

@@ -4,7 +4,7 @@ import { act, render } from "@testing-library/react";
 
 import { User } from "@/types";
 
-import { FavoritesContext, FavoritesProvider } from "./FavoritesContext";
+import { FavoritesContext, FavoritesProvider } from "./Favorites.context";
 
 interface FavoredUser {
   user: User;

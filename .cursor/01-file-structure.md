@@ -33,7 +33,9 @@ project-root/
 │   │   ├── constants/
 │   │   │   └── constants.tsx    # Single file folder → match folder name
 │   │   ├── contexts/
-│   │   │   └── SharedContext.tsx
+│   │   │   ├── Shared.context.tsx
+│   │   │   ├── Modal.context.tsx
+│   │   │   └── index.tsx        # Barrel export
 │   │   ├── hooks/
 │   │   │   └── hooks.ts         # Single file folder → match folder name
 │   │   ├── lib/
@@ -52,8 +54,10 @@ project-root/
 │   │
 │   └── users/                   # User feature domain
 │       ├── contexts/
-│       │   ├── FavsContext.tsx
-│       │   └── FavsContext.spec.tsx
+│       │   ├── Favorites.context.tsx
+│       │   ├── Filters.context.tsx
+│       │   ├── Favorites.context.spec.tsx
+│       │   └── index.tsx        # Barrel export
 │       ├── lib/
 │       │   ├── constants.ts
 │       │   └── utils.ts         # Utility functions (helper functions for repository/adapter)

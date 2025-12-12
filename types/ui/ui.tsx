@@ -130,3 +130,61 @@ export interface HeaderSlotItem {
   href?: string;
   disabled?: boolean;
 }
+
+export type DrawerPosition = "left" | "right";
+
+export interface ModalConfig {
+  overlay?: boolean;
+  overlayOpacity?: number;
+  drawerPosition?: DrawerPosition;
+  closeOnOverlayClick?: boolean;
+  closeOnEscape?: boolean;
+  preventBodyScroll?: boolean;
+  ariaLabel?: string;
+  ariaLabelledBy?: string;
+  ariaDescribedBy?: string;
+  className?: string;
+}
+
+export interface PortalProps {
+  children: ReactNode;
+  isOpen: boolean;
+  onClose?: () => void;
+  config?: ModalConfig;
+  zIndex?: number;
+  portalRef?: React.RefObject<HTMLDivElement>;
+}
+
+export interface ModalItem {
+  id: string;
+  content: ReactNode;
+  config: ModalConfig;
+}
+
+export interface ModalState {
+  modals: ModalItem[];
+}
+
+export interface ModalContextProps {
+  openModal: (content: ReactNode, config?: ModalConfig) => string;
+  closeModal: (id?: string) => void;
+  closeAllModals: () => void;
+  getModalById: (id: string) => ModalItem | null;
+  getModalIndex: (id: string) => number;
+  isTopModal: (id: string) => boolean;
+  getModalZIndex: (id: string) => number;
+  registerPortalRef: (id: string, ref: React.RefObject<HTMLDivElement>) => void;
+  getPortalRef: (id: string) => React.RefObject<HTMLDivElement> | null;
+  modalState: ModalState;
+}
+
+export interface OverlayProps {
+  onClick?: () => void;
+  opacity?: number;
+  className?: string;
+  "aria-label"?: string;
+}
+
+export interface DrawerProps {
+  children: ReactNode;
+}

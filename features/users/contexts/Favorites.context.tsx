@@ -12,9 +12,8 @@ import {
 
 import { User } from "@/types";
 
+import { useSharedContext } from "@shared/contexts";
 import { fetchUserService } from "@users/services";
-
-import { useSharedContext } from "../../shared/contexts/SharedContext";
 
 interface FavoritesProviderProps {
   children: React.ReactNode;
@@ -22,7 +21,6 @@ interface FavoritesProviderProps {
 
 interface FavoredUser {
   user: User;
-  // DOC Unix timestamp in milliseconds
   timestamp: number;
 }
 

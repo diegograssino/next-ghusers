@@ -194,6 +194,7 @@ const Card = ({ isActive, user }: CardProps) => {
 ```
 
 **Important:**
+
 - **Always import `main.scss` in component modules** - it's the single contact point for all abstracts
 - Adjust the relative path based on your component's location (e.g., `../../../styles/main` for pages, `../../../../styles/main` for features)
 - `main.scss` forwards all abstracts, so importing it gives access to all variables, mixins, and functions
@@ -281,3 +282,67 @@ const Typography = ({ variant }: TypographyProps) => {
 }
 ```
 
+### Z-Index Hierarchy
+
+- **Z-index values follow Bootstrap standards** - All z-index constants are defined in `features/shared/constants/z-index.constants.ts`
+- **Never hardcode z-index values** - Always use constants from `@shared/constants`
+- **Always use inline styles for z-index** - Z-index values must be applied via inline styles using TypeScript constants to ensure a single source of truth
+- **Never use z-index in SCSS files** - All z-index values must come from TypeScript constants via inline styles
+- **Z-index hierarchy** (from lowest to highest):
+  - `Z_INDEX_DROPDOWN = 1000` - Dropdown menus
+  - `Z_INDEX_STICKY_CONTENT = 1018` - Sticky content sections (search, filters)
+  - `Z_INDEX_STICKY_BREADCRUMBS = 1019` - Sticky breadcrumbs (below header)
+  - `Z_INDEX_STICKY = 1020` - Sticky positioned elements (header)
+  - `Z_INDEX_FIXED = 1030` - Fixed positioned elements
+  - `Z_INDEX_MODAL_BACKDROP = 1040` - Modal backdrop/overlay
+  - `Z_INDEX_MODAL = 1055` - Modal dialogs (default for modals)
+  - `Z_INDEX_POPOVER = 1060` - Popover components
+  - `Z_INDEX_TOOLTIP = 1080` - Tooltip components
+
+### Z-Index Usage
+
+- **Modals**: Use `DEFAULT_MODAL_Z_INDEX` (1055) as the base, increment by index for stacked modals
+- **Modal stacking**: When multiple modals are open, each modal gets `DEFAULT_MODAL_Z_INDEX + index` (e.g., first modal: 1055, second: 1056, third: 1057)
+- **Sticky elements**: Use appropriate constants (`Z_INDEX_STICKY`, `Z_INDEX_STICKY_BREADCRUMBS`, `Z_INDEX_STICKY_CONTENT`) based on stacking order
+- **Import z-index constants**: `import { DEFAULT_MODAL_Z_INDEX, Z_INDEX_STICKY, Z_INDEX_STICKY_CONTENT } from "@shared/constants"`
+- **Apply via inline styles**: Always use `style={{ zIndex: Z_INDEX_STICKY }}` in JSX, never in SCSS
+
+### Z-Index Examples
+
+```typescript
+// ✅ CORRECT: Use constants from @shared/constants with inline styles
+import { Z_INDEX_STICKY, DEFAULT_MODAL_Z_INDEX } from "@shared/constants";
+
+const Header = () => {
+  return <header style={{ zIndex: Z_INDEX_STICKY }}>{/* ... */}</header>;
+};
+
+const Portal = ({ zIndex = DEFAULT_MODAL_Z_INDEX }: PortalProps) => {
+  return <div style={{ zIndex }}>{/* ... */}</div>;
+};
+
+// ✅ CORRECT: Modal stacking in context
+const getModalZIndex = (index: number) => {
+  return DEFAULT_MODAL_Z_INDEX + index; // First modal: 1055, second: 1056, etc.
+};
+
+// ✅ CORRECT: Sticky content sections
+const SearchPage = () => {
+  return (
+    <div style={{ zIndex: Z_INDEX_STICKY_CONTENT }}>
+      {/* ... */}
+    </div>
+  );
+};
+
+// ❌ WRONG: Don't hardcode z-index values
+const Header = () => {
+  return <header style={{ zIndex: 9999 }}>{/* ❌ Use constant instead */}</header>;
+};
+
+// ❌ WRONG: Don't use z-index in SCSS files
+// Header.module.scss
+.header {
+  z-index: 100; // ❌ Use inline style with constant instead
+}
+```

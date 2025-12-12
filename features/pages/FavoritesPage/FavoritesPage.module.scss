@@ -31,7 +31,6 @@
   grid-area: search;
   position: sticky;
   top: calc($layout-navbar-height - 1px);
-  z-index: 10;
   background: linear-gradient(
     to bottom,
     $color-background 0%,
@@ -49,7 +48,6 @@
   grid-area: filters;
   position: sticky;
   top: $layout-navbar-height;
-  z-index: 9;
   background-color: $color-background;
   padding: 1rem 0;
   align-self: flex-start;
@@ -66,4 +64,3 @@
   grid-area: results;
   padding: 2rem 0 1rem;
 }
-

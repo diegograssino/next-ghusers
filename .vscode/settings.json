@@ -27,7 +27,7 @@
       "iconColour": "#2E7D32"
     }
   },
-  "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*\\*)\\s*($TAGS)(.*)",
+  "todo-tree.regex.regex": "(?://|#|<!--|;|/\\*\\*?|^\\s*\\*)\\s+\\b($TAGS)\\b(?::|\\s)(.*)",
   "todo-tree.regex.regexCaseSensitive": false,
   "todo-tree.general.tags": ["TODO", "FIX", "DOC"],
   "todo-tree.filtering.excludeGlobs": ["**/node_modules/**"],

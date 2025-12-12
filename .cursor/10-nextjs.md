@@ -122,7 +122,9 @@ import Image from "next/image";
 import { genericBlurData } from "../../lib/constants";
 
 // Parent container with position: relative
-<div className={cardImageContainer}> {/* position: relative in SCSS */}
+<div className={cardImageContainer}>
+  {" "}
+  {/* position: relative in SCSS */}
   <Image
     src={user.avatarUrl}
     alt={user.login}
@@ -154,9 +156,7 @@ import Link from "next/link";
 const Card = ({ user }: CardProps) => {
   return (
     <Link href={`/${user.id}`} data-testid="card">
-      <article className={card}>
-        {/* Card content */}
-      </article>
+      <article className={card}>{/* Card content */}</article>
     </Link>
   );
 };
@@ -174,7 +174,7 @@ const Card = ({ user }: CardProps) => {
 
 ```typescript
 // app/page.tsx
-import { FiltersProvider } from "@/features/users/contexts/FiltersContext";
+import { FiltersProvider } from "@users/contexts";
 
 const Home = async () => {
   return (
@@ -184,4 +184,3 @@ const Home = async () => {
   );
 };
 ```
-

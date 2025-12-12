@@ -89,7 +89,7 @@ export default Card;
 
 - **Use `...otherProps` to forward HTML attributes** - allows components to accept standard HTML props
 - **Type `otherProps` properly** - extend `HTMLAttributes<HTMLElement>` or use `Omit<HTMLAttributes<HTMLElement>, "conflictingProp">`
-- **Spread `otherProps` to the root element** - enables className, onClick, data-* attributes, etc.
+- **Spread `otherProps` to the root element** - enables className, onClick, data-\* attributes, etc.
 - **Merge className properly** - use `clsx` to combine component className with `otherProps.className`
 - **Document Omit exclusions** - When using `Omit` to exclude props (e.g., `"color"`, `"ref"`), add DOC comments explaining why:
   - `// DOC Omit "color" to use variant prop instead (variant controls text color via ColorVariants)`
@@ -127,10 +127,7 @@ const Typography = ({
   ...otherProps
 }: TypographyProps) => {
   return (
-    <p
-      {...otherProps}
-      className={clsx(typography, otherProps.className)}
-    >
+    <p {...otherProps} className={clsx(typography, otherProps.className)}>
       {children}
     </p>
   );
@@ -144,11 +141,7 @@ const Typography = ({
 }: TypographyProps) => {
   return (
     <p
-      className={clsx(
-        typography,
-        isTruncated && ellipsis,
-        hasShadow && shadow
-      )}
+      className={clsx(typography, isTruncated && ellipsis, hasShadow && shadow)}
     >
       {children}
     </p>
@@ -388,3 +381,83 @@ export { default as CardGrid, CardGridSkeleton } from "./CardGrid/CardGrid";
 export { default as Filters } from "./Filters/Filters";
 ```
 
+### Merged Config Pattern (For Complex Reusable Components)
+
+- **Use merged config approach for reusable components with complex configuration** - When a component has many optional configuration options, use a config object pattern
+- **Define default config in constants file** - Create a `DEFAULT_{COMPONENT}_CONFIG` object in `features/shared/constants/` or component-specific constants file
+- **Accept optional config prop** - Component accepts an optional `config` prop that can override defaults
+- **Merge configs in component** - Use spread operator to merge default config with provided config: `const mergedConfig = { ...DEFAULT_CONFIG, ...config }`
+- **Use merged config throughout component** - Reference `mergedConfig` instead of individual props or hardcoded values
+- **Benefits**:
+  - Cleaner component API (single config object instead of many optional props)
+  - Centralized default values
+  - Easy to extend with new config options
+  - Type-safe with TypeScript interfaces
+
+### Merged Config Pattern Example
+
+```typescript
+// features/shared/constants/modal.constants.ts
+export const DEFAULT_MODAL_CONFIG: ModalConfig = {
+  overlay: true,
+  overlayOpacity: 0.75,
+  closeOnOverlayClick: true,
+  closeOnEscape: true,
+  preventBodyScroll: true,
+  ariaLabel: "Modal dialog",
+};
+
+// types/ui/ui.tsx
+export interface ModalConfig {
+  overlay?: boolean;
+  overlayOpacity?: number;
+  closeOnOverlayClick?: boolean;
+  closeOnEscape?: boolean;
+  preventBodyScroll?: boolean;
+  ariaLabel?: string;
+  className?: string;
+}
+
+export interface PortalProps {
+  children: ReactNode;
+  isOpen: boolean;
+  onClose?: () => void;
+  config?: ModalConfig; // Optional config prop
+  zIndex?: number;
+}
+
+// Portal.tsx
+import { DEFAULT_MODAL_CONFIG } from "@shared/constants";
+
+const Portal = ({
+  children,
+  isOpen,
+  onClose,
+  config = {}, // Default to empty object
+  zIndex = DEFAULT_MODAL_Z_INDEX,
+}: PortalProps) => {
+  // ✅ Merge default config with provided config
+  const mergedConfig = { ...DEFAULT_MODAL_CONFIG, ...config };
+
+  return (
+    <div
+      className={clsx(portal, mergedConfig.className)}
+      aria-label={mergedConfig.ariaLabel}
+      style={{ zIndex }}
+    >
+      {mergedConfig.overlay && mergedConfig.closeOnOverlayClick && (
+        <Overlay onClick={onClose} opacity={mergedConfig.overlayOpacity} />
+      )}
+      {children}
+    </div>
+  );
+};
+```
+
+### When to Use Merged Config Pattern
+
+- ✅ **Use when**: Component has 5+ optional configuration options
+- ✅ **Use when**: Configuration options are related and form a cohesive set
+- ✅ **Use when**: Default values should be centralized and reusable
+- ❌ **Don't use when**: Component has only 1-2 simple optional props
+- ❌ **Don't use when**: Configuration options are unrelated or rarely used together

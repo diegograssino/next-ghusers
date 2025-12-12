@@ -33,7 +33,6 @@
 
   // DOC The 2 rem is a fix to avoid the search section to be overlapped by other sections, is a manual adjustment that should be fixed in the future
   top: calc($layout-navbar-height + $layout-breadcrumbs-height - 2rem);
-  z-index: 10;
   background: linear-gradient(
     to bottom,
     $color-background 0%,
@@ -55,7 +54,6 @@
   grid-area: filters;
   position: sticky;
   top: calc($layout-navbar-height + $layout-breadcrumbs-height);
-  z-index: 9;
   background-color: $color-background;
   padding: 1rem 0;
   align-self: flex-start;

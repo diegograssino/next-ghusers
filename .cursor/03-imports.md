@@ -20,7 +20,8 @@ import Link from "next/link";
 import Image from "next/image";
 
 // Internal imports with @/ alias
-import { useSharedContext } from "@/features/shared/contexts/SharedContext";
+import { useSharedContext, useModalContext } from "@shared/contexts";
+import { useFavoritesContext } from "@users/contexts";
 import { User, QueryParams } from "@/types";
 import "@/styles/globals.scss";
 

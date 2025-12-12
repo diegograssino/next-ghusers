@@ -10,42 +10,52 @@
 - Use `useMemo` for context values
 - Use `useCallback` for context methods
 
-### Context Hook Naming Convention
+### Context File Naming Convention
 
-- **Context name**: `{Feature}Context` (e.g., `FavsContext`, `FiltersContext`, `SharedContext`)
-- **Custom hook name**: `use{Feature}Context` (e.g., `useFavsContext`, `useFiltersContext`, `useSharedContext`)
+- **Context files must use `.context.tsx` suffix**: `{Feature}.context.tsx` (e.g., `Modal.context.tsx`, `Shared.context.tsx`, `Filters.context.tsx`, `Favorites.context.tsx`)
+- **Context name**: `{Feature}Context` (e.g., `ModalContext`, `FiltersContext`, `SharedContext`)
+- **Custom hook name**: `use{Feature}Context` (e.g., `useModalContext`, `useFiltersContext`, `useSharedContext`)
 - **Never use `useContext(ContextName)` directly** - always use the custom hook export
 - This ensures type safety and provides helpful error messages when context is used outside provider
 
 ### Context Example
 
+**File: `Favorites.context.tsx`**
+
 ```typescript
 "use client";
 import { createContext, useContext, useMemo, useCallback } from "react";
 
-export const FavsContext = createContext<FavsContextProps | undefined>(
-  undefined
-);
+export const FavoritesContext = createContext<
+  FavoritesContextProps | undefined
+>(undefined);
 
-export const FavsProvider = ({ children }: FavsProviderProps) => {
-  const [favs, setFavs] = useState<FavoredUser[]>([]);
+export const FavoritesProvider = ({ children }: FavoritesProviderProps) => {
+  const [favorites, setFavorites] = useState<FavoredUser[]>([]);
 
-  const addFav = useCallback(async (user: User) => {
+  const addFavorite = useCallback(async (user: User) => {
     // implementation
   }, []);
 
-  const contextValue = useMemo(() => ({ favs, addFav }), [favs, addFav]);
+  const contextValue = useMemo(
+    () => ({ favorites, addFavorite }),
+    [favorites, addFavorite]
+  );
 
   return (
-    <FavsContext.Provider value={contextValue}>{children}</FavsContext.Provider>
+    <FavoritesContext.Provider value={contextValue}>
+      {children}
+    </FavoritesContext.Provider>
   );
 };
 
 // ✅ CORRECT: Export custom hook with use{ContextName}Context naming
-export const useFavsContext = () => {
-  const context = useContext(FavsContext);
+export const useFavoritesContext = () => {
+  const context = useContext(FavoritesContext);
   if (context === undefined) {
-    throw new Error("useFavsContext must be used within a FavsProvider");
+    throw new Error(
+      "useFavoritesContext must be used within a FavoritesProvider"
+    );
   }
   return context;
 };
@@ -56,10 +66,10 @@ export const useFavsContext = () => {
 ```typescript
 // ❌ WRONG: Don't use useContext directly
 import { useContext } from "react";
-import { FavsContext } from "./FavsContext";
+import { FavoritesContext } from "./FavoritesContext";
 
 const MyComponent = () => {
-  const { favs } = useContext(FavsContext); // ❌ Use useFavsContext instead
+  const { favorites } = useContext(FavoritesContext); // ❌ Use useFavoritesContext instead
   // ...
 };
 ```
@@ -67,12 +77,11 @@ const MyComponent = () => {
 ### ✅ Correct Context Usage
 
 ```typescript
-// ✅ CORRECT: Use the custom hook export
-import { useFavsContext } from "./FavsContext";
+// ✅ CORRECT: Use the custom hook export via barrel export
+import { useFavoritesContext } from "@users/contexts";
 
 const MyComponent = () => {
-  const { favs } = useFavsContext(); // ✅ Type-safe with error handling
+  const { favorites } = useFavoritesContext(); // ✅ Type-safe with error handling
   // ...
 };
 ```
-

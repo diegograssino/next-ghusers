@@ -7,9 +7,9 @@ import { usePathname } from "next/navigation";
 
 import { BreadcrumbsProps, Route } from "@/types";
 
-import { ROUTES } from "@shared/constants";
+import { ROUTES, Z_INDEX_STICKY_BREADCRUMBS } from "@shared/constants";
+import { useSharedContext } from "@shared/contexts";
 
-import { useSharedContext } from "../../contexts/SharedContext";
 import { getUniqueId } from "../../lib/utils";
 import Button from "../Button/Button";
 import Container from "../Container/Container";
@@ -65,7 +65,12 @@ const Breadcrumbs = ({
   }
 
   return (
-    <Container as="nav" ref={breadcrumbsRef} className={breadcrumbs}>
+    <Container
+      as="nav"
+      ref={breadcrumbsRef}
+      className={breadcrumbs}
+      style={{ zIndex: Z_INDEX_STICKY_BREADCRUMBS }}
+    >
       <div className={breadcrumbsContainer}>
         {routes.map((route, index) => {
           const isLast = index === routes.length - 1;

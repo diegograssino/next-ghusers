@@ -1,5 +1,6 @@
 export type Styles = {
   'header': string;
+  'headerDrawerContent': string;
   'headerNavbarBrand': string;
   'headerNavbarCenter': string;
   'headerNavbarCenterList': string;
@@ -8,6 +9,7 @@ export type Styles = {
   'headerNavbarMenuButton': string;
   'headerNavbarMenuIcon': string;
   'headerNavbarRight': string;
+  'headerSlotDrawer': string;
   'pulse': string;
   'spin': string;
 };

@@ -1,0 +1,77 @@
+@use "../../../../styles/main" as *;
+
+.drawer {
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  max-width: 20rem;
+  background-color: $color-background;
+  box-shadow: var(--shadow-lg, 0 0.625rem 1.5625rem rgba(0, 0, 0, 0.2));
+  padding: var(--spacing-lg, 1.5rem);
+  overflow-y: auto;
+
+  &.drawerLeft {
+    left: 0;
+  }
+
+  &.drawerRight {
+    right: 0;
+  }
+}
+
+.drawerContainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  &.drawerContainerRight {
+    justify-content: flex-end;
+  }
+}
+
+.drawerCloseButton {
+  position: absolute;
+  top: var(--spacing-md, 1rem);
+  z-index: 1;
+  padding: var(--spacing-xs, 0.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drawerCloseButtonLeft {
+  left: var(--spacing-md, 1rem);
+}
+
+.drawerCloseButtonRight {
+  right: var(--spacing-md, 1rem);
+}
+
+.drawerCloseIcon {
+  color: $color-foreground;
+  @include property-per-breakpoint(
+    width,
+    (
+      base: 1.25rem,
+      sm: 1.375rem,
+      md: 1.5rem,
+      lg: 1.625rem,
+      xl: 1.75rem,
+      2xl: 1.875rem,
+      3xl: 2rem,
+    )
+  );
+  @include property-per-breakpoint(
+    height,
+    (
+      base: 1.25rem,
+      sm: 1.375rem,
+      md: 1.5rem,
+      lg: 1.625rem,
+      xl: 1.75rem,
+      2xl: 1.875rem,
+      3xl: 2rem,
+    )
+  );
+}
