@@ -38,8 +38,26 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   color: $color-foreground;
   background-color: $color-background;
   font-family: $font-primary;
+}
+
+// DOC Global focus ring for all focusable elements - uses accent color for consistency
+// DOC focus-visible only shows focus ring when navigating with keyboard (not mouse clicks)
+input,
+button,
+select,
+textarea,
+a[href],
+[tabindex]:not([tabindex="-1"]) {
+  &:focus-visible {
+    outline: 0.125rem solid $color-accent;
+    outline-offset: 0.125rem;
+  }
 }

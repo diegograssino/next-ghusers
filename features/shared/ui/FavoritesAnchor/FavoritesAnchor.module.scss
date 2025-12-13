@@ -13,7 +13,6 @@
 }
 
 .favoritesAnchorIcon {
-  color: $color-primary;
   @include property-per-breakpoint(
     width,
     (
@@ -38,4 +37,12 @@
       3xl: $font-size-xs-3xl,
     )
   );
+}
+
+.favoritesAnchorIconHeader {
+  color: $color-primary;
+}
+
+.favoritesAnchorIconDrawer {
+  color: $color-foreground;
 }

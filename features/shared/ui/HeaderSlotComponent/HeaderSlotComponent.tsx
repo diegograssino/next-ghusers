@@ -43,6 +43,7 @@ const HeaderSlotComponent = ({
             key={getUniqueId()}
             onClick={variant === "drawer" ? handleItemClick : undefined}
             showLabel={variant === "drawer"}
+            variant={variant}
           />
         );
 
@@ -64,7 +65,7 @@ const HeaderSlotComponent = ({
             <Typography
               as="span"
               size="xs"
-              variant="primary"
+              variant={variant === "header" ? "primary" : undefined}
               disabled={linkButtonProps.disabled}
             >
               {item.label}

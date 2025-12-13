@@ -36,9 +36,9 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
   const { perPageConfig } = pageConfig;
   const { filters } = useFiltersContext();
   const { isLoadingUsers, viewportHeight } = useSharedContext();
-  useFiltersToUrl(filters, "search-section");
   const { users, isError, isNoResults, isMore, totalCount, handleLoadMore } =
     useInfiniteUsers(filters, perPageConfig.items, initialUsers);
+  useFiltersToUrl(filters, "search-section");
 
   return (
     <>

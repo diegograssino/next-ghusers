@@ -8,16 +8,23 @@ import {
   useState,
 } from "react";
 
+import { DeviceType } from "@/types";
+
 import { DEFAULT_VIEWPORT_HEIGHT } from "@shared/constants";
 import { useIsFetching } from "@tanstack/react-query";
 
 interface SharedProviderProps {
   children: React.ReactNode;
+  deviceType?: DeviceType;
 }
 
 interface SharedContextProps {
   isClient: boolean;
   isLoadingUsers: boolean;
+  deviceType: DeviceType;
+  isMobileServerSide: boolean;
+  isMobileClientSide: boolean;
+  isMobile: boolean;
   headerRef: React.RefObject<HTMLElement>;
   breadcrumbsRef: React.RefObject<HTMLElement>;
   navbarHeight: number;
@@ -29,12 +36,14 @@ export const SharedContext = createContext<SharedContextProps | undefined>(
   undefined
 );
 
-// DOC Helper function to get ref height using offsetHeight (more performant than getBoundingClientRect)
 const getRefHeight = (ref: React.RefObject<HTMLElement>): number => {
   return ref.current?.offsetHeight ?? 0;
 };
 
-export const SharedProvider = ({ children }: SharedProviderProps) => {
+export const SharedProvider = ({
+  children,
+  deviceType: deviceTypeProp,
+}: SharedProviderProps) => {
   const [isClient, setIsClient] = useState(false);
   const [navbarHeight, setNavbarHeight] = useState(0);
   const [breadcrumbsHeight, setBreadcrumbsHeight] = useState(0);
@@ -42,6 +51,8 @@ export const SharedProvider = ({ children }: SharedProviderProps) => {
   const [viewportHeight, setViewportHeight] = useState(DEFAULT_VIEWPORT_HEIGHT);
   const headerRef = useRef<HTMLElement>(null);
   const breadcrumbsRef = useRef<HTMLElement>(null);
+
+  // TODO Review isLoadingUsers implementation - consider using fetchStatus: "fetching" instead of status === "pending"
   const isLoadingUsers =
     useIsFetching({
       queryKey: ["users"],
@@ -50,6 +61,40 @@ export const SharedProvider = ({ children }: SharedProviderProps) => {
         return query.state.status === "pending";
       },
     }) > 0;
+  // TODO This would provide more accurate loading state detection (includes background refetches)
+  // const isLoadingUsers =
+  //   useIsFetching({
+  //     queryKey: ["users"],
+  //     exact: false,
+  //     fetchStatus: "fetching",
+  //   }) > 0;
+  const deviceType = useMemo(() => {
+    if (deviceTypeProp) return deviceTypeProp;
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const deviceParam = params.get("device");
+      if (deviceParam) {
+        return deviceParam as DeviceType;
+      }
+    }
+    return "desktop";
+  }, [deviceTypeProp]);
+
+  const isMobileServerSide = useMemo(() => {
+    return deviceType === "mobile";
+  }, [deviceType]);
+
+  const isMobileClientSide = useMemo(() => {
+    if (typeof window === "undefined") return false;
+    const isMobile =
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+      window.innerWidth < 768;
+    return isMobile;
+  }, []);
+
+  const isMobile = useMemo(() => {
+    return isMobileServerSide || isMobileClientSide;
+  }, [isMobileServerSide, isMobileClientSide]);
 
   useEffect(() => {
     setIsClient(true);
@@ -70,7 +115,6 @@ export const SharedProvider = ({ children }: SharedProviderProps) => {
     // DOC Initial measurement (with delay to ensure refs are populated after LayoutClient mounts)
     const timeoutId = setTimeout(updateAllHeights, 100);
 
-    // DOC Using ResizeObserver for element size tracking (see .cursorrules for performance pattern)
     const headerObserver = new ResizeObserver(() => {
       setNavbarHeight(getRefHeight(headerRef));
     });
@@ -114,13 +158,27 @@ export const SharedProvider = ({ children }: SharedProviderProps) => {
     () => ({
       isClient,
       isLoadingUsers,
+      deviceType,
+      isMobileServerSide,
+      isMobileClientSide,
+      isMobile,
       headerRef,
       breadcrumbsRef,
       navbarHeight,
       breadcrumbsHeight,
       viewportHeight,
     }),
-    [isClient, isLoadingUsers, navbarHeight, breadcrumbsHeight, viewportHeight]
+    [
+      isClient,
+      isLoadingUsers,
+      deviceType,
+      isMobileServerSide,
+      isMobileClientSide,
+      isMobile,
+      navbarHeight,
+      breadcrumbsHeight,
+      viewportHeight,
+    ]
   );
 
   return (
