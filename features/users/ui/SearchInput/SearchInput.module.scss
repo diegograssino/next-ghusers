@@ -34,14 +34,7 @@
   font-family: $font-primary;
 
   // TODO Check why this styles are not being applied on mobile devices (or every device?)
-  @include property-per-breakpoint(
-    font-size,
-    (
-      xl: 1rem,
-      2xl: 1.0625rem,
-      3xl: 1.125rem,
-    )
-  );
+
   @include property-per-breakpoint(
     padding,
     (

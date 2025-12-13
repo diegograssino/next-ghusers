@@ -44,6 +44,7 @@ These dependencies are **required** for maintaining code quality, accessibility,
   - **Why**: Prevents conflicts between ESLint and Prettier, ensures consistent formatting
   - **Configuration**: Add to ESLint extends array after other configs
   - **Version**: Use `^` (e.g., `"eslint-config-prettier": "^10.1.5"`)
+  - **Important**: Even with this config, `lines-around-comment` must be disabled for JSX/TSX files (see ESLint configuration pattern in code quality docs)
 
 - **`prettier`** - Code formatter
   - **Why**: Ensures consistent code formatting across the project
@@ -213,14 +214,15 @@ When starting a new project, ensure:
 2. ✅ **Prettier configured** - `.prettierrc.js` with consistent formatting rules
 3. ✅ **Import sorting plugin** - `eslint-plugin-simple-import-sort` configured with import order groups matching project rules
 4. ✅ **Accessibility plugin** - `eslint-plugin-jsx-a11y` enabled with recommended rules
-5. ✅ **Husky installed** - Git hooks configured (pre-commit, pre-push)
-6. ✅ **lint-staged configured** - Auto-fixes issues on staged files before commit
-7. ✅ **TypeScript configured** - Strict mode enabled, path aliases configured
-8. ✅ **Testing setup** - Jest and Testing Library configured (if testing)
-9. ✅ **Stylelint configured** - For CSS/SCSS projects (if using styles) with empty line before comments rule
-10. ✅ **Concurrently configured** - For running watch-mode tools alongside dev server (if using type generation or watch-mode linting)
-11. ✅ **Pre-commit hook** - Runs SCSS type generation + lint-staged (ESLint, Stylelint, Prettier auto-fix)
-12. ✅ **Pre-push hook** - Runs comprehensive build checks
+5. ✅ **Comment formatting rules** - `lines-around-comment` enabled for `.ts`/`.js` files, **disabled for `.tsx`/`.jsx` files** to avoid conflicts with Prettier in JSX attribute lists
+6. ✅ **Husky installed** - Git hooks configured (pre-commit, pre-push)
+7. ✅ **lint-staged configured** - Auto-fixes issues on staged files before commit
+8. ✅ **TypeScript configured** - Strict mode enabled, path aliases configured
+9. ✅ **Testing setup** - Jest and Testing Library configured (if testing)
+10. ✅ **Stylelint configured** - For CSS/SCSS projects (if using styles) with empty line before comments rule
+11. ✅ **Concurrently configured** - For running watch-mode tools alongside dev server (if using type generation or watch-mode linting)
+12. ✅ **Pre-commit hook** - Runs SCSS type generation + lint-staged (ESLint, Stylelint, Prettier auto-fix)
+13. ✅ **Pre-push hook** - Runs comprehensive build checks
 
 ### Best Practices
 

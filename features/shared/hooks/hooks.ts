@@ -36,6 +36,7 @@ export const useUrl = () => {
       if (hasChanges) {
         const queryString = params.toString();
         const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
+
         // DOC We scroll in useFiltersToUrl to ensure smooth scroll to top
         router.replace(newUrl, { scroll: false });
       }

@@ -15,7 +15,57 @@
 - **Empty lines before comments** - Required for consistency:
   - **SCSS/CSS**: `scss/double-slash-comment-empty-line-before: "always"` - Auto-fixed by Stylelint
   - **TypeScript/JavaScript**: `lines-around-comment` - Auto-fixed by ESLint
+  - **JSX/TSX files**: `lines-around-comment` is **disabled** to avoid conflicts with Prettier in JSX attribute lists (Prettier removes blank lines in JSX attributes, causing conflicts)
 - **Use `source.fixAll` on save** - VS Code automatically fixes issues on save
+
+### ESLint Configuration Pattern
+
+When setting up ESLint for a new project, use the following configuration pattern to avoid conflicts between ESLint and Prettier:
+
+```javascript
+// eslint.config.mjs
+const eslintConfig = [
+  ...compat.config({
+    extends: ["next/core-web-vitals", "next/typescript", "prettier"],
+  }),
+  {
+    plugins: {
+      "jsx-a11y": jsxA11y,
+      "simple-import-sort": simpleImportSort,
+    },
+    rules: {
+      // Enable lines-around-comment for .ts/.js files
+      "lines-around-comment": [
+        "error",
+        {
+          beforeLineComment: true,
+          allowBlockStart: true,
+          allowBlockEnd: true,
+          allowObjectStart: true,
+          allowObjectEnd: true,
+          allowArrayStart: true,
+          allowArrayEnd: true,
+        },
+      ],
+    },
+  },
+  // IMPORTANT: Disable lines-around-comment for JSX/TSX files
+  // Prettier removes blank lines in JSX attribute lists, causing conflicts
+  {
+    files: ["**/*.tsx", "**/*.jsx"],
+    rules: {
+      "lines-around-comment": "off",
+    },
+  },
+];
+```
+
+**Why disable for JSX/TSX files?**
+
+- Prettier automatically removes blank lines in JSX attribute lists
+- ESLint's `lines-around-comment` rule requires empty lines before comments
+- This creates a conflict where ESLint adds the line, Prettier removes it, causing infinite formatting loops
+- Solution: Disable the rule for JSX/TSX files while keeping it enabled for regular TypeScript/JavaScript files
 
 ### Type Safety
 

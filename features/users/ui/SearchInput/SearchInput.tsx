@@ -88,10 +88,12 @@ const SearchInput = () => {
         setTimeout(() => {
           if (inputRef.current) {
             const savedPosition = cursorPositionRef.current;
+
             // DOC On mobile, only restore cursor position to avoid zoom, on desktop, restore focus and cursor position
             if (shouldFocus && !isMobile) {
               inputRef.current.focus();
             }
+
             // DOC Always restore cursor position if input is already focused
             if (document.activeElement === inputRef.current) {
               inputRef.current.setSelectionRange(savedPosition, savedPosition);
@@ -154,7 +156,7 @@ const SearchInput = () => {
           placeholder="Search users..."
           aria-label="Search GitHub users by username"
           // DOC Prevent mobile zoom on focus - ensure minimum 16px font-size on mobile devices
-          style={isMobile ? { fontSize: "16px" } : undefined}
+          style={{ fontSize: "16px" }}
         />
         <div
           className={clsx(

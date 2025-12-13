@@ -22,15 +22,26 @@ const eslintConfig = [
       // DOC autoFocus is needed for search input UX - users expect immediate focus on search pages for quick typing
       "jsx-a11y/no-autofocus": "off",
       // DOC Require empty line before comments in TypeScript/JavaScript files for consistency - auto-fixed on commit via lint-staged
+      // DOC Configured to work with Prettier by allowing comments at block/object/array starts and ends
       "lines-around-comment": [
         "error",
         {
           beforeLineComment: true,
           allowBlockStart: true,
+          allowBlockEnd: true,
           allowObjectStart: true,
+          allowObjectEnd: true,
           allowArrayStart: true,
+          allowArrayEnd: true,
         },
       ],
+    },
+  },
+  // DOC Disable lines-around-comment for JSX/TSX files to avoid conflicts with Prettier in JSX attribute lists
+  {
+    files: ["**/*.tsx", "**/*.jsx"],
+    rules: {
+      "lines-around-comment": "off",
     },
   },
   {
