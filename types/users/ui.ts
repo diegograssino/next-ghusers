@@ -21,8 +21,10 @@ export interface SortButtonProps {
   onSort: () => void;
 }
 
-export interface CardGridProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "color"> {
+export interface CardGridProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "color"
+> {
   children: React.ReactNode;
   perPageConfig?: PerPageConfig[keyof PerPageConfig];
 }

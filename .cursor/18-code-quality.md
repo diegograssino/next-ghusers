@@ -2,15 +2,20 @@
 
 ### Formatting
 
-- Use Prettier (configured via ESLint)
-- Format on save enabled
-- Organize imports on save
+- **Use Prettier** - Configured via `.prettierrc.js` with consistent formatting rules
+- **Format on save enabled** - VS Code automatically formats on save
+- **Auto-fix on commit** - Prettier runs via `lint-staged` to format staged files before commit
+- **Organize imports on save** - ESLint plugin automatically sorts imports
 
 ### Linting
 
-- Follow ESLint rules (Next.js + TypeScript + Prettier)
-- Fix all linting errors before committing
-- Use `source.fixAll` on save
+- **Follow ESLint rules** (Next.js + TypeScript + Prettier)
+- **Follow Stylelint rules** (Standard SCSS + Prettier integration)
+- **Auto-fix on commit** - ESLint and Stylelint run with `--fix` via `lint-staged` to automatically fix issues
+- **Empty lines before comments** - Required for consistency:
+  - **SCSS/CSS**: `scss/double-slash-comment-empty-line-before: "always"` - Auto-fixed by Stylelint
+  - **TypeScript/JavaScript**: `lines-around-comment` - Auto-fixed by ESLint
+- **Use `source.fixAll` on save** - VS Code automatically fixes issues on save
 
 ### Type Safety
 
@@ -86,4 +91,3 @@ const ERROR_MESSAGES = {
   network: "Network error occurred",
 } as const;
 ```
-

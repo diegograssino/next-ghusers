@@ -70,6 +70,7 @@ export const useHotkeys = (hotkeys: Hotkey[]) => {
 ```
 
 **Benefits**:
+
 - Effect only runs once (setup/cleanup)
 - Always has access to latest values via ref
 - No fragile memoization chains
@@ -230,4 +231,3 @@ export const FavsProvider = ({ children }) => {
   - Better performance: Reduces unnecessary state updates and re-renders
 - **Use cases**: Tracking element heights, widths, viewport changes, dynamic layout measurements
 - **Pattern**: Create ResizeObserver instances in `useEffect`, observe elements, clean up in return function
-

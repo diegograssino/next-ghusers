@@ -11,6 +11,7 @@ The project uses **Clean Architecture** with a three-layer pattern-based archite
    - `[feature].actions.ts` - Server-side actions
 
 This architecture follows **Clean Architecture** principles (Robert C. Martin) and ensures:
+
 - **Dependency Rule**: Dependencies point inward (Service → Adapter → Repository → API)
 - **Independence**: Business logic independent of frameworks, databases, and external agencies
 - **Testability**: Each layer can be tested independently
@@ -23,6 +24,7 @@ This architecture follows **Clean Architecture** principles (Robert C. Martin) a
 **Purpose**: Data Access Layer - Abstracts data access from external sources
 
 **Responsibilities**:
+
 - Makes raw API calls to external systems (e.g., GitHub API)
 - Handles network errors, timeouts, retries
 - Returns raw API response types
@@ -63,6 +65,7 @@ export const usersRepository = {
 **Purpose**: Data Transformation Layer - Transforms external API models to internal domain models
 
 **Responsibilities**:
+
 - Transforms external API responses → internal domain models
 - Converts API field names (e.g., `snake_case` → `camelCase`)
 - Removes unused fields from API responses
@@ -128,6 +131,7 @@ export const toFetchUsersResultAdapter = (
 **Purpose**: Business Logic Layer - Contains application-specific business rules and React Query integration
 
 **Responsibilities**:
+
 - Implements use cases (application-specific business rules)
 - Orchestrates Repository and Adapter
 - Integrates React Query for caching, loading states, and error handling
@@ -147,10 +151,7 @@ import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
 import { useCallback, useMemo } from "react";
 import { QueryParams, User } from "@/types/users";
 import { usersRepository } from "@users/repository";
-import {
-  toFetchUsersResultAdapter,
-  toUserAdapter,
-} from "@users/adapter";
+import { toFetchUsersResultAdapter, toUserAdapter } from "@users/adapter";
 import { DEFAULT_QUERY_PARAMS } from "../lib/constants";
 
 export const useInfiniteUsers = (
@@ -273,4 +274,3 @@ export const fetchUsersAction = async (
 ```
 
 **Note**: Server actions use Repository + Adapter directly (no React Query, as that's client-side only). Both `users.service.ts` (client) and `users.actions.ts` (server) are part of the Service layer and orchestrate Repository + Adapter.
-

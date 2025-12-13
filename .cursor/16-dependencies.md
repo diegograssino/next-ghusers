@@ -36,22 +36,20 @@ These dependencies are **required** for maintaining code quality, accessibility,
 #### Code Quality & Linting
 
 - **`eslint`** - JavaScript/TypeScript linter for catching errors and enforcing code style
-
   - **Why**: Catches bugs early, enforces consistent code style, improves code quality
   - **Configuration**: Use framework-specific configs (e.g., `eslint-config-next` for Next.js)
   - **Version**: Use `^` for flexibility (e.g., `"eslint": "^9"`)
 
 - **`eslint-config-prettier`** - Disables ESLint rules that conflict with Prettier
-
   - **Why**: Prevents conflicts between ESLint and Prettier, ensures consistent formatting
   - **Configuration**: Add to ESLint extends array after other configs
   - **Version**: Use `^` (e.g., `"eslint-config-prettier": "^10.1.5"`)
 
-- **`prettier`** (if not included via framework config) - Code formatter
-
+- **`prettier`** - Code formatter
   - **Why**: Ensures consistent code formatting across the project
-  - **Configuration**: Create `.prettierrc` or configure via ESLint
-  - **Version**: Use `^` (e.g., `"prettier": "^3.0.0"`)
+  - **Configuration**: Create `.prettierrc.js` with formatting rules (matches `.stylelintrc.js` format)
+  - **Version**: Use `^` (e.g., `"prettier": "^3.2.5"`)
+  - **Auto-fix**: Runs via `lint-staged` on commit to format staged files
 
 - **`eslint-plugin-simple-import-sort`** - ESLint plugin for automatic import sorting
   - **Why**: Enforces consistent import ordering, automatically sorts imports on save and during linting
@@ -76,6 +74,23 @@ These dependencies are **required** for maintaining code quality, accessibility,
   - **Version**: Use `^` (e.g., `"husky": "^9.1.7"`)
   - **Required hooks**: Pre-commit (fast checks), pre-push (comprehensive checks)
 
+- **`lint-staged`** - Run linters and formatters on staged files only
+  - **Why**: Efficiently auto-fixes issues only on changed files before commit, much faster than linting entire codebase
+  - **Setup**: Configure `lint-staged` in `package.json` with file patterns and commands
+  - **Configuration**: Define file patterns (e.g., `*.{ts,tsx}`) and commands to run (e.g., `eslint --fix`, `prettier --write`)
+  - **Version**: Use `^` (e.g., `"lint-staged": "^15.2.0"`)
+  - **Auto-fix**: Automatically fixes issues and re-stages fixed files before commit
+  - **Example configuration**:
+    ```json
+    {
+      "lint-staged": {
+        "*.{ts,tsx,js,jsx}": ["eslint --fix", "prettier --write"],
+        "*.{css,scss}": ["stylelint --fix", "prettier --write"],
+        "*.{json,md}": ["prettier --write"]
+      }
+    }
+    ```
+
 #### Type Safety
 
 - **`typescript`** - Type-safe JavaScript
@@ -86,13 +101,11 @@ These dependencies are **required** for maintaining code quality, accessibility,
 #### Testing (Recommended)
 
 - **`jest`** - JavaScript testing framework
-
   - **Why**: Enables unit and integration testing, ensures code reliability
   - **Configuration**: Create `jest.config.ts` with appropriate test environment
   - **Version**: Use `^` (e.g., `"jest": "^29.7.0"`)
 
 - **`@testing-library/react`** - React component testing utilities
-
   - **Why**: Encourages testing best practices, focuses on user-centric testing
   - **Configuration**: Use with Jest, configure test environment (jsdom)
   - **Version**: Use `^` (e.g., `"@testing-library/react": "^16.3.0"`)
@@ -105,7 +118,6 @@ These dependencies are **required** for maintaining code quality, accessibility,
 #### Styling (If using CSS/SCSS)
 
 - **`stylelint`** - CSS/SCSS linter
-
   - **Why**: Enforces consistent CSS/SCSS code style, catches styling errors
   - **Configuration**: Use standard configs (e.g., `stylelint-config-standard-scss`)
   - **Version**: Use `^` (e.g., `"stylelint": "^16.26.1"`)
@@ -114,6 +126,12 @@ These dependencies are **required** for maintaining code quality, accessibility,
   - **Why**: Prevents conflicts between Stylelint and Prettier for CSS/SCSS
   - **Configuration**: Add to Stylelint extends array
   - **Version**: Use `^` (e.g., `"stylelint-config-prettier-scss": "^1.0.0"`)
+
+- **`stylelint-config-standard-scss`** - Standard SCSS linting rules
+  - **Why**: Enforces consistent SCSS code style and best practices
+  - **Configuration**: Extend in `.stylelintrc.js`, customize rules as needed
+  - **Version**: Use `^` (e.g., `"stylelint-config-standard-scss": "^16.0.0"`)
+  - **Custom rules**: Configure empty line before comments (`scss/double-slash-comment-empty-line-before: "always"`) for consistency
 
 #### Development Workflow
 
@@ -151,12 +169,14 @@ These dependencies are **required** for maintaining code quality, accessibility,
 {
   "devDependencies": {
     // ... minimum required above ...
-    "prettier": "^3.0.0",
+    "prettier": "^3.2.5",
+    "lint-staged": "^15.2.0",
     "eslint-plugin-simple-import-sort": "^12.0.0",
     "jest": "^29.7.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/jest-dom": "^6.6.3",
     "stylelint": "^16.26.1",
+    "stylelint-config-standard-scss": "^16.0.0",
     "stylelint-config-prettier-scss": "^1.0.0",
     "concurrently": "^9.2.1"
   }
@@ -190,15 +210,17 @@ These dependencies are **required** for maintaining code quality, accessibility,
 When starting a new project, ensure:
 
 1. ✅ **ESLint configured** - Framework-specific config + Prettier integration
-2. ✅ **Import sorting plugin** - `eslint-plugin-simple-import-sort` configured with import order groups matching project rules
-3. ✅ **Accessibility plugin** - `eslint-plugin-jsx-a11y` enabled with recommended rules
-4. ✅ **Husky installed** - Git hooks configured (pre-commit, pre-push)
-5. ✅ **TypeScript configured** - Strict mode enabled, path aliases configured
-6. ✅ **Testing setup** - Jest and Testing Library configured (if testing)
-7. ✅ **Stylelint configured** - For CSS/SCSS projects (if using styles)
-8. ✅ **Concurrently configured** - For running watch-mode tools alongside dev server (if using type generation or watch-mode linting)
-9. ✅ **Pre-commit hook** - Runs linting and accessibility checks
-10. ✅ **Pre-push hook** - Runs comprehensive build checks
+2. ✅ **Prettier configured** - `.prettierrc.js` with consistent formatting rules
+3. ✅ **Import sorting plugin** - `eslint-plugin-simple-import-sort` configured with import order groups matching project rules
+4. ✅ **Accessibility plugin** - `eslint-plugin-jsx-a11y` enabled with recommended rules
+5. ✅ **Husky installed** - Git hooks configured (pre-commit, pre-push)
+6. ✅ **lint-staged configured** - Auto-fixes issues on staged files before commit
+7. ✅ **TypeScript configured** - Strict mode enabled, path aliases configured
+8. ✅ **Testing setup** - Jest and Testing Library configured (if testing)
+9. ✅ **Stylelint configured** - For CSS/SCSS projects (if using styles) with empty line before comments rule
+10. ✅ **Concurrently configured** - For running watch-mode tools alongside dev server (if using type generation or watch-mode linting)
+11. ✅ **Pre-commit hook** - Runs SCSS type generation + lint-staged (ESLint, Stylelint, Prettier auto-fix)
+12. ✅ **Pre-push hook** - Runs comprehensive build checks
 
 ### Best Practices
 

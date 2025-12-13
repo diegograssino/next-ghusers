@@ -51,7 +51,9 @@
     "husky": "^9.1.7",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^30.0.0-beta.3",
+    "lint-staged": "^15.2.0",
     "nyc": "^17.1.0",
+    "prettier": "^3.2.5",
     "sass": "^1.93.2",
     "stylelint": "^16.26.1",
     "stylelint-config-prettier-scss": "^1.0.0",
@@ -59,5 +61,18 @@
     "ts-node": "^10.9.2",
     "typed-scss-modules": "^8.1.1",
     "typescript": "^5"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,scss}": [
+      "stylelint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   }
 }

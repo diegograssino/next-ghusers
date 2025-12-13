@@ -1,5 +1,5 @@
 export type Styles = {
-  'overlay': string;
+  overlay: string;
 };
 
 export type ClassNames = keyof Styles;

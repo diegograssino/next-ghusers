@@ -15,4 +15,3 @@ const Favorites = async (pageParams: PageParamsProps) => {
 };
 
 export default Favorites;
-

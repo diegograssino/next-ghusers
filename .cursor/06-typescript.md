@@ -51,16 +51,16 @@ interface Product {
 
 // Usage in props/interfaces
 interface CardProps {
-  user: User;        // ✅ Singular entity
+  user: User; // ✅ Singular entity
 }
 
 interface CardGridProps {
-  users: User[];     // ✅ Array of entities
+  users: User[]; // ✅ Array of entities
 }
 
 interface UserDetailProps {
-  user: User;        // ✅ Singular entity
-  repos: Repo[];     // ✅ Array of entities
+  user: User; // ✅ Singular entity
+  repos: Repo[]; // ✅ Array of entities
 }
 
 // ✅ Context Props - ContextNameProps
@@ -98,4 +98,3 @@ interface FavsContextProps {
   removeFav: (id: number) => void;
 }
 ```
-

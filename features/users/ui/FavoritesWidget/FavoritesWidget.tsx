@@ -43,8 +43,8 @@ const FavoritesWidget = ({ id, user }: FavoritesWidgetProps) => {
     (isLoading
       ? "Adding to favorites..."
       : isFavorite
-      ? `Remove ${user.login} from favorites`
-      : `Add ${user.login} to favorites`);
+        ? `Remove ${user.login} from favorites`
+        : `Add ${user.login} to favorites`);
 
   return (
     <button

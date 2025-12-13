@@ -2,7 +2,9 @@
 
 :root {
   // DOC Breakpoints - CSS custom properties for runtime use
+
   // TODO Move all other SCSS variables (colors, spacing, typography, etc.) to CSS custom properties here for single source of truth
+
   // TODO Consider migrate vars to a module in order to use them in the app, and not just in the styles
   --breakpoint-xs: 480px;
   --breakpoint-sm: 640px;
@@ -49,6 +51,7 @@ body {
 }
 
 // DOC Global focus ring for all focusable elements - uses accent color for consistency
+
 // DOC focus-visible only shows focus ring when navigating with keyboard (not mouse clicks)
 input,
 button,

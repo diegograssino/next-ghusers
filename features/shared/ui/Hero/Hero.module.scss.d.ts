@@ -1,8 +1,8 @@
 export type Styles = {
-  'hero': string;
-  'heroBackgroundImage': string;
-  'pulse': string;
-  'spin': string;
+  hero: string;
+  heroBackgroundImage: string;
+  pulse: string;
+  spin: string;
 };
 
 export type ClassNames = keyof Styles;

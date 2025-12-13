@@ -1,7 +1,7 @@
 export type Styles = {
-  'layoutClient': string;
-  'pulse': string;
-  'spin': string;
+  layoutClient: string;
+  pulse: string;
+  spin: string;
 };
 
 export type ClassNames = keyof Styles;

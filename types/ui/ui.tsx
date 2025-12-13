@@ -29,9 +29,12 @@ export type ButtonVariants = ColorVariants | "unstyled";
 export type WeightVariants = "thin" | "normal" | "bold";
 
 export type Sizes = "xs" | "sm" | "md" | "lg" | "xl";
+
 // DOC Omit "color" - Container is a layout component, doesn't use color styling
-export interface ContainerProps
-  extends Omit<HTMLAttributes<HTMLOrSVGElement>, "color"> {
+export interface ContainerProps extends Omit<
+  HTMLAttributes<HTMLOrSVGElement>,
+  "color"
+> {
   as?: ElementType;
 }
 
@@ -44,10 +47,13 @@ type TypographyElements =
   | "h4"
   | "h5"
   | "h6";
+
 // DOC Omit "color" to use variant prop instead (variant controls text color via ColorVariants)
 // DOC Omit "ref" because Typography doesn't use forwardRef - refs are not supported
-export interface TypographyProps
-  extends Omit<HTMLAttributes<HTMLOrSVGElement>, "color" | "ref"> {
+export interface TypographyProps extends Omit<
+  HTMLAttributes<HTMLOrSVGElement>,
+  "color" | "ref"
+> {
   as?: TypographyElements;
   size?: Sizes;
   weight?: WeightVariants;

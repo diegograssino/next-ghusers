@@ -1,3 +1,2 @@
 npm run type-check:scss:build
-npm run lint:scss:check
-npm run lint
+npx lint-staged

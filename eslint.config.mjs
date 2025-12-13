@@ -21,6 +21,16 @@ const eslintConfig = [
       ...jsxA11y.configs.recommended.rules,
       // DOC autoFocus is needed for search input UX - users expect immediate focus on search pages for quick typing
       "jsx-a11y/no-autofocus": "off",
+      // DOC Require empty line before comments in TypeScript/JavaScript files for consistency - auto-fixed on commit via lint-staged
+      "lines-around-comment": [
+        "error",
+        {
+          beforeLineComment: true,
+          allowBlockStart: true,
+          allowObjectStart: true,
+          allowArrayStart: true,
+        },
+      ],
     },
   },
   {

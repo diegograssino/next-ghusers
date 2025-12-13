@@ -231,8 +231,10 @@ export type Sizes = "xs" | "sm" | "md" | "lg" | "xl";
 export type WeightVariants = "thin" | "normal" | "bold";
 export type ColorVariants = "default" | "primary" | "secondary" | "accent";
 
-export interface TypographyProps
-  extends Omit<HTMLAttributes<HTMLOrSVGElement>, "color"> {
+export interface TypographyProps extends Omit<
+  HTMLAttributes<HTMLOrSVGElement>,
+  "color"
+> {
   as?: TypographyElements;
   size?: Sizes;
   weight?: WeightVariants;

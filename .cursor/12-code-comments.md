@@ -51,4 +51,3 @@ const fetchUsers = () => {};
 // DOC Only use initialData on first load server-side, not when query changes
 initialData: initialData && !isClient ? { pages: [initialData] } : undefined,
 ```
-

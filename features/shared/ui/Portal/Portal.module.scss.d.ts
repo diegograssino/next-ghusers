@@ -1,6 +1,6 @@
 export type Styles = {
-  'content': string;
-  'portal': string;
+  content: string;
+  portal: string;
 };
 
 export type ClassNames = keyof Styles;

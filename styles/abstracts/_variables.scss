@@ -1,10 +1,17 @@
 // DOC Breakpoints - Used for SCSS media queries
+
 // DOC Note: Cannot use CSS custom properties here as they're needed for media queries at compile time
+
 // DOC Breakpoints are in px (not rem) because:
+
 // DOC - Media queries evaluate viewport width in CSS pixels regardless of unit
+
 // DOC - They represent actual device/viewport widths (e.g., 768px for tablets)
+
 // DOC - Standard practice - most frameworks use pixels for breakpoints
+
 // DOC - rem would convert to pixels anyway (e.g., 48rem = 768px at 16px base)
+
 // DOC - Media queries don't respect user font-size preferences for accessibility
 $screen-xs: 480px !default;
 $screen-sm: 640px !default;

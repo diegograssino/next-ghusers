@@ -8,13 +8,17 @@
 
 ### Pre-commit Hooks
 
-- **Purpose**: Run fast checks before code is committed to catch issues early
+- **Purpose**: Run fast checks and auto-fix issues before code is committed to catch issues early
 - **Configuration**: `.husky/pre-commit` file
 - **Checks performed**:
   - SCSS type generation (`npm run type-check:scss:build`) - Ensures SCSS module types are up-to-date
-  - SCSS linting (`npm run lint:scss:check`) - Validates SCSS code quality and style
+  - **lint-staged** - Runs linters and formatters on staged files only:
+    - **ESLint** with auto-fix (`eslint --fix`) - Fixes linting issues in TypeScript/JavaScript files
+    - **Stylelint** with auto-fix (`stylelint --fix`) - Fixes linting issues in CSS/SCSS files (including empty lines before comments)
+    - **Prettier** (`prettier --write`) - Formats all code files consistently
 - **Performance**: These checks should be fast (< 10 seconds) to not slow down development workflow
-- **Failure behavior**: Commit is blocked if any check fails
+- **Failure behavior**: Commit is blocked if any unfixable errors remain after auto-fixing
+- **Auto-fix behavior**: Automatically fixes issues and re-stages the fixed files before commit
 
 ### Pre-push Hooks
 
@@ -30,6 +34,8 @@
 ### Hook Configuration Best Practices
 
 - **Keep pre-commit hooks fast** - Only include quick checks (linting, type generation, formatting)
+- **Use lint-staged for efficiency** - Only process staged files, not the entire codebase
+- **Auto-fix when possible** - Use `--fix` flags to automatically fix issues before commit
 - **Use pre-push for comprehensive checks** - Full builds, tests, and expensive operations
 - **Document all hooks** - List what each hook does and why it's needed
 - **Make hooks idempotent** - Running a hook multiple times should produce the same result
@@ -50,16 +56,24 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 npm run type-check:scss:build
-npm run lint:scss:check
+npx lint-staged
 ```
 
 ### Current Hook Configuration
 
 **Pre-commit** (`.husky/pre-commit`):
+
 - `npm run type-check:scss:build` - Generate SCSS module types
-- `npm run lint:scss:check` - Check SCSS code quality
-- `npm run lint` - **ESLint checks** - Runs Next.js ESLint (includes accessibility checks via `eslint-plugin-jsx-a11y`), blocks commits with linting or accessibility warnings to prevent code quality issues and inaccessible code from being committed
+- `npx lint-staged` - Runs linters and formatters on staged files only:
+  - **TypeScript/JavaScript files** (`.ts`, `.tsx`, `.js`, `.jsx`):
+    - `eslint --fix` - Auto-fixes ESLint issues (including empty lines before comments)
+    - `prettier --write` - Formats code
+  - **CSS/SCSS files** (`.css`, `.scss`):
+    - `stylelint --fix` - Auto-fixes Stylelint issues (including empty lines before comments)
+    - `prettier --write` - Formats code
+  - **Other files** (`.json`, `.md`):
+    - `prettier --write` - Formats code
 
 **Pre-push** (`.husky/pre-push`):
-- `npm run build` - Full production build (includes type checking and Next.js build)
 
+- `npm run build` - Full production build (includes type checking and Next.js build)
