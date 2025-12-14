@@ -22,9 +22,9 @@ project-root/
 │
 ├── features/                     # Feature-based organization
 │   ├── pages/                   # Page components
-│   │   ├── SearchPage/
-│   │   │   ├── SearchPage.tsx
-│   │   │   └── SearchPage.module.scss
+│   │   ├── HomePage/
+│   │   │   ├── HomePage.tsx
+│   │   │   └── HomePage.module.scss
 │   │   └── FavsPage/
 │   │       ├── FavsPage.tsx
 │   │       └── FavsPage.module.scss

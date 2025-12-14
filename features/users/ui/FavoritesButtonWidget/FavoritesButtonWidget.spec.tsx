@@ -2,11 +2,11 @@ import { render } from "@testing-library/react";
 
 import { User } from "@/types";
 
-import { default as CardWidget } from "./FavoritesWidget";
+import { default as CardWidget } from "./FavoritesButtonWidget";
 
 import "@testing-library/jest-dom";
 
-describe("FavoritesWidget", () => {
+describe("FavoritesButtonWidget", () => {
   const mockUser: User = {
     id: 1,
     login: "testuser",

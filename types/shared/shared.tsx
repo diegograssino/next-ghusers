@@ -36,6 +36,7 @@ export interface Route {
   label: string;
   href: string;
   heroText?: string;
+  sectionId?: string;
 }
 
 export interface Routes {

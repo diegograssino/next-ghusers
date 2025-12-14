@@ -6,15 +6,16 @@ import { CardWidgetProps, User } from "@/types";
 import { IconStar, IconStarFilled } from "@tabler/icons-react";
 import { useFavoritesContext } from "@users/contexts";
 
-import styles from "./FavoritesWidget.module.scss";
+import styles from "./FavoritesButtonWidget.module.scss";
 
-const { favoritesWidgetEmptyStar, favoritesWidgetFilledStar } = styles;
+const { favoritesButtonWidgetEmptyStar, favoritesButtonWidgetFilledStar } =
+  styles;
 
-interface FavoritesWidgetProps extends CardWidgetProps {
+interface FavoritesButtonWidgetProps extends CardWidgetProps {
   user: User;
 }
 
-const FavoritesWidget = ({ id, user }: FavoritesWidgetProps) => {
+const FavoritesButtonWidget = ({ id, user }: FavoritesButtonWidgetProps) => {
   const { checkFavorite, addFavorite, removeFavorite, isAddingFavorite } =
     useFavoritesContext();
   const [error, setError] = useState<string | null>(null);
@@ -55,14 +56,14 @@ const FavoritesWidget = ({ id, user }: FavoritesWidgetProps) => {
       title={ariaLabel}
     >
       {isLoading ? (
-        <IconStar className={favoritesWidgetEmptyStar} />
+        <IconStar className={favoritesButtonWidgetEmptyStar} />
       ) : !isFavorite ? (
-        <IconStar className={favoritesWidgetEmptyStar} />
+        <IconStar className={favoritesButtonWidgetEmptyStar} />
       ) : (
-        <IconStarFilled className={favoritesWidgetFilledStar} />
+        <IconStarFilled className={favoritesButtonWidgetFilledStar} />
       )}
     </button>
   );
 };
 
-export default FavoritesWidget;
+export default FavoritesButtonWidget;

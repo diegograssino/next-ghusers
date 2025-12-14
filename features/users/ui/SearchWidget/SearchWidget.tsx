@@ -9,17 +9,17 @@ import { useSharedContext } from "@shared/contexts";
 import { IconRotate, IconSearch } from "@tabler/icons-react";
 import { useFiltersContext } from "@users/contexts";
 
-import styles from "./SearchInput.module.scss";
+import styles from "./SearchWidget.module.scss";
 
 const {
-  searchInputContainer,
-  searchInputInnerContainer,
-  searchInput,
-  searchInputIcon,
-  searchInputLoading,
+  searchWidgetContainer,
+  searchWidgetInnerContainer,
+  searchWidget,
+  searchWidgetIcon,
+  searchWidgetLoading,
 } = styles;
 
-const SearchInput = () => {
+const SearchWidget = () => {
   const { isLoadingUsers, isMobile } = useSharedContext();
   const { loginInputValue, updateFilters } = useFiltersContext();
   const searchParams = useSearchParams();
@@ -139,12 +139,13 @@ const SearchInput = () => {
   }, [queryParam, handleFocusAndCursorPosition]);
 
   return (
-    <div className={searchInputContainer}>
-      <div className={searchInputInnerContainer}>
+    <div className={searchWidgetContainer}>
+      <div className={searchWidgetInnerContainer}>
+        {/* TODO on focus the input on ios simulator, the page make a little jump to the top */}
         <input
           type="text"
           name="search"
-          className={searchInput}
+          className={searchWidget}
           disabled={isLoadingUsers}
           onChange={handleChange}
           onFocus={handleFocus}
@@ -160,8 +161,8 @@ const SearchInput = () => {
         />
         <div
           className={clsx(
-            searchInputIcon,
-            isLoadingUsers && searchInputLoading
+            searchWidgetIcon,
+            isLoadingUsers && searchWidgetLoading
           )}
         >
           {!isLoadingUsers ? (
@@ -175,4 +176,4 @@ const SearchInput = () => {
   );
 };
 
-export default SearchInput;
+export default SearchWidget;

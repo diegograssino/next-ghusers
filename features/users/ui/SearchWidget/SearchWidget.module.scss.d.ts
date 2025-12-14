@@ -1,8 +1,10 @@
 export type Styles = {
-  favoritesWidgetEmptyStar: string;
-  favoritesWidgetFilledStar: string;
-  favoritesWidgetIcon: string;
   pulse: string;
+  searchWidget: string;
+  searchWidgetContainer: string;
+  searchWidgetIcon: string;
+  searchWidgetInnerContainer: string;
+  searchWidgetLoading: string;
   spin: string;
 };
 

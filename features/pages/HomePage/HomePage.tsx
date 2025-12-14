@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { getUniqueId } from "@/features/shared/lib/utils";
 import heroImage from "@/public/assets/hero.png";
-import { SearchPageProps } from "@/types";
+import { HomePageProps } from "@/types";
 
 import { ROUTES, Z_INDEX_STICKY_CONTENT } from "@shared/constants";
 import { useSharedContext } from "@shared/contexts";
@@ -18,32 +18,32 @@ import {
   CardGrid,
   CardGridSkeleton,
   Filters,
-  SearchInput,
+  SearchWidget,
 } from "@users/ui";
 
-import styles from "./SearchPage.module.scss";
+import styles from "./HomePage.module.scss";
 
 const {
-  searchPage,
-  searchPageAside,
-  searchPageResults,
-  searchPageSearch,
-  searchPageHeroContent,
+  homePage,
+  homePageAside,
+  homePageResults,
+  homePageSearch,
+  homePageHeroContent,
 } = styles;
 
-const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
+const HomePage = ({ initialUsers, pageConfig }: HomePageProps) => {
   // TODO On infinite scroll loading state, we should show a skeleton, seems that is not being present now
   const { perPageConfig } = pageConfig;
   const { filters } = useFiltersContext();
   const { isLoadingUsers, viewportHeight } = useSharedContext();
   const { users, isError, isNoResults, isMore, totalCount, handleLoadMore } =
     useInfiniteUsers(filters, perPageConfig.items, initialUsers);
-  useFiltersToUrl(filters, "search-section");
+  useFiltersToUrl(filters, ROUTES.HOME.sectionId);
 
   return (
     <>
       <Hero alt="Discover GitHub Users" backgroundImage={heroImage}>
-        <div className={searchPageHeroContent}>
+        <div className={homePageHeroContent}>
           <Typography weight="bold" size="xl" as="h2" variant="primary" shadow>
             Discover GitHub Users
           </Typography>
@@ -59,22 +59,22 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
           </Button>
         </div>
       </Hero>
-      <div id="search-section" />
-      <div className={searchPage}>
+      <div id={ROUTES.HOME.sectionId} />
+      <div className={homePage}>
         <div
-          className={searchPageSearch}
+          className={homePageSearch}
           style={{ zIndex: Z_INDEX_STICKY_CONTENT }}
         >
           {/* TODO Search input should be in the header and open a palette style modal*/}
-          <SearchInput />
+          <SearchWidget />
         </div>
         <aside
-          className={searchPageAside}
+          className={homePageAside}
           style={{ zIndex: Z_INDEX_STICKY_CONTENT }}
         >
           <Filters totalCount={totalCount} />
         </aside>
-        <div className={searchPageResults}>
+        <div className={homePageResults}>
           {isError ? (
             <PageMessage message="error" />
           ) : isLoadingUsers ? (
@@ -108,4 +108,4 @@ const SearchPage = ({ initialUsers, pageConfig }: SearchPageProps) => {
   );
 };
 
-export default SearchPage;
+export default HomePage;

@@ -8,7 +8,7 @@ import { CardProps } from "@/types";
 import { Typography } from "@shared/ui";
 
 import { genericBlurData } from "../../lib/constants";
-import FavoritesWidget from "../FavoritesWidget/FavoritesWidget";
+import FavoritesButtonWidget from "../FavoritesButtonWidget/FavoritesButtonWidget";
 import styles from "./Card.module.scss";
 
 const {
@@ -46,7 +46,7 @@ const Card = ({ user }: CardProps) => {
           </Typography>
         </div>
         <div className={cardOptions}>
-          <FavoritesWidget id={user.id} user={user} />
+          <FavoritesButtonWidget id={user.id} user={user} />
         </div>
       </article>
     </Link>

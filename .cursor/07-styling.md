@@ -106,7 +106,7 @@ $color-secondary: #4a4a4a;
 - **Base class**: Use lowercase component name (e.g., `Card` → `.card`, `CardGrid` → `.cardGrid`)
 - **Child/part classes**: Use lowercase component name + camelCase descriptor
   - `Card` → `.cardContent`, `.cardImage`, `.cardImageContainer`, `.cardOptions`
-  - `SearchPage` → `.searchPageSearch`, `.searchPageAside`, `.searchPageResults`
+  - `HomePage` → `.homePageSearch`, `.homePageAside`, `.homePageResults`
 - **Variant classes**: Use lowercase component name + variant name
   - `Card` → `.cardSkeleton`, `.cardContentSkeleton`, `.cardOptionsSkeleton`
   - `CardGrid` → `.cardGridSkeleton`
@@ -327,7 +327,7 @@ const getModalZIndex = (index: number) => {
 };
 
 // ✅ CORRECT: Sticky content sections
-const SearchPage = () => {
+const HomePage = () => {
   return (
     <div style={{ zIndex: Z_INDEX_STICKY_CONTENT }}>
       {/* ... */}

@@ -5,7 +5,7 @@ export interface PageParamsProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export interface SearchPageProps {
+export interface HomePageProps {
   initialUsers?: FetchUsersResult;
   pageConfig: PageConfig;
 }

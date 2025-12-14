@@ -1,10 +1,10 @@
 export { genericBlurData } from "../lib/constants";
 export { default as Card, CardSkeleton } from "./Card/Card";
 export { default as CardGrid, CardGridSkeleton } from "./CardGrid/CardGrid";
-export { default as FavoritesWidget } from "./FavoritesWidget/FavoritesWidget";
+export { default as FavoritesButtonWidget } from "./FavoritesButtonWidget/FavoritesButtonWidget";
 export { default as Filters } from "./Filters/Filters";
 export { default as FiltersInfo } from "./FiltersInfo/FiltersInfo";
 export { default as FiltersInputs } from "./FiltersInputs/FiltersInputs";
-export { default as SearchInput } from "./SearchInput/SearchInput";
+export { default as SearchWidget } from "./SearchWidget/SearchWidget";
 export { default as SortButton } from "./SortButton/SortButton";
 export { default as UserDetail } from "./UserDetail/UserDetail";

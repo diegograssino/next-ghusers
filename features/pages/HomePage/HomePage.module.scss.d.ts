@@ -1,8 +1,10 @@
 export type Styles = {
-  favoritesAnchor: string;
-  favoritesAnchorIcon: string;
-  favoritesAnchorIconDrawer: string;
-  favoritesAnchorIconHeader: string;
+  homePage: string;
+  homePageAside: string;
+  homePageHeroContent: string;
+  homePageInfo: string;
+  homePageResults: string;
+  homePageSearch: string;
   pulse: string;
   spin: string;
 };

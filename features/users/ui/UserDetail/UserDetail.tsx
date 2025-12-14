@@ -8,7 +8,7 @@ import { Button, Typography } from "@shared/ui";
 import { IconLink } from "@tabler/icons-react";
 
 import { genericBlurData } from "../../lib/constants";
-import FavoritesWidget from "../FavoritesWidget/FavoritesWidget";
+import FavoritesButtonWidget from "../FavoritesButtonWidget/FavoritesButtonWidget";
 import styles from "./UserDetail.module.scss";
 
 const {
@@ -52,7 +52,7 @@ const UserDetail = ({ user, repos }: UserDetailProps) => {
             className={detailHeaderImage}
           />
           <div className={detailHeaderWidget}>
-            <FavoritesWidget id={user.id} user={user} />
+            <FavoritesButtonWidget id={user.id} user={user} />
           </div>
         </header>
         <div className={detailInfo}>

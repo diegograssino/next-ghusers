@@ -21,21 +21,21 @@
 
 ```typescript
 // app/page.tsx (Next.js Page - Server Component)
-import SearchPage from "@/features/pages/SearchPage/SearchPage";
+import HomePage from "@/features/pages/HomePage/HomePage";
 import { fetchUsersAction } from "@users/actions";
 
 const Home = async (pageParams: PageParamsProps) => {
   const initialUsers = await fetchUsersAction({
     /* ... */
   });
-  return <SearchPage initialUsers={initialUsers} />;
+  return <HomePage initialUsers={initialUsers} />;
 };
 
 export default Home;
 
-// features/pages/SearchPage/SearchPage.tsx (Page Component - Client Component)
+// features/pages/HomePage/HomePage.tsx (Page Component - Client Component)
 ("use client");
-const SearchPage = ({ initialUsers }: SearchPageProps) => {
+const HomePage = ({ initialUsers }: HomePageProps) => {
   // Interactive UI logic
   return <div>{/* ... */}</div>;
 };
@@ -179,7 +179,7 @@ import { FiltersProvider } from "@users/contexts";
 const Home = async () => {
   return (
     <FiltersProvider initialFilters={initialFilters}>
-      <SearchPage />
+      <HomePage />
     </FiltersProvider>
   );
 };

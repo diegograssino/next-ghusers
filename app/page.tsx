@@ -1,4 +1,4 @@
-import SearchPage from "@/features/pages/SearchPage/SearchPage";
+import HomePage from "@/features/pages/HomePage/HomePage";
 import { getPageConfig } from "@/features/shared/lib/utils";
 import { PageParamsProps } from "@/types";
 
@@ -17,7 +17,7 @@ const Home = async (pageParams: PageParamsProps) => {
 
   return (
     <FiltersProvider initialFilters={pageConfig.initialFilters}>
-      <SearchPage initialUsers={initialUsers} pageConfig={pageConfig} />
+      <HomePage initialUsers={initialUsers} pageConfig={pageConfig} />
     </FiltersProvider>
   );
 };

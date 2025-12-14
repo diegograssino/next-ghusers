@@ -18,6 +18,7 @@ export const ROUTES: Routes = {
     label: "Home",
     href: "/",
     heroText: "Discover GitHub Users",
+    sectionId: "search-section",
   },
   FAVORITES: {
     label: "Favorites",

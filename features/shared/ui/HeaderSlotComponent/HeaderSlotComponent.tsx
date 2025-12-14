@@ -8,8 +8,8 @@ import { HeaderSlotItem } from "@/types";
 import { useModalContext } from "@shared/contexts";
 import { Button, Typography } from "@shared/ui";
 
-import FavoritesAnchor from "../FavoritesAnchor/FavoritesAnchor";
 import headerStyles from "../Header/Header.module.scss";
+import HeaderIconButtonWidget from "../HeaderIconButtonWidget/HeaderIconButtonWidget";
 
 const { headerNavbarCenterList, headerSlotDrawer } = headerStyles;
 
@@ -39,8 +39,9 @@ const HeaderSlotComponent = ({
     switch (item.type) {
       case "favorites":
         return (
-          <FavoritesAnchor
+          <HeaderIconButtonWidget
             key={getUniqueId()}
+            type={item.type}
             onClick={variant === "drawer" ? handleItemClick : undefined}
             showLabel={variant === "drawer"}
             variant={variant}

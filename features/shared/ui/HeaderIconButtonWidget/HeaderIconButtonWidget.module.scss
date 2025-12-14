@@ -1,6 +1,6 @@
 @use "../../../../styles/main" as *;
 
-.favoritesAnchor {
+.headerIconButtonWidget {
   display: flex;
   align-items: center;
   @include property-per-breakpoint(
@@ -12,7 +12,7 @@
   );
 }
 
-.favoritesAnchorIcon {
+.headerIconButtonWidgetIcon {
   @include property-per-breakpoint(
     width,
     (
@@ -39,10 +39,10 @@
   );
 }
 
-.favoritesAnchorIconHeader {
+.headerIconButtonWidgetIconHeader {
   color: $color-primary;
 }
 
-.favoritesAnchorIconDrawer {
+.headerIconButtonWidgetIconDrawer {
   color: $color-foreground;
 }

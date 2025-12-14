@@ -1,10 +1,8 @@
 export type Styles = {
+  favoritesButtonWidgetEmptyStar: string;
+  favoritesButtonWidgetFilledStar: string;
+  favoritesButtonWidgetIcon: string;
   pulse: string;
-  searchInput: string;
-  searchInputContainer: string;
-  searchInputIcon: string;
-  searchInputInnerContainer: string;
-  searchInputLoading: string;
   spin: string;
 };
 

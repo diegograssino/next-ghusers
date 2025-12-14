@@ -7,7 +7,7 @@ import { useFiltersToUrl } from "@shared/hooks";
 import { PageMessage } from "@shared/ui";
 import { useFavoritesContext, useFiltersContext } from "@users/contexts";
 import { useInfiniteFavoriteUsers } from "@users/services";
-import { Card, CardGrid, Filters, SearchInput } from "@users/ui";
+import { Card, CardGrid, Filters, SearchWidget } from "@users/ui";
 
 import styles from "./FavoritesPage.module.scss";
 
@@ -46,7 +46,7 @@ const FavoritesPage = ({ pageConfig }: FavoritesPageProps) => {
         className={favoritesPageSearch}
         style={{ zIndex: Z_INDEX_STICKY_CONTENT }}
       >
-        <SearchInput />
+        <SearchWidget />
       </div>
       <aside
         className={favoritesPageAside}
