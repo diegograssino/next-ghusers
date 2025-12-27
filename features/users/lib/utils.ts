@@ -1,4 +1,5 @@
 import { FilterParams, Params } from "@/types";
+
 import {
   FILTER_LABEL_FORMATTERS,
   VALID_FILTER_PARAMS,

@@ -1,0 +1,91 @@
+@use "../../../../../styles/main" as *;
+
+.searchInput {
+  width: 100%;
+  position: relative;
+}
+
+.searchInputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.searchInputInput {
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem 1rem;
+  padding-right: 3rem;
+  border: 2px solid $color-foreground;
+  border-radius: $border-radius;
+  background-color: $color-background;
+  color: $color-foreground;
+  font-family: $font-primary;
+  font-size: 1rem;
+  transition: $transition-fast;
+  outline: none;
+
+  &:focus {
+    border-color: $color-primary;
+  }
+
+  &:disabled {
+    opacity: $disabled-opacity;
+    cursor: not-allowed;
+  }
+
+  &::placeholder {
+    color: $color-muted;
+  }
+}
+
+.searchInputIcon {
+  position: absolute;
+  right: var(--spacing-md, 1rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-primary;
+  pointer-events: none;
+
+  @include property-per-breakpoint(
+    width,
+    (
+      base: 1.25rem,
+      sm: 1.375rem,
+      md: 1.5rem,
+      lg: 1.625rem,
+      xl: 1.75rem,
+      2xl: 1.875rem,
+      3xl: 2rem,
+    )
+  );
+
+  @include property-per-breakpoint(
+    height,
+    (
+      base: 1.25rem,
+      sm: 1.375rem,
+      md: 1.5rem,
+      lg: 1.625rem,
+      xl: 1.75rem,
+      2xl: 1.875rem,
+      3xl: 2rem,
+    )
+  );
+}
+
+.searchInputLoading {
+  .searchInputIcon {
+    animation: $animation-spin;
+  }
+}
+
+.spin {
+  animation: $animation-spin;
+}
+
+.pulse {
+  animation: $animation-pulse;
+}

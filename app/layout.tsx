@@ -1,22 +1,15 @@
-import "@/styles/globals.scss";
-import { LayoutClient } from "@shared/ui";
-import clsx from "clsx";
 import type { Metadata } from "next";
-import { Mona_Sans, Noto_Sans } from "next/font/google";
+
+import clsx from "clsx";
+
+import { HeaderSlotItem } from "@/types";
+
+import { primaryFont, secondaryFont } from "@shared/constants";
+import { LayoutClient } from "@shared/ui";
+
 import Providers from "./providers";
 
-// TODO Move font configuration to a separate file
-const primaryFont = Noto_Sans({
-  variable: "--font-primary",
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
-
-const secondaryFont = Mona_Sans({
-  variable: "--font-secondary",
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
+import "@/styles/globals.scss";
 
 // TODO Improve Metadata
 export const metadata: Metadata = {
@@ -26,6 +19,11 @@ export const metadata: Metadata = {
   icons: {
     icon: "/github.ico",
   },
+};
+
+// DOC Header slots - will be configured via CMS in the future, probably
+const headerRightSlot: HeaderSlotItem | HeaderSlotItem[] = {
+  type: "favorites" as const,
 };
 
 const RootLayout = ({
@@ -40,7 +38,9 @@ const RootLayout = ({
         className={clsx(primaryFont.variable, secondaryFont.variable)}
       >
         <body>
-          <LayoutClient>{children}</LayoutClient>
+          <LayoutClient headerRightSlot={headerRightSlot ?? undefined}>
+            {children}
+          </LayoutClient>
         </body>
       </html>
     </Providers>

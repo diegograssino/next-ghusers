@@ -1,7 +1,7 @@
 export type Styles = {
-  'pulse': string;
-  'sortButton': string;
-  'spin': string;
+  pulse: string;
+  sortButton: string;
+  spin: string;
 };
 
 export type ClassNames = keyof Styles;

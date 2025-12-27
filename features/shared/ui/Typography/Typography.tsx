@@ -1,10 +1,14 @@
+import clsx from "clsx";
+
 import { getStyleClass } from "@/features/shared/lib/utils";
 import { TypographyProps } from "@/types";
-import clsx from "clsx";
+
 import styles from "./Typography.module.scss";
 
-const { typography, ellipsis, shadow } = styles;
-
+const { typography, ellipsis, shadow, disabled } = styles;
+// TODO We should be able to accept all the colors available, is a problem to add every color to the props
+// TODO Check why we should use undefined to apply foreground color
+// TODO Work in responsive measures, maybe should start bigger
 const Typography = ({
   children,
   as: Tag = "p",
@@ -13,6 +17,7 @@ const Typography = ({
   truncate: isTruncated = false,
   shadow: hasShadow = false,
   variant = "default",
+  disabled: isDisabled = false,
   ...otherProps
 }: TypographyProps) => {
   return (
@@ -25,6 +30,7 @@ const Typography = ({
         getStyleClass(styles, size),
         isTruncated && ellipsis,
         hasShadow && shadow,
+        isDisabled && disabled,
         otherProps.className
       )}
     >

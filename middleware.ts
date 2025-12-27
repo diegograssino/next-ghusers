@@ -1,5 +1,7 @@
-import { DeviceType } from "@/types";
 import { NextRequest, NextResponse, userAgent } from "next/server";
+
+import { DeviceType } from "@/types";
+
 import { log } from "./features/shared/lib/logger";
 
 export function middleware(request: NextRequest) {

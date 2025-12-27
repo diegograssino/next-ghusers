@@ -1,7 +1,10 @@
+import Image from "next/image";
+
+import clsx from "clsx";
+
 import { genericBlurData } from "@/features/users/ui";
 import { HeroProps } from "@/types";
-import clsx from "clsx";
-import Image from "next/image";
+
 import styles from "./Hero.module.scss";
 
 const { hero, heroBackgroundImage } = styles;
@@ -18,7 +21,8 @@ const Hero = ({ backgroundImage, alt, ...otherProps }: HeroProps) => {
           alt={alt}
           fill
           priority
-          //  TODO Check sizes
+          fetchPriority="high"
+          sizes="100vw"
           placeholder="blur"
           blurDataURL={genericBlurData}
           className={heroBackgroundImage}

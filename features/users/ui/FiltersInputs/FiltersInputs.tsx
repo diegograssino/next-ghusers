@@ -1,7 +1,9 @@
 import { getUniqueId } from "@/features/shared/lib/utils";
+
 import { Typography } from "@shared/ui";
 import { VALID_FOLLOWERS_VALUES } from "@users/constants";
 import { useFiltersContext } from "@users/contexts";
+
 import { formatFilterLabel } from "../../lib/utils";
 import styles from "./FiltersInputs.module.scss";
 
@@ -30,7 +32,7 @@ const FiltersInputs = () => {
     <div className={filtersInputs}>
       <section className={filterInputsFollowers}>
         <Typography
-          as="h5"
+          as="h3"
           size="sm"
           weight="bold"
           className={filterInputsFollowersTitle}

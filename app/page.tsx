@@ -1,12 +1,12 @@
-import SearchPage from "@/features/pages/SearchPage/SearchPage";
+import HomePage from "@/features/pages/HomePage/HomePage";
+import HomePageHero from "@/features/pages/HomePage/HomePageHero/HomePageHero";
 import { getPageConfig } from "@/features/shared/lib/utils";
 import { PageParamsProps } from "@/types";
+
 import { fetchUsersAction } from "@users/actions";
 import { INITIAL_PAGE_PARAM } from "@users/constants";
-import { FiltersProvider } from "@users/contexts";
 
 const Home = async (pageParams: PageParamsProps) => {
-  // TODO GLOBAL implement react aria for accessibility
   const pageConfig = await getPageConfig(pageParams);
 
   const initialUsers = await fetchUsersAction({
@@ -16,9 +16,10 @@ const Home = async (pageParams: PageParamsProps) => {
   });
 
   return (
-    <FiltersProvider initialFilters={pageConfig.initialFilters}>
-      <SearchPage initialUsers={initialUsers} pageConfig={pageConfig} />
-    </FiltersProvider>
+    <>
+      <HomePageHero />
+      <HomePage initialUsers={initialUsers} pageConfig={pageConfig} />
+    </>
   );
 };
 

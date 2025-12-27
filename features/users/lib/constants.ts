@@ -31,7 +31,6 @@ export const FIRST_PAGE_PARAM = "1";
 export const GITHUB_API_BASE_URL = "https://api.github.com";
 export const GITHUB_API_SEARCH_USERS_ENDPOINT = "/search/users";
 export const GITHUB_API_USERS_ENDPOINT = "/users";
-export const GITHUB_API_USER_ENDPOINT = "/user";
 export const GITHUB_API_REPOS_ENDPOINT = "/repos";
 export const GITHUB_API_QUERY_PARAM_Q = "q";
 export const GITHUB_API_QUERY_PARAM_PAGE = "page";

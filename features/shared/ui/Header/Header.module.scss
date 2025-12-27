@@ -5,19 +5,68 @@
   box-shadow: 0 2px 4px 0 color-mix(in srgb, $color-secondary 5%, transparent);
   position: sticky;
   top: 0;
-  z-index: 100;
 }
 
-.headerNavbarContainer {
+.headerContainer {
   height: $layout-navbar-height;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
   align-items: center;
+  gap: 0 2rem;
+  grid-template-columns: 1fr 3fr 1fr;
+
+  @media (min-width: $screen-md) {
+    grid-template-columns: 2fr 3fr 1fr;
+  }
+
+  @media (min-width: $screen-lg) {
+    grid-template-columns: 1fr 3fr 1fr;
+  }
+
+  @media (min-width: $screen-xl) {
+    grid-template-columns: 1fr 3fr 1fr;
+  }
+
+  @media (min-width: $screen-2xl) {
+    grid-template-columns: 1fr 2fr 1fr;
+  }
+
+  @media (min-width: $screen-3xl) {
+    grid-template-columns: 1fr 3fr 1fr;
+  }
 }
 
-.headerNavbarBrand {
+.headerCenterList {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 1rem;
+}
+
+.headerRightSlotDesktop {
+  display: none;
+  align-items: center;
+  justify-content: flex-end;
+
+  @media (min-width: $screen-lg) {
+    display: flex;
+  }
+}
+
+.headerRightSlotMobile {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+
+  @media (min-width: $screen-lg) {
+    display: none;
+  }
+}
+
+.headerBrand {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   text-decoration: none;
   @include property-per-breakpoint(
     gap,
@@ -28,7 +77,8 @@
   );
 }
 
-.headerNavbarIcon {
+.headerBrandIcon {
+  // DOC Use primary color (light) for better contrast on dark header background (WCAG AA)
   color: $color-primary;
   @include property-per-breakpoint(
     width,
@@ -54,4 +104,46 @@
       3xl: 1.5rem,
     )
   );
+}
+
+.headerBrandTitle {
+  @include property-per-breakpoint(
+    display,
+    (
+      base: none,
+      md: block,
+    )
+  );
+}
+
+.headerRightSlotMobileIcon {
+  color: $color-primary;
+  @include property-per-breakpoint(
+    width,
+    (
+      base: 1.25rem,
+      sm: 1.375rem,
+      md: 1.5rem,
+    )
+  );
+  @include property-per-breakpoint(
+    height,
+    (
+      base: 1.25rem,
+      sm: 1.375rem,
+      md: 1.5rem,
+    )
+  );
+}
+
+.headerDrawer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  > *:not(:last-child) {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid
+      color-mix(in srgb, $color-foreground 20%, transparent);
+  }
 }

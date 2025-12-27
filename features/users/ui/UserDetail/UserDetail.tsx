@@ -1,16 +1,23 @@
-import { getUniqueId } from "@/features/shared/lib/utils";
-import { UserDetailProps } from "@/types";
-import { Button, Typography } from "@shared/ui";
-import { IconLink } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
-import FavoritesWidget from "../FavoritesWidget/FavoritesWidget";
+
+import { getUniqueId } from "@/features/shared/lib/utils";
+import { UserDetailProps } from "@/types";
+
+import { Button, Typography } from "@shared/ui";
+import { IconLink } from "@tabler/icons-react";
+
+import { genericBlurData } from "../../lib/constants";
+import FavoritesButtonWidget from "../FavoritesButtonWidget/FavoritesButtonWidget";
 import styles from "./UserDetail.module.scss";
 
 const {
   detail,
   detailInfoSection,
   detailHeader,
+  detailHeaderTitle,
+  detailHeaderWidget,
+  detailHeaderImage,
   detailInfo,
   detailStats,
   detailRepos,
@@ -20,13 +27,17 @@ const {
 } = styles;
 
 const UserDetail = ({ user, repos }: UserDetailProps) => {
-  // TODO Fix UI
-
   return (
     <article className={detail}>
       <div className={detailInfoSection}>
         <header className={detailHeader}>
-          <Typography weight="bold" size="lg" as="h2">
+          <Typography
+            weight="bold"
+            size="lg"
+            as="h2"
+            className={detailHeaderTitle}
+            truncate
+          >
             {user.login}
           </Typography>
           <Image
@@ -34,9 +45,14 @@ const UserDetail = ({ user, repos }: UserDetailProps) => {
             alt={user.login}
             width={300}
             height={300}
+            priority
+            sizes="(max-width: 48rem) 25rem, 18.75rem"
+            placeholder="blur"
+            blurDataURL={genericBlurData}
+            className={detailHeaderImage}
           />
-          <div>
-            <FavoritesWidget id={user.id} user={user} />
+          <div className={detailHeaderWidget}>
+            <FavoritesButtonWidget id={user.id} user={user} />
           </div>
         </header>
         <div className={detailInfo}>

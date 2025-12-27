@@ -1,0 +1,67 @@
+@use "../../../../styles/main" as *;
+
+.searchWidgetMobileButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid $color-foreground;
+  border-radius: $border-radius;
+  background-color: $color-background;
+  color: $color-foreground;
+  transition: $transition-fast;
+  font-family: $font-primary;
+
+  @media (min-width: $screen-lg) {
+    display: none;
+  }
+}
+
+.searchWidgetDesktop {
+  display: none;
+  flex: 1;
+  width: 100%;
+
+  @media (min-width: $screen-lg) {
+    display: block;
+  }
+}
+
+.searchWidgetMobileButtonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  width: 100%;
+}
+
+.searchWidgetMobileButtonIcon {
+  color: $color-foreground;
+
+  @include property-per-breakpoint(
+    width,
+    (
+      base: 0.875rem,
+      sm: 0.9375rem,
+      md: 1rem,
+      lg: 1.125rem,
+      xl: 1.25rem,
+      2xl: 1.375rem,
+      3xl: 1.5rem,
+    )
+  );
+  @include property-per-breakpoint(
+    height,
+    (
+      base: 0.875rem,
+      sm: 0.9375rem,
+      md: 1rem,
+      lg: 1.125rem,
+      xl: 1.25rem,
+      2xl: 1.375rem,
+      3xl: 1.5rem,
+    )
+  );
+}

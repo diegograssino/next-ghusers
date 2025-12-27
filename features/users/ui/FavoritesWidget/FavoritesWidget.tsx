@@ -1,65 +1,65 @@
 "use client";
-import { CardWidgetProps, User } from "@/types";
-import { IconStar, IconStarFilled } from "@tabler/icons-react";
-import { useState } from "react";
-import { useFavoritesContext } from "../../contexts/FavoritesContext";
+import Link from "next/link";
+
+import clsx from "clsx";
+
+import { FavoritesWidgetProps } from "@/types";
+
+import { ROUTES } from "@shared/constants";
+import { Button, Typography } from "@shared/ui";
+import { IconStarFilled } from "@tabler/icons-react";
+import { useFavoritesContext } from "@users/contexts";
+
 import styles from "./FavoritesWidget.module.scss";
 
-const { favoritesWidgetEmptyStar, favoritesWidgetFilledStar } = styles;
+const {
+  favoritesWidget,
+  favoritesWidgetIcon,
+  favoritesWidgetIconHeader,
+  favoritesWidgetIconDrawer,
+  favoritesWidgetDrawer,
+} = styles;
 
-interface FavoritesWidgetProps extends CardWidgetProps {
-  user: User;
-}
+const FavoritesWidget = ({
+  onClick,
+  showLabel = false,
+  variant = "header",
+}: FavoritesWidgetProps) => {
+  const { favorites } = useFavoritesContext();
 
-const FavoritesWidget = ({ id, user }: FavoritesWidgetProps) => {
-  const { checkFavorite, addFavorite, removeFavorite, isAddingFavorite } =
-    useFavoritesContext();
-  const [error, setError] = useState<string | null>(null);
-  // DOC Simple boolean checks don't need memoization
-  const isFavorite = checkFavorite(id);
-  const isLoading = isAddingFavorite(id);
-
-  // DOC No need to memoize handler passed to React built-in (button)
-  const handleFavorite = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setError(null);
-
-    if (isFavorite) {
-      removeFavorite(id);
-    } else {
-      try {
-        await addFavorite(user);
-      } catch (err) {
-        console.error("Error adding favorite:", err);
-        setError("Failed to add favorite. Please try again.");
-      }
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
     }
   };
 
-  const ariaLabel =
-    error ||
-    (isLoading
-      ? "Adding to favorites..."
-      : isFavorite
-      ? `Remove ${user.login} from favorites`
-      : `Add ${user.login} to favorites`);
+  const typographyVariant = variant === "header" ? "primary" : undefined;
+  const iconClass =
+    variant === "header"
+      ? favoritesWidgetIconHeader
+      : favoritesWidgetIconDrawer;
 
   return (
-    <button
-      onClick={handleFavorite}
-      disabled={isLoading}
-      data-testid="card-widget"
-      aria-label={ariaLabel}
-      title={ariaLabel}
+    <Button
+      as={Link}
+      href={ROUTES.FAVORITES.href}
+      variant="unstyled"
+      size="xs"
+      onClick={handleClick}
+      className={variant === "drawer" ? favoritesWidgetDrawer : undefined}
     >
-      {isLoading ? (
-        <IconStar className={favoritesWidgetEmptyStar} />
-      ) : !isFavorite ? (
-        <IconStar className={favoritesWidgetEmptyStar} />
-      ) : (
-        <IconStarFilled className={favoritesWidgetFilledStar} />
-      )}
-    </button>
+      <div className={favoritesWidget}>
+        <IconStarFilled className={clsx(favoritesWidgetIcon, iconClass)} />
+        {showLabel && (
+          <Typography as="span" size="xs" variant={typographyVariant}>
+            {ROUTES.FAVORITES.label}
+          </Typography>
+        )}
+        <Typography as="span" size="xs" variant={typographyVariant}>
+          ({favorites.length})
+        </Typography>
+      </div>
+    </Button>
   );
 };
 

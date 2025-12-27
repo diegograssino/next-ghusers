@@ -1,5 +1,7 @@
-import { ContainerProps } from "@/types";
 import { forwardRef } from "react";
+
+import { ContainerProps } from "@/types";
+
 import styles from "./Container.module.scss";
 
 const { container } = styles;

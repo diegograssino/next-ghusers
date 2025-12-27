@@ -1,6 +1,18 @@
 @use "../abstracts" as *;
 
 :root {
+  // DOC Breakpoints - CSS custom properties for runtime use
+
+  // TODO Move all other SCSS variables (colors, spacing, typography, etc.) to CSS custom properties here for single source of truth
+
+  // TODO Consider migrate vars to a module in order to use them in the app, and not just in the styles
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1440px;
+  --breakpoint-3xl: 1920px;
   --color-foreground: #{$base-color-secondary};
   --color-background: #{$base-color-primary};
   --color-primary: #{$base-color-primary};
@@ -10,6 +22,7 @@
   --color-success: #{$base-color-success};
   --color-error: #{$base-color-error};
   --color-warning: #{$base-color-warning};
+  --color-muted: #{$base-color-muted};
   --color-black: #{$base-color-black};
   --color-white: #{$base-color-white};
 
@@ -23,13 +36,33 @@
     --color-success: #{$base-color-success-dark};
     --color-error: #{$base-color-error-dark};
     --color-warning: #{$base-color-warning-dark};
+    --color-muted: #{$base-color-muted-dark};
     --color-black: #{$base-color-black};
     --color-white: #{$base-color-white};
   }
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   color: $color-foreground;
   background-color: $color-background;
   font-family: $font-primary;
+}
+
+// DOC Global focus ring for all focusable elements - uses accent color for consistency
+
+// DOC focus-visible only shows focus ring when navigating with keyboard (not mouse clicks)
+input,
+button,
+select,
+textarea,
+a[href],
+[tabindex]:not([tabindex="-1"]) {
+  &:focus-visible {
+    outline: 0.125rem solid $color-accent;
+    outline-offset: 0.125rem;
+  }
 }

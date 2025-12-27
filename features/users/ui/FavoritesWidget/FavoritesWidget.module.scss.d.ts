@@ -1,9 +1,11 @@
 export type Styles = {
-  'favoritesWidgetEmptyStar': string;
-  'favoritesWidgetFilledStar': string;
-  'favoritesWidgetIcon': string;
-  'pulse': string;
-  'spin': string;
+  favoritesWidget: string;
+  favoritesWidgetDrawer: string;
+  favoritesWidgetIcon: string;
+  favoritesWidgetIconDrawer: string;
+  favoritesWidgetIconHeader: string;
+  pulse: string;
+  spin: string;
 };
 
 export type ClassNames = keyof Styles;

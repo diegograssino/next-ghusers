@@ -1,7 +1,7 @@
 export type Styles = {
-  'pageMessage': string;
-  'pulse': string;
-  'spin': string;
+  pageMessage: string;
+  pulse: string;
+  spin: string;
 };
 
 export type ClassNames = keyof Styles;

@@ -16,15 +16,13 @@
     outline-offset: 0.125rem;
   }
 
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
+  &:disabled:not(.unstyled) {
+    @include disabled-opacity;
   }
 }
 
 .default {
   background-color: $color-background;
-  color: $color-foreground;
   border-color: $color-secondary;
 
   @include hover-on-non-touch(background-color, $color-primary);
@@ -32,56 +30,54 @@
 
 .primary {
   background-color: $color-primary;
-  color: $color-foreground;
 
   @include hover-on-non-touch(opacity, 0.9);
 }
 
 .secondary {
   background-color: $color-secondary;
-  color: $color-background;
 
   @include hover-on-non-touch(opacity, 0.9);
 }
 
 .accent {
   background-color: $color-accent;
-  color: $color-background;
+  color: $color-white; // DOC Ensure white text on accent buttons for WCAG AA contrast
+
+  // DOC Force white color on all children to ensure proper contrast
+  > * {
+    color: $color-white;
+  }
 
   @include hover-on-non-touch(opacity, 0.9);
 }
 
 .accent2 {
   background-color: $color-accent2;
-  color: $color-foreground;
 
-  @include hover-on-non-touch(background-color, $color-primary);
+  @include hover-on-non-touch(opacity, 0.9);
 }
 
 .success {
   background-color: $color-success;
-  color: $color-background;
 
   @include hover-on-non-touch(opacity, 0.9);
 }
 
 .error {
   background-color: $color-error;
-  color: $color-background;
 
   @include hover-on-non-touch(opacity, 0.9);
 }
 
 .warning {
   background-color: $color-warning;
-  color: $color-background;
 
   @include hover-on-non-touch(opacity, 0.9);
 }
 
 .inverse {
   background-color: $color-foreground;
-  color: $color-background;
 
   @include hover-on-non-touch(opacity, 0.9);
 }
@@ -89,7 +85,6 @@
 .unstyled {
   // TODO check if this variant styles are correct or we need a rework, specially the hover visual feedback
   background-color: transparent;
-  color: inherit;
   border: none;
   border-radius: 0;
   padding: 0;
@@ -100,6 +95,10 @@
   &.lg,
   &.xl {
     padding: 0;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
   }
 }
 
@@ -118,6 +117,10 @@
       base: $font-size-xs-base,
       sm: $font-size-xs-sm,
       md: $font-size-xs-md,
+      lg: $font-size-xs-lg,
+      xl: $font-size-xs-xl,
+      2xl: $font-size-xs-2xl,
+      3xl: $font-size-xs-3xl,
     )
   );
 }
@@ -137,6 +140,10 @@
       base: $font-size-sm-base,
       sm: $font-size-sm-sm,
       md: $font-size-sm-md,
+      lg: $font-size-sm-lg,
+      xl: $font-size-sm-xl,
+      2xl: $font-size-sm-2xl,
+      3xl: $font-size-sm-3xl,
     )
   );
 }
@@ -156,6 +163,10 @@
       base: $font-size-md-base,
       sm: $font-size-md-sm,
       md: $font-size-md-md,
+      lg: $font-size-md-lg,
+      xl: $font-size-md-xl,
+      2xl: $font-size-md-2xl,
+      3xl: $font-size-md-3xl,
     )
   );
 }
@@ -175,6 +186,10 @@
       base: $font-size-lg-base,
       sm: $font-size-lg-sm,
       md: $font-size-lg-md,
+      lg: $font-size-lg-lg,
+      xl: $font-size-lg-xl,
+      2xl: $font-size-lg-2xl,
+      3xl: $font-size-lg-3xl,
     )
   );
 }
@@ -194,6 +209,10 @@
       base: $font-size-xl-base,
       sm: $font-size-xl-sm,
       md: $font-size-xl-md,
+      lg: $font-size-xl-lg,
+      xl: $font-size-xl-xl,
+      2xl: $font-size-xl-2xl,
+      3xl: $font-size-xl-3xl,
     )
   );
 }

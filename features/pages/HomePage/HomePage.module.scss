@@ -1,0 +1,61 @@
+@use "../../../styles/main" as *;
+
+.homePage {
+  display: grid;
+  grid-template: "filters" auto "results" 1fr / 1fr;
+  gap: 0 2rem;
+  min-height: 100vh;
+
+  @media (min-width: $screen-md) {
+    grid-template: "filters results" 1fr / 1fr 2fr;
+  }
+
+  @media (min-width: $screen-lg) {
+    grid-template-columns: 1fr 4fr;
+  }
+
+  @media (min-width: $screen-xl) {
+    grid-template-columns: 1fr 4fr;
+  }
+
+  @media (min-width: $screen-2xl) {
+    grid-template-columns: 1fr 3fr;
+  }
+
+  @media (min-width: $screen-3xl) {
+    grid-template-columns: 1fr 4fr;
+  }
+}
+
+.homePageAside {
+  grid-area: filters;
+  position: sticky;
+  top: calc($layout-navbar-height + $layout-breadcrumbs-height);
+  background-color: $color-background;
+  padding: 1rem 0;
+  align-self: flex-start;
+  @include property-per-breakpoint(
+    display,
+    (
+      base: none,
+      md: block,
+    )
+  );
+}
+
+.homePageResults {
+  grid-area: results;
+  padding: 2rem 0 1rem;
+}
+
+.homePageInfo {
+  grid-area: info;
+  padding: 1rem 0;
+  @include property-per-breakpoint(
+    display,
+    (
+      base: none,
+      md: block,
+    )
+  );
+}

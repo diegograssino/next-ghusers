@@ -1,11 +1,15 @@
 "use client";
 
-import { BreadcrumbsProps, Route } from "@/types";
-import { ROUTES } from "@shared/constants";
+import { Fragment } from "react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Fragment } from "react";
-import { useSharedContext } from "../../contexts/SharedContext";
+
+import { BreadcrumbsProps, Route } from "@/types";
+
+import { ROUTES, Z_INDEX_STICKY_BREADCRUMBS } from "@shared/constants";
+import { useSharedContext } from "@shared/contexts";
+
 import { getUniqueId } from "../../lib/utils";
 import Button from "../Button/Button";
 import Container from "../Container/Container";
@@ -16,7 +20,7 @@ const { breadcrumbs, breadcrumbsContainer } = styles;
 
 const Breadcrumbs = ({
   variant = undefined,
-  size = "sm",
+  size = "xs",
 }: BreadcrumbsProps) => {
   const { breadcrumbsRef } = useSharedContext();
   const pathname = usePathname();
@@ -41,10 +45,9 @@ const Breadcrumbs = ({
     if (matchingRoute) {
       return matchingRoute;
     }
-    // DOC Check if it's a number (user ID) - for dynamic routes like USER_DETAIL
-    const userId = Number(part);
-    if (!isNaN(userId) && userId > 0) {
-      return ROUTES.USER_DETAIL(userId);
+    // DOC Check if it's a login (not a known static route) - for dynamic routes like USER_DETAIL, logins are alphanumeric with hyphens and underscores, and not empty
+    if (part && /^[a-zA-Z0-9_-]+$/.test(part)) {
+      return ROUTES.USER_DETAIL(part);
     }
     return {
       label: part,
@@ -62,7 +65,12 @@ const Breadcrumbs = ({
   }
 
   return (
-    <Container as="nav" ref={breadcrumbsRef} className={breadcrumbs}>
+    <Container
+      as="nav"
+      ref={breadcrumbsRef}
+      className={breadcrumbs}
+      style={{ zIndex: Z_INDEX_STICKY_BREADCRUMBS }}
+    >
       <div className={breadcrumbsContainer}>
         {routes.map((route, index) => {
           const isLast = index === routes.length - 1;

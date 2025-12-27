@@ -1,5 +1,6 @@
 @use "sass:map";
 @use "./variables.scss" as *;
+@use "./colors.scss" as *;
 
 @mixin property-per-breakpoint($property, $values) {
   #{$property}: map.get($values, base);
@@ -46,5 +47,18 @@
     &:hover {
       #{$property}: $value;
     }
+  }
+}
+
+@mixin disabled-opacity {
+  cursor: not-allowed;
+  opacity: $disabled-opacity;
+}
+
+@mixin disabled-greyed-text-only {
+  cursor: not-allowed;
+
+  * {
+    color: $color-secondary;
   }
 }

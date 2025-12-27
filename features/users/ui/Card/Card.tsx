@@ -1,10 +1,14 @@
-import { CardProps } from "@/types";
-import { Typography } from "@shared/ui";
-import { clsx } from "clsx";
 import Image from "next/image";
 import Link from "next/link";
+
+import { clsx } from "clsx";
+
+import { CardProps } from "@/types";
+
+import { Typography } from "@shared/ui";
+
 import { genericBlurData } from "../../lib/constants";
-import FavoritesWidget from "../FavoritesWidget/FavoritesWidget";
+import FavoritesButtonWidget from "../FavoritesButtonWidget/FavoritesButtonWidget";
 import styles from "./Card.module.scss";
 
 const {
@@ -17,18 +21,18 @@ const {
   cardContentAtSymbol,
 } = styles;
 
-const Card = ({ user }: CardProps) => {
+const Card = ({ user, priority = false }: CardProps) => {
   // TODO The cards are shuffling on hover, more noticeable on safari, seems to be the border
 
   return (
-    <Link href={`/${user.id}`} data-testid="card">
+    <Link href={`/${user.login}`} data-testid="card">
       <article className={card}>
         <div className={cardImageContainer}>
           <Image
             src={user.avatarUrl}
             alt={user.login}
             fill
-            priority
+            priority={priority}
             sizes="(min-width: 48rem) 9.375rem, 19.4375rem"
             placeholder="blur"
             blurDataURL={genericBlurData}
@@ -42,7 +46,7 @@ const Card = ({ user }: CardProps) => {
           </Typography>
         </div>
         <div className={cardOptions}>
-          <FavoritesWidget id={user.id} user={user} />
+          <FavoritesButtonWidget id={user.id} user={user} />
         </div>
       </article>
     </Link>

@@ -1,0 +1,16 @@
+@use "../../../../styles/main" as *;
+
+.favoritesButtonWidgetIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  stroke-width: 0.125rem;
+}
+
+.favoritesButtonWidgetEmptyStar {
+  stroke: $color-warning;
+}
+
+.favoritesButtonWidgetFilledStar {
+  stroke: $color-warning;
+  fill: $color-warning;
+}

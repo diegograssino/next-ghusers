@@ -1,8 +1,8 @@
 export type Styles = {
-  'cardGrid': string;
-  'cardGridSkeleton': string;
-  'pulse': string;
-  'spin': string;
+  cardGrid: string;
+  cardGridSkeleton: string;
+  pulse: string;
+  spin: string;
 };
 
 export type ClassNames = keyof Styles;

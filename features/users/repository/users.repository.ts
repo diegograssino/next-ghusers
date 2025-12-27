@@ -6,7 +6,9 @@ import {
   GitHubUsersResponse,
   QueryParams,
 } from "@/types";
+
 import { FETCH_TIMEOUT_MS, PER_PAGE_CONFIGS } from "@shared/constants";
+
 import {
   DEFAULT_QUERY_PARAMS,
   FIRST_PAGE_PARAM,
@@ -34,7 +36,6 @@ import {
   GITHUB_API_REPOS_ENDPOINT,
   GITHUB_API_SEARCH_USERS_ENDPOINT,
   GITHUB_API_STATUS_FORBIDDEN,
-  GITHUB_API_USER_ENDPOINT,
   GITHUB_API_USERS_ENDPOINT,
   VALID_FILTER_KEYS,
 } from "../lib/constants";
@@ -149,9 +150,10 @@ export const usersRepository = {
       VALID_FILTER_KEYS.some((filterKey) => queryParams[filterKey]?.trim())
     );
     const page = isSearch
-      ? Number(pageParam) < 1
-        ? 1
-        : Number(pageParam)
+      ? (() => {
+          const pageNumber = Number(pageParam);
+          return pageNumber < 1 ? 1 : pageNumber;
+        })()
       : pageParam;
     const url = getFetchUsersUrl(
       queryParams,
@@ -169,11 +171,12 @@ export const usersRepository = {
 
       if (isSearch) {
         const data = await res.json();
+        const pageNumber = typeof page === "number" ? page : Number(page);
         const hasMore =
           data.items && data.items.length === Number(perPageParam);
         return {
           users: data.items || [],
-          nextSince: hasMore ? String(Number(page) + 1) : null,
+          nextSince: hasMore ? String(pageNumber + 1) : null,
           totalCount: data.total_count || 0,
         };
       } else {
@@ -192,12 +195,12 @@ export const usersRepository = {
     }
   },
 
-  getUser: async (id: number): Promise<GitHubUser | null> => {
+  getUser: async (login: string): Promise<GitHubUser | null> => {
     const fetchOptions = getFetchOptions();
 
     try {
       const res = await fetch(
-        `${GITHUB_API_BASE_URL}${GITHUB_API_USER_ENDPOINT}/${id}`,
+        `${GITHUB_API_BASE_URL}${GITHUB_API_USERS_ENDPOINT}/${login}`,
         fetchOptions
       );
 
@@ -254,12 +257,12 @@ export const usersRepository = {
     }
   },
 
-  getUserRepos: async (id: number): Promise<GitHubRepo[]> => {
+  getUserRepos: async (login: string): Promise<GitHubRepo[]> => {
     const fetchOptions = getFetchOptions();
 
     try {
       const res = await fetch(
-        `${GITHUB_API_BASE_URL}${GITHUB_API_USER_ENDPOINT}/${id}${GITHUB_API_REPOS_ENDPOINT}`,
+        `${GITHUB_API_BASE_URL}${GITHUB_API_USERS_ENDPOINT}/${login}${GITHUB_API_REPOS_ENDPOINT}`,
         fetchOptions
       );
 
@@ -300,7 +303,7 @@ export const usersRepository = {
             rateLimitReset,
             isRateLimit,
             hasToken,
-            url: `${GITHUB_API_BASE_URL}${GITHUB_API_USER_ENDPOINT}/${id}${GITHUB_API_REPOS_ENDPOINT}`,
+            url: `${GITHUB_API_BASE_URL}${GITHUB_API_USERS_ENDPOINT}/${login}${GITHUB_API_REPOS_ENDPOINT}`,
           });
 
           return [];

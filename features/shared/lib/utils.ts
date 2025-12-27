@@ -1,5 +1,7 @@
-import { DeviceType, PageConfig, PageParamsProps, QueryParams } from "@/types";
 import { v4 } from "uuid";
+
+import { DeviceType, PageConfig, PageParamsProps, QueryParams } from "@/types";
+
 import {
   VALID_FILTER_PARAMS,
   VALID_FOLLOWERS_VALUES,
@@ -7,19 +9,19 @@ import {
 import { PER_PAGE_CONFIGS } from "../constants";
 import { log } from "./logger";
 
+export const getStringParam = (
+  value: string | string[] | undefined
+): string | undefined => {
+  if (Array.isArray(value)) {
+    return value[0];
+  }
+  return value;
+};
+
 export const getPageConfig = async (
   pageParams: PageParamsProps
 ): Promise<PageConfig> => {
   const searchParams = await pageParams.searchParams;
-
-  const getStringParam = (
-    value: string | string[] | undefined
-  ): string | undefined => {
-    if (Array.isArray(value)) {
-      return value[0];
-    }
-    return value;
-  };
 
   const deviceParam = getStringParam(searchParams.device);
   const deviceType: DeviceType = (deviceParam as DeviceType) || "desktop";
@@ -69,4 +71,44 @@ export const getStyleClass = <T extends Record<string, string>>(
   key: string | undefined
 ): string | undefined => {
   return key && key in styles ? styles[key as keyof T] : undefined;
+};
+
+const accumulateOffsetTop = (element: HTMLElement | null): number => {
+  if (!element) return 0;
+  return (
+    element.offsetTop +
+    accumulateOffsetTop(element.offsetParent as HTMLElement | null)
+  );
+};
+
+export const getScrollPositionWithOffset = (
+  element: HTMLElement,
+  offset: number
+): number => accumulateOffsetTop(element) - offset;
+
+export const scrollToElementWithOffset = (
+  elementId: string,
+  offset: number,
+  maxRetries = 3
+): void => {
+  const attemptScroll = (retryCount = 0) => {
+    requestAnimationFrame(() => {
+      const targetElement = document.getElementById(elementId);
+      if (!targetElement) {
+        if (retryCount < maxRetries) {
+          setTimeout(() => attemptScroll(retryCount + 1), 50);
+        }
+        return;
+      }
+
+      const offsetPosition = getScrollPositionWithOffset(targetElement, offset);
+
+      window.scrollTo({
+        top: Math.max(0, offsetPosition),
+        behavior: "smooth",
+      });
+    });
+  };
+
+  attemptScroll();
 };

@@ -7,9 +7,6 @@
   height: $layout-breadcrumbs-height;
   position: sticky;
   top: $layout-navbar-height;
-
-  // TODO add better z-index for hierarchy system
-  z-index: 99;
   background-color: $color-background;
 }
 
@@ -20,6 +17,5 @@
   width: 100%;
   height: $layout-breadcrumbs-height;
   gap: 0.5rem;
-  padding: 0 1.25rem;
   box-sizing: border-box;
 }

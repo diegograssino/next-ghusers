@@ -2,8 +2,7 @@
   "editor.formatOnSave": true,
   "files.autoSave": "onFocusChange",
   "editor.codeActionsOnSave": {
-    "source.fixAll": "always",
-    "source.organizeImports": "always"
+    "source.fixAll.eslint": "always"
   },
   "todo-tree.highlights.customHighlight": {
     "TODO": {
@@ -28,9 +27,11 @@
       "iconColour": "#2E7D32"
     }
   },
-  "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*\\*)\\s*($TAGS)(.*)",
+  "todo-tree.regex.regex": "(?://|#|<!--|;|/\\*\\*?|^\\s*\\*)\\s+\\b($TAGS)\\b(?::|\\s)(.*)",
   "todo-tree.regex.regexCaseSensitive": false,
   "todo-tree.general.tags": ["TODO", "FIX", "DOC"],
+  "todo-tree.filtering.excludeGlobs": ["**/node_modules/**"],
+  "todo-tree.filtering.useBuiltInExcludes": "search excludes",
   "cSpell.enabled": true,
   "cSpell.enabledFileTypes": {
     "typescript": true,
@@ -56,6 +57,6 @@
     "**/.husky/**",
     "**/public/**"
   ],
-  // TODO: Add ignore words here if you found any check with errors
+  // DOC: Add ignore words here if you found any check with errors
   "cSpell.ignoreWords": ["tabler"]
 }

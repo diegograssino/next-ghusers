@@ -4,11 +4,12 @@ import {
   getNonLoginFilters,
 } from "@/features/users/lib/utils";
 import { FiltersInfoProps } from "@/types";
+
 import { useSharedContext } from "@shared/contexts";
 import { Typography } from "@shared/ui";
+import { IconX } from "@tabler/icons-react";
 import { useFiltersContext } from "@users/contexts";
 
-import { IconX } from "@tabler/icons-react";
 import Pill from "../Pill/Pill";
 import styles from "./FilterInfo.module.scss";
 
@@ -28,7 +29,6 @@ const FiltersInfo = ({ totalCount }: FiltersInfoProps) => {
   const { isLoadingUsers } = useSharedContext();
   const { filters, clearFilters, removeFilter } = useFiltersContext();
 
-  // TODO Work on responsivness
   const isOneUserFound = totalCount === 1;
   const nonLoginFilters = getNonLoginFilters(filters);
   const isOtherFiltersApplied = nonLoginFilters.length > 0;

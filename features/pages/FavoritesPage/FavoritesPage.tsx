@@ -1,36 +1,27 @@
 "use client";
 import { getUniqueId } from "@/features/shared/lib/utils";
 import { FavoritesPageProps } from "@/types";
+
+import { Z_INDEX_STICKY_CONTENT } from "@shared/constants";
 import { useFiltersToUrl } from "@shared/hooks";
 import { PageMessage } from "@shared/ui";
 import { useFavoritesContext, useFiltersContext } from "@users/contexts";
 import { useInfiniteFavoriteUsers } from "@users/services";
-import { Card, CardGrid, Filters, SearchInput } from "@users/ui";
+import { Card, CardGrid, Filters } from "@users/ui";
+
 import styles from "./FavoritesPage.module.scss";
 
-const {
-  favoritesPage,
-  favoritesPageAside,
-  favoritesPageResults,
-  favoritesPageSearch,
-} = styles;
+const { favoritesPage, favoritesPageAside, favoritesPageResults } = styles;
 
 const FavoritesPage = ({ pageConfig }: FavoritesPageProps) => {
-  // TODO UI should show clearly that is a favorites page, not a search page, maybe it should be the dashboard and the search be below the user data, orders and controls
   const { favorites, updateFavorite } = useFavoritesContext();
   const { filters } = useFiltersContext();
   useFiltersToUrl(filters);
 
   const { perPageConfig } = pageConfig;
 
-  const {
-    users,
-    isError,
-    isLoading,
-    isNoResults,
-    totalCount,
-    hasNoFavorites,
-  } = useInfiniteFavoriteUsers(favorites, filters, updateFavorite);
+  const { users, isError, isLoading, isNoResults, totalCount, hasNoFavorites } =
+    useInfiniteFavoriteUsers(favorites, filters, updateFavorite);
 
   if (isError) {
     return <PageMessage message="error" />;
@@ -46,10 +37,10 @@ const FavoritesPage = ({ pageConfig }: FavoritesPageProps) => {
 
   return (
     <div className={favoritesPage}>
-      <div className={favoritesPageSearch}>
-        <SearchInput />
-      </div>
-      <aside className={favoritesPageAside}>
+      <aside
+        className={favoritesPageAside}
+        style={{ zIndex: Z_INDEX_STICKY_CONTENT }}
+      >
         <Filters totalCount={totalCount} />
       </aside>
       <div className={favoritesPageResults}>
@@ -57,8 +48,12 @@ const FavoritesPage = ({ pageConfig }: FavoritesPageProps) => {
           <PageMessage message="noResults" />
         ) : (
           <CardGrid perPageConfig={perPageConfig}>
-            {users.map((user) => (
-              <Card key={getUniqueId()} user={user} />
+            {users.map((user, index) => (
+              <Card
+                key={getUniqueId()}
+                user={user}
+                priority={index < Number(perPageConfig.items)}
+              />
             ))}
           </CardGrid>
         )}
@@ -68,4 +63,3 @@ const FavoritesPage = ({ pageConfig }: FavoritesPageProps) => {
 };
 
 export default FavoritesPage;
-
