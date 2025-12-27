@@ -13,8 +13,8 @@ $base-color-accent2-dark: #3f3f3f !default;
 $base-color-success-dark: #059669 !default;
 $base-color-error-dark: #dc2626 !default;
 $base-color-warning-dark: #d97706 !default;
-$base-color-muted: #9a9a9a !default; // DOC Greyed text color (equivalent to foreground with 0.6 opacity on light background)
-$base-color-muted-dark: #8a8a8a !default; // DOC Greyed text color for dark theme (equivalent to foreground with 0.6 opacity on dark background)
+$base-color-muted: #6b6b6b !default; // DOC Greyed text color - darker for WCAG AA contrast (4.5:1) on light backgrounds
+$base-color-muted-dark: #a0a0a0 !default; // DOC Greyed text color for dark theme - lighter for WCAG AA contrast (4.5:1) on dark backgrounds
 $base-color-black: #000 !default;
 $base-color-white: #fff !default;
 

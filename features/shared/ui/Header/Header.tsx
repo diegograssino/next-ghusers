@@ -79,7 +79,7 @@ const Header = ({ rightSlot = undefined }: HeaderProps) => {
               className={headerBrandTitle}
             >
               Github{" "}
-              <Typography as="span" size="md" weight="bold" variant="accent">
+              <Typography as="span" size="md" weight="bold" variant="primary">
                 Users
               </Typography>
             </Typography>

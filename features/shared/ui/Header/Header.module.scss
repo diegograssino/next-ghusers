@@ -78,13 +78,8 @@
 }
 
 .headerBrandIcon {
-  @include property-per-breakpoint(
-    color,
-    (
-      base: $color-accent,
-      md: $color-primary,
-    )
-  );
+  // DOC Use primary color (light) for better contrast on dark header background (WCAG AA)
+  color: $color-primary;
   @include property-per-breakpoint(
     width,
     (

@@ -32,7 +32,7 @@ const FiltersInputs = () => {
     <div className={filtersInputs}>
       <section className={filterInputsFollowers}>
         <Typography
-          as="h5"
+          as="h3"
           size="sm"
           weight="bold"
           className={filterInputsFollowersTitle}

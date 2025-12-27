@@ -21,7 +21,7 @@ const {
   cardContentAtSymbol,
 } = styles;
 
-const Card = ({ user }: CardProps) => {
+const Card = ({ user, priority = false }: CardProps) => {
   // TODO The cards are shuffling on hover, more noticeable on safari, seems to be the border
 
   return (
@@ -32,7 +32,7 @@ const Card = ({ user }: CardProps) => {
             src={user.avatarUrl}
             alt={user.login}
             fill
-            priority
+            priority={priority}
             sizes="(min-width: 48rem) 9.375rem, 19.4375rem"
             placeholder="blur"
             blurDataURL={genericBlurData}

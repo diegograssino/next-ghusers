@@ -5,6 +5,7 @@ import { Repo, User } from "./users";
 
 export interface CardProps {
   user: User;
+  priority?: boolean; // DOC Only set to true for above-the-fold images (first 6-8 cards)
 }
 
 export interface CardWidgetProps {

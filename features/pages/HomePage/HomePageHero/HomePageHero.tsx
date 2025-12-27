@@ -22,7 +22,7 @@ const HomePageHero = () => {
           variant="accent"
           size="lg"
         >
-          <Typography variant="inverse" size="md">
+          <Typography variant="primary" size="md">
             Go to Favorites
           </Typography>
         </Button>

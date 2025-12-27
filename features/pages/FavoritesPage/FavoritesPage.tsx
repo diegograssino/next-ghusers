@@ -48,8 +48,12 @@ const FavoritesPage = ({ pageConfig }: FavoritesPageProps) => {
           <PageMessage message="noResults" />
         ) : (
           <CardGrid perPageConfig={perPageConfig}>
-            {users.map((user) => (
-              <Card key={getUniqueId()} user={user} />
+            {users.map((user, index) => (
+              <Card
+                key={getUniqueId()}
+                user={user}
+                priority={index < Number(perPageConfig.items)}
+              />
             ))}
           </CardGrid>
         )}
