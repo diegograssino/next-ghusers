@@ -6,7 +6,9 @@ import { TypographyProps } from "@/types";
 import styles from "./Typography.module.scss";
 
 const { typography, ellipsis, shadow, disabled } = styles;
-
+// TODO We should be able to accept all the colors available, is a problem to add every color to the props
+// TODO Check why we should use undefined to apply foreground color
+// TODO Work in responsive measures, maybe should start bigger
 const Typography = ({
   children,
   as: Tag = "p",

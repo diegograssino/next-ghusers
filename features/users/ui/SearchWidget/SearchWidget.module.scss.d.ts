@@ -1,10 +1,9 @@
 export type Styles = {
   pulse: string;
-  searchWidget: string;
-  searchWidgetContainer: string;
-  searchWidgetIcon: string;
-  searchWidgetInnerContainer: string;
-  searchWidgetLoading: string;
+  searchWidgetDesktop: string;
+  searchWidgetMobileButton: string;
+  searchWidgetMobileButtonContainer: string;
+  searchWidgetMobileButtonIcon: string;
   spin: string;
 };
 

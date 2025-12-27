@@ -4,7 +4,6 @@ import { PageParamsProps } from "@/types";
 
 import { fetchUsersAction } from "@users/actions";
 import { INITIAL_PAGE_PARAM } from "@users/constants";
-import { FiltersProvider } from "@users/contexts";
 
 const Home = async (pageParams: PageParamsProps) => {
   const pageConfig = await getPageConfig(pageParams);
@@ -15,11 +14,7 @@ const Home = async (pageParams: PageParamsProps) => {
     queryParams: pageConfig.initialFilters,
   });
 
-  return (
-    <FiltersProvider initialFilters={pageConfig.initialFilters}>
-      <HomePage initialUsers={initialUsers} pageConfig={pageConfig} />
-    </FiltersProvider>
-  );
+  return <HomePage initialUsers={initialUsers} pageConfig={pageConfig} />;
 };
 
 export default Home;

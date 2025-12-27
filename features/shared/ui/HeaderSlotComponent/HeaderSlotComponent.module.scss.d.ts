@@ -1,7 +1,6 @@
 export type Styles = {
-  favoritesPage: string;
-  favoritesPageAside: string;
-  favoritesPageResults: string;
+  headerSlotComponentDrawer: string;
+  headerSlotComponentList: string;
   pulse: string;
   spin: string;
 };

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-import { CardWidgetProps, User } from "@/types";
+import { FavoritesButtonWidgetProps } from "@/types";
 
 import { IconStar, IconStarFilled } from "@tabler/icons-react";
 import { useFavoritesContext } from "@users/contexts";
@@ -10,10 +10,6 @@ import styles from "./FavoritesButtonWidget.module.scss";
 
 const { favoritesButtonWidgetEmptyStar, favoritesButtonWidgetFilledStar } =
   styles;
-
-interface FavoritesButtonWidgetProps extends CardWidgetProps {
-  user: User;
-}
 
 const FavoritesButtonWidget = ({ id, user }: FavoritesButtonWidgetProps) => {
   const { checkFavorite, addFavorite, removeFavorite, isAddingFavorite } =

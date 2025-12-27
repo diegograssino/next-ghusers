@@ -22,6 +22,7 @@
   --color-success: #{$base-color-success};
   --color-error: #{$base-color-error};
   --color-warning: #{$base-color-warning};
+  --color-muted: #{$base-color-muted};
   --color-black: #{$base-color-black};
   --color-white: #{$base-color-white};
 
@@ -35,6 +36,7 @@
     --color-success: #{$base-color-success-dark};
     --color-error: #{$base-color-error-dark};
     --color-warning: #{$base-color-warning-dark};
+    --color-muted: #{$base-color-muted-dark};
     --color-black: #{$base-color-black};
     --color-white: #{$base-color-white};
   }

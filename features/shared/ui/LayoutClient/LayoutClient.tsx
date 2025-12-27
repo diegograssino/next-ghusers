@@ -16,7 +16,6 @@ const { layoutClient } = styles;
 
 const LayoutClient = ({
   children,
-  headerCentralSlot = undefined,
   headerRightSlot = undefined,
 }: LayoutClientProps) => {
   const { modalState } = useModalContext();
@@ -27,7 +26,7 @@ const LayoutClient = ({
 
   return (
     <div className={layoutClient}>
-      <Header centerSlot={headerCentralSlot} rightSlot={headerRightSlot} />
+      <Header rightSlot={headerRightSlot} />
       <Breadcrumbs />
       <Container as="main">{children}</Container>
       <Footer />

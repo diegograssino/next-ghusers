@@ -8,6 +8,8 @@ import {
   useState,
 } from "react";
 
+import { useMediaQuery } from "usehooks-ts";
+
 import { DeviceType } from "@/types";
 
 import { DEFAULT_VIEWPORT_HEIGHT } from "@shared/constants";
@@ -79,21 +81,15 @@ export const SharedProvider = ({
     }
     return "desktop";
   }, [deviceTypeProp]);
+  // TODO Refactor to receive the breakpoint from constants
+  const isMobileClientSide = useMediaQuery(`(max-width: 768px)`);
 
   const isMobileServerSide = useMemo(() => {
     return deviceType === "mobile";
   }, [deviceType]);
 
-  const isMobileClientSide = useMemo(() => {
-    if (typeof window === "undefined") return false;
-    const isMobile =
-      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
-      window.innerWidth < 768;
-    return isMobile;
-  }, []);
-
   const isMobile = useMemo(() => {
-    return isMobileServerSide || isMobileClientSide;
+    return isMobileClientSide ? isMobileClientSide : isMobileServerSide;
   }, [isMobileServerSide, isMobileClientSide]);
 
   useEffect(() => {

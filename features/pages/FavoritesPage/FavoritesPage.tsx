@@ -7,16 +7,11 @@ import { useFiltersToUrl } from "@shared/hooks";
 import { PageMessage } from "@shared/ui";
 import { useFavoritesContext, useFiltersContext } from "@users/contexts";
 import { useInfiniteFavoriteUsers } from "@users/services";
-import { Card, CardGrid, Filters, SearchWidget } from "@users/ui";
+import { Card, CardGrid, Filters } from "@users/ui";
 
 import styles from "./FavoritesPage.module.scss";
 
-const {
-  favoritesPage,
-  favoritesPageAside,
-  favoritesPageResults,
-  favoritesPageSearch,
-} = styles;
+const { favoritesPage, favoritesPageAside, favoritesPageResults } = styles;
 
 const FavoritesPage = ({ pageConfig }: FavoritesPageProps) => {
   const { favorites, updateFavorite } = useFavoritesContext();
@@ -42,12 +37,6 @@ const FavoritesPage = ({ pageConfig }: FavoritesPageProps) => {
 
   return (
     <div className={favoritesPage}>
-      <div
-        className={favoritesPageSearch}
-        style={{ zIndex: Z_INDEX_STICKY_CONTENT }}
-      >
-        <SearchWidget />
-      </div>
       <aside
         className={favoritesPageAside}
         style={{ zIndex: Z_INDEX_STICKY_CONTENT }}

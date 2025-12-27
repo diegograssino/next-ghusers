@@ -13,23 +13,12 @@ import { useFiltersToUrl } from "@shared/hooks";
 import { Button, Hero, PageMessage, Typography } from "@shared/ui";
 import { useFiltersContext } from "@users/contexts";
 import useInfiniteUsers from "@users/services";
-import {
-  Card,
-  CardGrid,
-  CardGridSkeleton,
-  Filters,
-  SearchWidget,
-} from "@users/ui";
+import { Card, CardGrid, CardGridSkeleton, Filters } from "@users/ui";
 
 import styles from "./HomePage.module.scss";
 
-const {
-  homePage,
-  homePageAside,
-  homePageResults,
-  homePageSearch,
-  homePageHeroContent,
-} = styles;
+const { homePage, homePageAside, homePageResults, homePageHeroContent } =
+  styles;
 
 const HomePage = ({ initialUsers, pageConfig }: HomePageProps) => {
   // TODO On infinite scroll loading state, we should show a skeleton, seems that is not being present now
@@ -61,13 +50,6 @@ const HomePage = ({ initialUsers, pageConfig }: HomePageProps) => {
       </Hero>
       <div id={ROUTES.HOME.sectionId} />
       <div className={homePage}>
-        <div
-          className={homePageSearch}
-          style={{ zIndex: Z_INDEX_STICKY_CONTENT }}
-        >
-          {/* TODO Search input should be in the header and open a palette style modal*/}
-          <SearchWidget />
-        </div>
         <aside
           className={homePageAside}
           style={{ zIndex: Z_INDEX_STICKY_CONTENT }}

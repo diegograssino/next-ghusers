@@ -8,10 +8,9 @@ import { HeaderSlotItem } from "@/types";
 import { useModalContext } from "@shared/contexts";
 import { Button, Typography } from "@shared/ui";
 
-import headerStyles from "../Header/Header.module.scss";
-import HeaderIconButtonWidget from "../HeaderIconButtonWidget/HeaderIconButtonWidget";
+import styles from "./HeaderSlotComponent.module.scss";
 
-const { headerNavbarCenterList, headerSlotDrawer } = headerStyles;
+const { headerSlotComponentList, headerSlotComponentDrawer } = styles;
 
 export interface HeaderSlotComponentProps {
   components: HeaderSlotItem | HeaderSlotItem[];
@@ -37,17 +36,6 @@ const HeaderSlotComponent = ({
 
   const renderComponent = (item: HeaderSlotItem): React.ReactNode => {
     switch (item.type) {
-      case "favorites":
-        return (
-          <HeaderIconButtonWidget
-            key={getUniqueId()}
-            type={item.type}
-            onClick={variant === "drawer" ? handleItemClick : undefined}
-            showLabel={variant === "drawer"}
-            variant={variant}
-          />
-        );
-
       case "link":
         if (!item.href || !item.label) return null;
         const linkButtonProps = {
@@ -89,7 +77,7 @@ const HeaderSlotComponent = ({
 
   if (variant === "drawer") {
     return (
-      <div className={headerSlotDrawer}>
+      <div className={headerSlotComponentDrawer}>
         {renderedComponents.map((component) => (
           <div key={getUniqueId()}>{component}</div>
         ))}
@@ -98,7 +86,7 @@ const HeaderSlotComponent = ({
   }
 
   return (
-    <ul className={headerNavbarCenterList}>
+    <ul className={headerSlotComponentList}>
       {renderedComponents.map((component) => (
         <li key={getUniqueId()}>{component}</li>
       ))}

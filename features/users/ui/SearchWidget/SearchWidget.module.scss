@@ -1,96 +1,67 @@
 @use "../../../../styles/main" as *;
 
-.searchWidgetContainer {
+.searchWidgetMobileButton {
   display: flex;
-  flex-direction: column;
-}
-
-.searchWidgetInnerContainer {
-  position: relative;
-  @include property-per-breakpoint(
-    height,
-    (
-      base: 2.5rem,
-      sm: 2.65rem,
-      md: 2.8rem,
-      lg: 2.95rem,
-      xl: 3.05rem,
-      2xl: 3.1rem,
-      3xl: 3.1563rem,
-    )
-  );
-}
-
-.searchWidget {
+  align-items: center;
+  justify-content: center;
+  flex: 1;
   width: 100%;
-  height: 100%;
   box-sizing: border-box;
   border: 2px solid $color-foreground;
   border-radius: $border-radius;
-  padding-right: 3rem;
   background-color: $color-background;
   color: $color-foreground;
   transition: $transition-fast;
   font-family: $font-primary;
 
-  // TODO Check why this styles are not being applied on mobile devices (or every device?)
-
-  @include property-per-breakpoint(
-    padding,
-    (
-      base: $input-padding-base,
-      sm: $input-padding-sm,
-      md: $input-padding-md,
-      lg: $input-padding-lg,
-      xl: $input-padding-xl,
-      2xl: $input-padding-2xl,
-      3xl: $input-padding-3xl,
-    )
-  );
-
-  &:disabled {
-    cursor: not-allowed;
+  @media (min-width: $screen-lg) {
+    display: none;
   }
 }
 
-.searchWidgetIcon {
-  position: absolute;
-  right: 1rem;
-  pointer-events: none;
+.searchWidgetDesktop {
+  display: none;
+  flex: 1;
+  width: 100%;
+
+  @media (min-width: $screen-lg) {
+    display: block;
+  }
+}
+
+.searchWidgetMobileButtonContainer {
   display: flex;
   align-items: center;
-  justify-content: center;
-  top: 0%;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  width: 100%;
+}
+
+.searchWidgetMobileButtonIcon {
+  color: $color-foreground;
+
+  @include property-per-breakpoint(
+    width,
+    (
+      base: 0.875rem,
+      sm: 0.9375rem,
+      md: 1rem,
+      lg: 1.125rem,
+      xl: 1.25rem,
+      2xl: 1.375rem,
+      3xl: 1.5rem,
+    )
+  );
   @include property-per-breakpoint(
     height,
     (
-      base: 2.5rem,
-      sm: 2.65rem,
-      md: 2.8rem,
-      lg: 2.95rem,
-      xl: 3.05rem,
-      2xl: 3.1rem,
-      3xl: 3.1563rem,
+      base: 0.875rem,
+      sm: 0.9375rem,
+      md: 1rem,
+      lg: 1.125rem,
+      xl: 1.25rem,
+      2xl: 1.375rem,
+      3xl: 1.5rem,
     )
   );
-
-  & svg {
-    @include property-per-breakpoint(
-      width,
-      (
-        base: 0.875rem,
-        sm: 0.9375rem,
-        md: 1rem,
-        lg: 1.125rem,
-        xl: 1.25rem,
-        2xl: 1.375rem,
-        3xl: 1.5rem,
-      )
-    );
-  }
-}
-
-.searchWidgetLoading {
-  animation: $animation-spin;
-  top: 50%;
 }

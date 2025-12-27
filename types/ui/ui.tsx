@@ -21,7 +21,8 @@ export type ColorVariants =
   | "accent2"
   | "success"
   | "error"
-  | "warning";
+  | "warning"
+  | "muted";
 
 // DOC Button-specific variants - extends ColorVariants with Button-only variants
 export type ButtonVariants = ColorVariants | "unstyled";
@@ -118,13 +119,11 @@ type ButtonAsLink = Omit<ComponentProps<typeof Link>, "color"> & {
 export type ButtonProps = ButtonAsButton | ButtonAsLink;
 
 export interface HeaderProps {
-  centerSlot?: HeaderSlotItem | HeaderSlotItem[];
   rightSlot?: HeaderSlotItem | HeaderSlotItem[];
 }
 
 export interface LayoutClientProps {
   children: ReactNode;
-  headerCentralSlot?: HeaderSlotItem | HeaderSlotItem[];
   headerRightSlot?: HeaderSlotItem | HeaderSlotItem[];
 }
 

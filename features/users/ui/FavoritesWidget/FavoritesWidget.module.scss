@@ -1,0 +1,54 @@
+@use "../../../../styles/main" as *;
+
+.favoritesWidget {
+  display: flex;
+  align-items: center;
+
+  @include property-per-breakpoint(
+    gap,
+    (
+      base: 0.25rem,
+      xl: 0.5rem,
+    )
+  );
+}
+
+.favoritesWidgetDrawer {
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.favoritesWidgetIcon {
+  @include property-per-breakpoint(
+    width,
+    (
+      base: $font-size-xs-base,
+      sm: $font-size-xs-sm,
+      md: $font-size-xs-md,
+      lg: $font-size-xs-lg,
+      xl: $font-size-xs-xl,
+      2xl: $font-size-xs-2xl,
+      3xl: $font-size-xs-3xl,
+    )
+  );
+  @include property-per-breakpoint(
+    height,
+    (
+      base: $font-size-xs-base,
+      sm: $font-size-xs-sm,
+      md: $font-size-xs-md,
+      lg: $font-size-xs-lg,
+      xl: $font-size-xs-xl,
+      2xl: $font-size-xs-2xl,
+      3xl: $font-size-xs-3xl,
+    )
+  );
+}
+
+.favoritesWidgetIconHeader {
+  color: $color-primary;
+}
+
+.favoritesWidgetIconDrawer {
+  color: $color-foreground;
+}

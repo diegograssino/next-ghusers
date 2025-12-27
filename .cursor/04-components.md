@@ -6,6 +6,7 @@
 - Use named exports for hooks, utilities, types, and skeleton components
 - **IMPORTANT**: Import CSS/SCSS modules and destructure styles OUTSIDE the component (before component definition) - do this only once, not inside the component
 - Use functional components with TypeScript
+- **Internal components**: If a component is only used internally by a parent component (not exported from barrel exports), it should be placed in a folder inside the parent component's folder. All standard component rules apply (folder structure, SCSS modules, etc.)
 
 ### Export Patterns
 

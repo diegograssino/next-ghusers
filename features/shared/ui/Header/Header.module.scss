@@ -7,25 +7,35 @@
   top: 0;
 }
 
-.headerNavbarContainer {
+.headerContainer {
   height: $layout-navbar-height;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
   align-items: center;
-  gap: 1rem;
-}
+  gap: 0 2rem;
+  grid-template-columns: 1fr 3fr 1fr;
 
-.headerNavbarCenter {
-  display: flex;
-  align-items: center;
+  @media (min-width: $screen-md) {
+    grid-template-columns: 2fr 3fr 1fr;
+  }
 
-  // DOC Hide on md and below, show on larger screens
-  @media (max-width: $screen-md) {
-    display: none;
+  @media (min-width: $screen-lg) {
+    grid-template-columns: 1fr 3fr 1fr;
+  }
+
+  @media (min-width: $screen-xl) {
+    grid-template-columns: 1fr 3fr 1fr;
+  }
+
+  @media (min-width: $screen-2xl) {
+    grid-template-columns: 1fr 2fr 1fr;
+  }
+
+  @media (min-width: $screen-3xl) {
+    grid-template-columns: 1fr 3fr 1fr;
   }
 }
 
-.headerNavbarCenterList {
+.headerCenterList {
   display: flex;
   list-style: none;
   margin: 0;
@@ -33,19 +43,30 @@
   gap: 1rem;
 }
 
-.headerNavbarRight {
+.headerRightSlotDesktop {
+  display: none;
+  align-items: center;
+  justify-content: flex-end;
+
+  @media (min-width: $screen-lg) {
+    display: flex;
+  }
+}
+
+.headerRightSlotMobile {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 
-  // DOC Hide on md and below, show on larger screens
-  @media (max-width: $screen-md) {
+  @media (min-width: $screen-lg) {
     display: none;
   }
 }
 
-.headerNavbarBrand {
+.headerBrand {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   text-decoration: none;
   @include property-per-breakpoint(
     gap,
@@ -56,8 +77,14 @@
   );
 }
 
-.headerNavbarIcon {
-  color: $color-primary;
+.headerBrandIcon {
+  @include property-per-breakpoint(
+    color,
+    (
+      base: $color-accent,
+      md: $color-primary,
+    )
+  );
   @include property-per-breakpoint(
     width,
     (
@@ -84,18 +111,17 @@
   );
 }
 
-.headerNavbarMenuButton {
-  display: none;
-  align-items: center;
-  justify-content: center;
-
-  // DOC Show on md and below, hide on larger screens
-  @media (max-width: $screen-md) {
-    display: flex;
-  }
+.headerBrandTitle {
+  @include property-per-breakpoint(
+    display,
+    (
+      base: none,
+      md: block,
+    )
+  );
 }
 
-.headerNavbarMenuIcon {
+.headerRightSlotMobileIcon {
   color: $color-primary;
   @include property-per-breakpoint(
     width,
@@ -115,20 +141,14 @@
   );
 }
 
-.headerDrawerContent {
+.headerDrawer {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-lg, 1.5rem);
+  gap: 1.5rem;
 
   > *:not(:last-child) {
-    padding-bottom: var(--spacing-lg, 1.5rem);
+    padding-bottom: 1.5rem;
     border-bottom: 1px solid
       color-mix(in srgb, $color-foreground 20%, transparent);
   }
-}
-
-.headerSlotDrawer {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md, 1rem);
 }

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "concurrently -n \"next,scss\" -c \"cyan,magenta\" \"next dev --turbopack\" \"npm run type-check:scss\"",
     "build": "npm run type-check:scss:build && next build",
     "start": "next start",
     "lint": "next lint",

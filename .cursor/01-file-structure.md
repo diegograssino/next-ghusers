@@ -123,8 +123,16 @@ ComponentName/
   ├── ComponentName.tsx              # Component file (PascalCase)
   ├── ComponentName.module.scss      # Styles (CSS Modules)
   ├── ComponentName.spec.tsx         # Tests (same name + .spec)
-  └── ComponentName.constants.ts     # Optional: Component-specific constants
+  ├── ComponentName.constants.ts     # Optional: Component-specific constants
+  └── InternalComponent/             # Optional: Internal sub-components (only used by parent)
+      └── InternalComponent.tsx      # Internal component follows same structure rules
 ```
+
+**Internal Components**:
+
+- If a component is only used internally by a parent component (not exported from barrel exports), it should be placed in a folder inside the parent component's folder
+- All standard component rules apply (folder structure, SCSS modules, etc.)
+- Example: `SearchWidget/SearchInput/SearchInput.tsx` - `SearchInput` is only used by `SearchWidget`
 
 **Component-specific constants files**:
 

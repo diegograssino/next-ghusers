@@ -1,8 +1,10 @@
 export type Styles = {
-  favoritesPage: string;
-  favoritesPageAside: string;
-  favoritesPageResults: string;
   pulse: string;
+  searchInput: string;
+  searchInputContainer: string;
+  searchInputIcon: string;
+  searchInputInput: string;
+  searchInputLoading: string;
   spin: string;
 };
 

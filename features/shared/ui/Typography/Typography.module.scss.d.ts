@@ -8,6 +8,7 @@ export type Styles = {
   inverse: string;
   lg: string;
   md: string;
+  muted: string;
   normal: string;
   primary: string;
   pulse: string;

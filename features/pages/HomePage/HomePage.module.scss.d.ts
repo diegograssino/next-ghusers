@@ -4,7 +4,6 @@ export type Styles = {
   homePageHeroContent: string;
   homePageInfo: string;
   homePageResults: string;
-  homePageSearch: string;
   pulse: string;
   spin: string;
 };

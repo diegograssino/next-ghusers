@@ -4,12 +4,12 @@ import Link from "next/link";
 
 import { HeaderProps } from "@/types";
 
-import { Z_INDEX_STICKY } from "@shared/constants";
 import { useModalContext, useSharedContext } from "@shared/contexts";
 import { Drawer } from "@shared/ui";
 import { IconBrandGithub, IconMenu } from "@tabler/icons-react";
+import { FavoritesWidget, SearchWidget } from "@users/ui";
 
-import { ROUTES } from "../../constants";
+import { ROUTES, Z_INDEX_STICKY } from "../../constants";
 import Button from "../Button/Button";
 import Container from "../Container/Container";
 import HeaderSlotComponent from "../HeaderSlotComponent/HeaderSlotComponent";
@@ -18,33 +18,38 @@ import styles from "./Header.module.scss";
 
 const {
   header,
-  headerNavbarContainer,
-  headerNavbarIcon,
-  headerNavbarBrand,
-  headerNavbarCenter,
-  headerNavbarRight,
-  headerNavbarMenuButton,
-  headerNavbarMenuIcon,
-  headerDrawerContent,
+  headerBrand,
+  headerBrandIcon,
+  headerRightSlotMobile,
+  headerRightSlotMobileIcon,
+  headerRightSlotDesktop,
+  headerDrawer,
+  headerContainer,
+  headerBrandTitle,
 } = styles;
 
-const Header = ({
-  centerSlot = undefined,
-  rightSlot = undefined,
-}: HeaderProps) => {
+const Header = ({ rightSlot = undefined }: HeaderProps) => {
   const { headerRef } = useSharedContext();
-  const { openModal } = useModalContext();
+  const { openModal, closeAllModals } = useModalContext();
 
   const handleMenuClick = () => {
-    if (!centerSlot || !rightSlot) return;
+    if (!rightSlot) return;
+
+    const isFavorites =
+      (Array.isArray(rightSlot) ? rightSlot[0] : rightSlot).type ===
+      "favorites";
 
     openModal(
       <Drawer>
-        <div className={headerDrawerContent}>
-          {centerSlot && (
-            <HeaderSlotComponent components={centerSlot} variant="drawer" />
-          )}
-          {rightSlot && (
+        {/* TODO Check here the favorites styles for the drawer */}
+        <div className={headerDrawer}>
+          {isFavorites ? (
+            <FavoritesWidget
+              onClick={closeAllModals}
+              showLabel={true}
+              variant="drawer"
+            />
+          ) : (
             <HeaderSlotComponent components={rightSlot} variant="drawer" />
           )}
         </div>
@@ -62,36 +67,37 @@ const Header = ({
       style={{ zIndex: Z_INDEX_STICKY }}
     >
       <Container>
-        <nav className={headerNavbarContainer}>
-          <Link href={ROUTES.HOME.href} className={headerNavbarBrand}>
-            <IconBrandGithub className={headerNavbarIcon} />
-            <Typography as="h1" size="md" weight="bold" variant="primary">
+        <nav className={headerContainer}>
+          <Link href={ROUTES.HOME.href} className={headerBrand}>
+            <IconBrandGithub className={headerBrandIcon} />
+            <Typography
+              as="h1"
+              size="md"
+              weight="bold"
+              variant="primary"
+              className={headerBrandTitle}
+            >
               Github{" "}
               <Typography as="span" size="md" weight="bold" variant="accent">
                 Users
               </Typography>
             </Typography>
           </Link>
-          {centerSlot && (
-            <Button
-              variant="unstyled"
-              onClick={handleMenuClick}
-              className={headerNavbarMenuButton}
-              aria-label="Open navigation menu"
-            >
-              {/* DOC Preferred a css approach instead of using client logics to hide/show the menu button, is a fair trade off by now*/}
-              <IconMenu className={headerNavbarMenuIcon} />
-            </Button>
-          )}
-          {centerSlot && (
-            <div className={headerNavbarCenter}>
-              <HeaderSlotComponent components={centerSlot} />
-            </div>
-          )}
+          <SearchWidget variant="header" />
           {rightSlot && (
-            <div className={headerNavbarRight}>
-              <HeaderSlotComponent components={rightSlot} />
-            </div>
+            <>
+              <Button
+                variant="unstyled"
+                onClick={handleMenuClick}
+                className={headerRightSlotMobile}
+                aria-label="Open navigation menu"
+              >
+                <IconMenu className={headerRightSlotMobileIcon} />
+              </Button>
+              <div className={headerRightSlotDesktop}>
+                <FavoritesWidget variant="header" />
+              </div>
+            </>
           )}
         </nav>
       </Container>

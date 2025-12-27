@@ -1,4 +1,4 @@
-import { HTMLAttributes } from "react";
+import { CSSProperties, HTMLAttributes } from "react";
 
 import { PerPageConfig } from "../shared/shared";
 import { Repo, User } from "./users";
@@ -48,4 +48,23 @@ interface Params {
 
 export interface UserPageProps {
   params?: Promise<Params>;
+}
+
+export interface FavoritesWidgetProps {
+  onClick?: () => void;
+  showLabel?: boolean;
+  variant?: "header" | "drawer";
+}
+
+export interface SearchWidgetProps {
+  variant?: "header" | "drawer";
+}
+
+export interface SearchInputProps {
+  style?: CSSProperties;
+  onEnterPress?: () => void;
+}
+
+export interface FavoritesButtonWidgetProps extends CardWidgetProps {
+  user: User;
 }

@@ -2,12 +2,12 @@
 
 .homePage {
   display: grid;
-  grid-template: "search" auto "filters" auto "results" 1fr / 1fr;
+  grid-template: "filters" auto "results" 1fr / 1fr;
   gap: 0 2rem;
   min-height: 100vh;
 
   @media (min-width: $screen-md) {
-    grid-template: "filters search" auto "filters results" 1fr / 1fr 2fr;
+    grid-template: "filters results" 1fr / 1fr 2fr;
   }
 
   @media (min-width: $screen-lg) {
@@ -24,29 +24,6 @@
 
   @media (min-width: $screen-3xl) {
     grid-template-columns: 1fr 4fr;
-  }
-}
-
-.homePageSearch {
-  grid-area: search;
-  position: sticky;
-
-  // DOC The 2 rem is a fix to avoid the search section to be overlapped by other sections, is a manual adjustment that should be fixed in the future
-  top: calc($layout-navbar-height + $layout-breadcrumbs-height - 2rem);
-  background: linear-gradient(
-    to bottom,
-    $color-background 0%,
-    $color-background 20%,
-    transparent 100%
-  );
-  padding: 1rem 0 0;
-
-  @media (max-width: #{$screen-sm - 1px}) {
-    margin-bottom: layout-hero-margin-bottom;
-    top: calc(
-      $layout-navbar-height + $layout-breadcrumbs-height -
-        $layout-hero-margin-bottom
-    );
   }
 }
 

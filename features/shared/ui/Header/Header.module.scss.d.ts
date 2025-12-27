@@ -1,15 +1,14 @@
 export type Styles = {
   header: string;
-  headerDrawerContent: string;
-  headerNavbarBrand: string;
-  headerNavbarCenter: string;
-  headerNavbarCenterList: string;
-  headerNavbarContainer: string;
-  headerNavbarIcon: string;
-  headerNavbarMenuButton: string;
-  headerNavbarMenuIcon: string;
-  headerNavbarRight: string;
-  headerSlotDrawer: string;
+  headerBrand: string;
+  headerBrandIcon: string;
+  headerBrandTitle: string;
+  headerCenterList: string;
+  headerContainer: string;
+  headerDrawer: string;
+  headerRightSlotDesktop: string;
+  headerRightSlotMobile: string;
+  headerRightSlotMobileIcon: string;
   pulse: string;
   spin: string;
 };
