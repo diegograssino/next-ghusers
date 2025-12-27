@@ -26,6 +26,7 @@ const SearchWidget = ({ variant = "header" }: SearchWidgetProps) => {
   const handleSearchButtonClick = () => {
     openModal(
       <Drawer>
+        {/* TODO add a skeleton for this */}
         <Suspense fallback={<div style={{ fontSize: "16px" }}>Loading...</div>}>
           <SearchInput
             style={{ fontSize: "16px" }}
@@ -42,6 +43,7 @@ const SearchWidget = ({ variant = "header" }: SearchWidgetProps) => {
   // DOC If variant is drawer, render SearchInput with 16px inline style to prevent mobile zoom
   if (variant === "drawer") {
     return (
+      // TODO add a skeleton for this
       <Suspense fallback={<div style={{ fontSize: "16px" }}>Loading...</div>}>
         <SearchInput
           style={{ fontSize: "16px" }}

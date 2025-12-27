@@ -1,8 +1,5 @@
 export type Styles = {
-  homePage: string;
-  homePageAside: string;
-  homePageInfo: string;
-  homePageResults: string;
+  homePageHeroContent: string;
   pulse: string;
   spin: string;
 };

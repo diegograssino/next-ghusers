@@ -68,6 +68,7 @@ const Header = ({ rightSlot = undefined }: HeaderProps) => {
     >
       <Container>
         <nav className={headerContainer}>
+          {/* TODO If we are already on the home page, we should disablethe link */}
           <Link href={ROUTES.HOME.href} className={headerBrand}>
             <IconBrandGithub className={headerBrandIcon} />
             <Typography

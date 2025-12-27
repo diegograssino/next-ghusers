@@ -1,4 +1,5 @@
 import HomePage from "@/features/pages/HomePage/HomePage";
+import HomePageHero from "@/features/pages/HomePage/HomePageHero/HomePageHero";
 import { getPageConfig } from "@/features/shared/lib/utils";
 import { PageParamsProps } from "@/types";
 
@@ -14,7 +15,12 @@ const Home = async (pageParams: PageParamsProps) => {
     queryParams: pageConfig.initialFilters,
   });
 
-  return <HomePage initialUsers={initialUsers} pageConfig={pageConfig} />;
+  return (
+    <>
+      <HomePageHero />
+      <HomePage initialUsers={initialUsers} pageConfig={pageConfig} />
+    </>
+  );
 };
 
 export default Home;

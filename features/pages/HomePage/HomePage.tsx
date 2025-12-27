@@ -1,27 +1,24 @@
 "use client";
 import InfiniteScroll from "react-infinite-scroller";
 
-import Link from "next/link";
-
 import { getUniqueId } from "@/features/shared/lib/utils";
-import heroImage from "@/public/assets/hero.png";
 import { HomePageProps } from "@/types";
 
 import { ROUTES, Z_INDEX_STICKY_CONTENT } from "@shared/constants";
 import { useSharedContext } from "@shared/contexts";
 import { useFiltersToUrl } from "@shared/hooks";
-import { Button, Hero, PageMessage, Typography } from "@shared/ui";
+import { PageMessage } from "@shared/ui";
 import { useFiltersContext } from "@users/contexts";
 import useInfiniteUsers from "@users/services";
 import { Card, CardGrid, CardGridSkeleton, Filters } from "@users/ui";
 
 import styles from "./HomePage.module.scss";
 
-const { homePage, homePageAside, homePageResults, homePageHeroContent } =
-  styles;
+const { homePage, homePageAside, homePageResults } = styles;
 
 const HomePage = ({ initialUsers, pageConfig }: HomePageProps) => {
   // TODO On infinite scroll loading state, we should show a skeleton, seems that is not being present now
+  // TODO On changing to another page, we should reset the filters, probably we should wrap the Link component to a custom one that resets the filters when clicked
   const { perPageConfig } = pageConfig;
   const { filters } = useFiltersContext();
   const { isLoadingUsers, viewportHeight } = useSharedContext();
@@ -31,23 +28,6 @@ const HomePage = ({ initialUsers, pageConfig }: HomePageProps) => {
 
   return (
     <>
-      <Hero alt="Discover GitHub Users" backgroundImage={heroImage}>
-        <div className={homePageHeroContent}>
-          <Typography weight="bold" size="xl" as="h2" variant="primary" shadow>
-            Discover GitHub Users
-          </Typography>
-          <Button
-            as={Link}
-            href={ROUTES.FAVORITES.href}
-            variant="accent"
-            size="lg"
-          >
-            <Typography variant="inverse" size="md">
-              Go to Favorites
-            </Typography>
-          </Button>
-        </div>
-      </Hero>
       <div id={ROUTES.HOME.sectionId} />
       <div className={homePage}>
         <aside
